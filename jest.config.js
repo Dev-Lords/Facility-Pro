@@ -13,8 +13,13 @@ export default {
     collectCoverageFrom: [
       "src/**/*.{js,jsx}",
       "!src/**/*.test.{js,jsx}",
-      "!**/node_modules/**"
+      "!**/node_modules/**",
+      "!**/vendor/**"
+
     ],
+
+    coverageReporters: ["json", "lcov", "text", "clover"],
+
     transform: {
       "^.+\\.(js|jsx)$": "babel-jest"
     }
