@@ -1,0 +1,116 @@
+.LandingPage-main{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.LandingPage-HeaderBar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0px;
+    padding: 1px;
+    background-color: #020D2F; 
+    height: 80px;
+}
+
+.LandingPage-HeaderBar:hover{
+    background-color: #FFFFFF;
+    color: #020D2F;
+}
+
+.LandingPage-HeaderLeft{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 20px;
+}
+
+.LandingPage-HeaderRight{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color:#FFFFFF;
+    list-style: none;
+    margin: 0;
+    padding: 20px;
+}
+
+.LandingPage-Middle{
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.LandingPage-LeftSection{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #020D2F;
+    color: #FFFFFF;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1.1;
+    padding: 2rem
+}
+.LandingPage-LeftSection:hover{
+    background-color: #FFFFFF;
+    color: #020D2F;
+}
+
+.LandingPage-RightSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #29B4D1;
+    background-image: url("back7.avif");
+    flex: 1;
+    padding: 2rem;
+}
+
+.LandingPage-RightSection:hover{
+    background-color: #FFFFFF;
+    color: #020D2F;
+    flex:2;
+}
+
+.LandingPage-SignLogContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFFFFF;
+    color: #020D2F;
+    border-radius: 25px;
+    height: 230px;
+    width: 200px;
+
+}
+
+.LandingPage-text{
+    display: flex;
+    flex-wrap: wrap;
+    justify-self: center;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .nav-links a:hover{
+    background-color: #FFFFFF;
+    color: #020D2F;
+}
