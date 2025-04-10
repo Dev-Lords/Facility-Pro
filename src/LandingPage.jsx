@@ -10,7 +10,7 @@ const LandingPage = () => {
         <header className="LandingPage-HeaderLeft"><h2>Facility Pro</h2></header>
         <header className="LandingPage-HeaderRight">
         <ul className="nav-links">
-          <li><a className="nav-links a" href = "">Documentation</a></li>
+          <li><a className="nav-links a" href = "https://dev-lords.github.io/Facility-Pro/#/">Documentation</a></li>
           <li><a className="nav-links a" href = "">Terms</a></li>
           <li><a className= "nav-links a" href = "">Privacy</a></li>
         </ul>
