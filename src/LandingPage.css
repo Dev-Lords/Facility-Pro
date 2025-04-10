@@ -94,6 +94,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-self: center;
+    align-self: center;
 }
 
 .nav-links {
