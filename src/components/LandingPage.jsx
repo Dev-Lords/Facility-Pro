@@ -1,7 +1,25 @@
 import React from "react";
 import "./LandingPage.css";
+import { signInWithGoogle } from "../../backend/services/auth/firebase-auth";
 
 const LandingPage = () => {
+
+
+  function handleSignIn() {
+
+    signInWithGoogle()
+      .then((result) => {
+        const user = result.user;
+        console.log("User signed in: ", user);
+      }
+      )
+      .catch((error) => {
+        console.error("Error signing in: ", error);
+      }
+      );
+
+  }
+
 
     return(
     <main className="LandingPage-main">
@@ -25,7 +43,7 @@ const LandingPage = () => {
 
       <section className="LandingPage-RightSection">
         <section className="LandingPage-SignLogContainer">
-        <button id="SignIn Button">Sign In with Google</button>
+        <button id="SignIn Button"  onClick={handleSignIn} >Sign In with Google</button>
         <p>Don't have an account?</p>
         <button id="SignUp Button">Sign Up with Google</button>
         </section>

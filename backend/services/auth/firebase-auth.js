@@ -1,5 +1,5 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import app from "./firebase-config";
+import { app } from "../firebase/firebase.config"; // FIXED PATH
 
 // Initialize Firebase Authentication
 const auth = getAuth(app);
@@ -10,7 +10,7 @@ export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     console.log("User signed in:", result.user);
-    return result.user;
+    return result;
   } catch (error) {
     console.error("Error signing in:", error);
   }
