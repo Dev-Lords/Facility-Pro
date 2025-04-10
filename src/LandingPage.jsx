@@ -6,7 +6,7 @@ const LandingPage = () => {
     <main className="LandingPage-main">
 
       <section className="LandingPage-HeaderBar">
-        <header className="LandingPage-HeaderLeft"><h2>FacilityPro</h2></header>
+        <header className="LandingPage-HeaderLeft"><h2>Facility Pro</h2></header>
         <header className="LandingPage-HeaderRight">
         <ul className="nav-links">
           <li><a className="nav-links a" href = "">Documentation</a></li>
