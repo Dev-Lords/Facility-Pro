@@ -14,10 +14,10 @@
     height: 80px;
 }
 
-.LandingPage-HeaderBar:hover{
+/* .LandingPage-HeaderBar:hover{
     background-color: #FFFFFF;
     color: #020D2F;
-}
+} */
 
 .LandingPage-HeaderLeft{
     display:flex;
@@ -55,10 +55,10 @@
     flex: 1.1;
     padding: 2rem
 }
-.LandingPage-LeftSection:hover{
+/* .LandingPage-LeftSection:hover{
     background-color: #FFFFFF;
     color: #020D2F;
-}
+} */
 
 .LandingPage-RightSection{
     display: flex;
@@ -66,16 +66,16 @@
     justify-content: center;
     align-items: center;
     background-color: #29B4D1;
-    background-image: url("back7.avif");
+    background-image: url("../back7.avif");
     flex: 1;
     padding: 2rem;
 }
 
-.LandingPage-RightSection:hover{
+/* .LandingPage-RightSection:hover{
     background-color: #FFFFFF;
     color: #020D2F;
     flex:2;
-}
+} */
 
 .LandingPage-SignLogContainer{
     display: flex;
