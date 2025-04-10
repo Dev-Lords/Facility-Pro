@@ -1,10 +1,23 @@
-import "@testing-library/jest-dom";  // ✅ Add this import
-import React from "react";  // ✅ Add this import
-import { render, screen } from "@testing-library/react";
-import App from "./App";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom'; // Add this line
+import App from './App';
 
-test("renders learn react link", () => {
+test("renders Facility Pro landing page", () => {
   render(<App />);
-  const linkElement = screen.getByText(/vite \+ react/i);
-  expect(linkElement).toBeInTheDocument();
+  
+  // Check for the main header
+  const headerElement = screen.getByText("Facility Pro");
+  expect(headerElement).toBeInTheDocument();
+  
+  // Test for other key content to ensure the page renders properly
+  const taglineElement = screen.getByText(/schedule and manage your local facilities/i);
+  expect(taglineElement).toBeInTheDocument();
+  
+  // Test for button elements
+  const signInButton = screen.getByText("Sign In with Google");
+  expect(signInButton).toBeInTheDocument();
+  
+  const signUpButton = screen.getByText("Sign Up with Google");
+  expect(signUpButton).toBeInTheDocument();
 });

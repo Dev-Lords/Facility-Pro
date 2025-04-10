@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for firebase-auth.js</title>
+    <title>Code coverage report for LandingPage.jsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> firebase-auth.js</h1>
+        <h1><a href="index.html">All files</a> LandingPage.jsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -93,67 +93,91 @@
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import app from "./firebase-config";
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
+import "./LandingPage.css";
 &nbsp;
-// Initialize Firebase Authentication
-const auth = <span class="cstat-no" title="statement not covered" >getAuth(app);</span>
-const provider = <span class="cstat-no" title="statement not covered" >new GoogleAuthProvider();</span>
+const LandingPage = () =&gt; {
 &nbsp;
-// Sign in function
-export const signInWithGoogle = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const result = <span class="cstat-no" title="statement not covered" >await signInWithPopup(auth, provider);</span>
-<span class="cstat-no" title="statement not covered" >    console.log("User signed in:", result.user);</span>
-<span class="cstat-no" title="statement not covered" >    return result.user;</span>
-  } catch (error) {
-<span class="cstat-no" title="statement not covered" >    console.error("Error signing in:", error);</span>
-  }
-};
+    return(
+    &lt;main className="LandingPage-main"&gt;
 &nbsp;
-// Sign out function
-export const signOutUser = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    await signOut(auth);</span>
-<span class="cstat-no" title="statement not covered" >    console.log("User signed out");</span>
-  } catch (error) {
-<span class="cstat-no" title="statement not covered" >    console.error("Error signing out:", error);</span>
-  }
-};
+      &lt;section className="LandingPage-HeaderBar"&gt;
+        &lt;header className="LandingPage-HeaderLeft"&gt;&lt;h2&gt;Facility Pro&lt;/h2&gt;&lt;/header&gt;
+        &lt;header className="LandingPage-HeaderRight"&gt;
+        &lt;ul className="nav-links"&gt;
+          &lt;li&gt;&lt;a className="nav-links a" href = "https://dev-lords.github.io/Facility-Pro/#/"&gt;Documentation&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a className="nav-links a" href = ""&gt;Terms&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a className= "nav-links a" href = ""&gt;Privacy&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;/header&gt;
+      &lt;/section&gt;
+      
+      &lt;section className="LandingPage-Middle"&gt;
+      &lt;section className="LandingPage-LeftSection"&gt;
+        &lt;h2 className="LandingPage-text"&gt;Facility Pro let's you schedule and manage your local facilities, Hassle Free.&lt;/h2&gt;
+        &lt;p className="LandingPage-text"&gt;We want to see communities outside again. Plan sports days, without the headache.&lt;/p&gt;
+      &lt;/section&gt;
 &nbsp;
-// Export auth instance for use in other components
-export { auth };
-&nbsp;</pre></td></tr></table></pre>
+      &lt;section className="LandingPage-RightSection"&gt;
+        &lt;section className="LandingPage-SignLogContainer"&gt;
+        &lt;button id="SignIn Button"&gt;Sign In with Google&lt;/button&gt;
+        &lt;p&gt;Don't have an account?&lt;/p&gt;
+        &lt;button id="SignUp Button"&gt;Sign Up with Google&lt;/button&gt;
+        &lt;/section&gt;
+      &lt;/section&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+&nbsp;
+    );
+}
+&nbsp;
+export default LandingPage;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
