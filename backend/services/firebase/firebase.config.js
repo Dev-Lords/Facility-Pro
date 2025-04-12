@@ -19,3 +19,11 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
+if (process.env.NODE_ENV !== 'test') {
+  import('firebase/analytics').then(({ getAnalytics, isSupported }) => {
+    isSupported().then((supported) => {
+      if (supported) getAnalytics(app);
+    });
+  });
+}
