@@ -1,8 +1,13 @@
 import React from 'react';
 import './ResidentDashboard.css';
 console.log("ResidentDashboard component is loading");
+import { Navigate } from 'react-router-dom';
 
 export default function ResidentPortal() {
+  const token = localStorage.getItem('authToken');
+    if(!token){
+        return <Navigate to="/" />;
+    }
   return (
     <main className="container">
       <header className="header">
