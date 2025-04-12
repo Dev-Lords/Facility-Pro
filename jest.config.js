@@ -14,7 +14,7 @@ export default {
   moduleNameMapper: {
     '\\.svg$': '<rootDir>/__mocks__/svgMock.js',
     '\\.(css|less|scss)$': 'identity-obj-proxy',
-    '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/__mocks__/fileMock.js',
+    '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/mocks/fileMock.js',
   },
 
   collectCoverageFrom: [
