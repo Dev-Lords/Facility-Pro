@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  // I
 import LandingPage from './components/LandingPage';
 import LoginPage from './components/LoginPage.jsx'; 
 import SignupPage from './components/SignupPage.jsx'; 
-import ResidentHomePage from './components/ResidentHomePage';  // Import the ResidentHomePage
-import AdminHomePage from './components/AdminHomePage';
+import ResidentDashboard from './components/ResidentDashboard.jsx';  // 
+import AdminDashboard from './components/AdminDashboard.jsx';
 
 function App() {
   return (
