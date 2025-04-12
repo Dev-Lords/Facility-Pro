@@ -2,25 +2,11 @@ import React from "react";
 import "./LandingPage.css";
 import { signInWithGoogle } from "../../backend/services/auth/firebase-auth";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+//import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 
 const LandingPage = () => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const token = await user.getIdToken();
-        localStorage.setItem('authToken', token);
-        navigate('/resident-home');
-      }
-    });
-
-    return () => unsubscribe(); // cleanup
-  }, [navigate]);
 
 
 
