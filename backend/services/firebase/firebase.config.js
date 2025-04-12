@@ -1,8 +1,8 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
-// Your web app's Firebase configuration
+
 const firebaseConfig = {
   apiKey: "AIzaSyC1CymHohELYGN7EipJOC5sL9iQe5sIOzc",
   authDomain: "facilty-pro.firebaseapp.com",
@@ -13,10 +13,10 @@ const firebaseConfig = {
   measurementId: "G-89EB162VPS"
 };
 
-// Initialize Firebase
+
 export const app = initializeApp(firebaseConfig);
 
-// Safely initialize Analytics only if supported and not in test environment
+
 if (process.env.NODE_ENV !== 'test') {
   isSupported().then((supported) => {
     if (supported) {
