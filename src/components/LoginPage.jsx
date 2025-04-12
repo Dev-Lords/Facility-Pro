@@ -14,7 +14,7 @@ const LoginPage = ({ onSubmit, error }) => {
       console.log("User signed in: ", user);
       const token = await user.getIdToken();
       localStorage.setItem('authToken', token);
-      navigate('/resident-home');
+      navigate('/admin-home');
     }
     catch(error){
       console.error("Error signing in: ", error);
