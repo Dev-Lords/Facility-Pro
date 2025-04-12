@@ -1,0 +1,217 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
+    background-color: #e0ecf6;
+    color: #1c2e4a;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  .facility-header {
+    background: linear-gradient(135deg, #0b2e5b 0%, #1e4e8c 100%);
+    color: white;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(14, 54, 102, 0.25);
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .facility-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 70%);
+    pointer-events: none;
+  }
+  
+  .facility-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  
+  .facility-subtitle {
+    opacity: 0.9;
+    font-size: 17px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  .staff-icon,
+  .card-icon {
+    font-size: 36px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+    height: 80px;
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+  }
+  
+  .facility-card:hover .card-icon {
+    transform: scale(1.1);
+  }
+  
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 40px;
+  }
+  
+  .facility-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    padding: 35px 25px;
+    text-align: center;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    border-top: 5px solid transparent;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  
+  .facility-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(to right, transparent, rgba(61, 110, 168, 0.3), transparent);
+    z-index: -1;
+  }
+  
+  .facility-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(14, 54, 102, 0.12);
+  }
+  
+  .card-maintenance {
+    border-top-color: #3d6ea8;
+  }
+  
+  .card-availability {
+    border-top-color: #1e4e8c;
+  }
+  
+  .card-bookings {
+    border-top-color: #0b2e5b;
+  }
+  
+  .card-title {
+    margin-bottom: 15px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #0f3d78;
+  }
+  
+  .card-description {
+    margin-bottom: 25px;
+    color: #455a64;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  
+  .facility-btn {
+    background: linear-gradient(to right, #1e4e8c, #3d6ea8);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 4px 12px rgba(14, 54, 102, 0.25);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .facility-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s ease;
+  }
+  
+  .facility-btn:hover {
+    background: linear-gradient(to right, #143f6d, #1e4e8c);
+    box-shadow: 0 6px 15px rgba(14, 54, 102, 0.35);
+    transform: translateY(-2px);
+  }
+  
+  .facility-btn:hover::after {
+    left: 100%;
+  }
+  
+  .facility-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 25px;
+    color: #546e7a;
+    font-size: 14px;
+    position: relative;
+  }
+  
+  .facility-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 25%;
+    width: 50%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #b0c7e1, transparent);
+  }
+  
+  @media (max-width: 992px) {
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .facility-title {
+      font-size: 28px;
+    }
+  
+    body {
+      padding: 15px;
+    }
+  }
+  
+  
