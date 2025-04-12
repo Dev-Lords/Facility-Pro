@@ -5,6 +5,7 @@ import LoginPage from './components/LoginPage.jsx';
 import SignupPage from './components/SignupPage.jsx'; 
 import ResidentDashboard from './components/ResidentDashboard.jsx';  // 
 import AdminDashboard from './components/AdminDashboard.jsx';
+import FacilityStaffDashboard from './components/FacilityStaffDashboard.jsx'
 
 function App() {
   return (
