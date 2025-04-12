@@ -1,4 +1,5 @@
-module.exports = {
+
+export default {
   testEnvironment: 'jsdom',
 
   setupFiles: ['<rootDir>/jest.setup.js'],
@@ -11,9 +12,7 @@ module.exports = {
   moduleFileExtensions: ['js', 'jsx'],
 
   moduleNameMapper: {
-    // Mock SVG files
     '\\.svg$': '<rootDir>/__mocks__/svgMock.js',
-    // Handle styles (CSS/SCSS)
     '\\.(css|less|scss)$': 'identity-obj-proxy',
   },
 
