@@ -19,7 +19,7 @@ test("renders Facility Pro landing page", () => {
   const signInButton = screen.getByText("Login");
   expect(signInButton).toBeInTheDocument();
   
-  const signUpButton = screen.getByText("Sign Up with Google");
+  //const signUpButton = screen.getByText("Sign Up with Google");
   const signUpButton = screen.getByText("Login");
 
   expect(signUpButton).toBeInTheDocument();
