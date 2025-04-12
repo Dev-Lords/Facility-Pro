@@ -1,23 +1,40 @@
 import React from "react";
 import "./LandingPage.css";
 import { signInWithGoogle } from "../../backend/services/auth/firebase-auth";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
 
-
-  function handleSignIn() {
-
-    signInWithGoogle()
-      .then((result) => {
-        const user = result.user;
-        console.log("User signed in: ", user);
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const token = await user.getIdToken();
+        localStorage.setItem('authToken', token);
+        navigate('/resident-home');
       }
-      )
-      .catch((error) => {
-        console.error("Error signing in: ", error);
-      }
-      );
+    });
 
+    return () => unsubscribe(); // cleanup
+  }, [navigate]);
+
+
+
+  async function handleSignInWithGoogle() {
+    
+    try{
+      const result = await signInWithGoogle();
+      const user = result.user;
+      console.log("User signed in: ", user);
+      const token = await user.getIdToken();
+      localStorage.setItem('authToken', token);
+      navigate('/resident-home');
+    }
+    catch(error){
+      console.error("Error signing in: ", error);
+    }
+    
   }
 
 
@@ -43,7 +60,7 @@ const LandingPage = () => {
 
       <section className="LandingPage-RightSection">
         <section className="LandingPage-SignLogContainer">
-        <button id="SignIn Button"  onClick={handleSignIn} >Sign In with Google</button>
+        <button id="SignIn Button"  onClick={handleSignInWithGoogle} >Sign In with Google</button>
         <p>Don't have an account?</p>
         <button id="SignUp Button">Sign Up with Google</button>
         </section>
