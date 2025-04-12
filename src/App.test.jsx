@@ -16,7 +16,7 @@ test("renders Facility Pro landing page", () => {
   
   // Test for button elements
   //const signInButton = screen.getByText("Sign In with Google");
-  const signInButton = screen.getByText("Sign In");
+  const signInButton = screen.getByText("Login");
   expect(signInButton).toBeInTheDocument();
   
   //const signUpButton = screen.getByText("Sign Up with Google");
