@@ -2,13 +2,13 @@ import React from "react";
 import "./LandingPage.css";
 import FacilitySlideshow from "./visuals";
 import { useNavigate } from "react-router-dom";
-import basketball from "../assets/polish/basketball_court.jpg";
+/*import basketball from "../assets/polish/basketball_court.jpg";
 import swim from "../assets/polish/Swimming_pools.jpg";
 import tennis from "../assets/polish/Tennis_Courts.jpg";
 import soccer from "../assets/polish/Soccer_field.jpg";
 import track from"../assets/polish/Running_track.jpg";
 import gym from "../assets/polish/Gymnastics.png";
-import dance from "../assets/polish/Dance_studio.jpg";
+import dance from "../assets/polish/Dance_studio.jpg";*/
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const LandingPage = () => {
     navigate("/SignupPage");
   }
  
-  /*Featured facilities data*/
+  /*Featured facilities data
   const facilityData = [
     {name: "Basketball Courts",image: basketball },
     {name: "Swimming Pools",image: swim},
@@ -30,7 +30,7 @@ const LandingPage = () => {
     {name: "Track",image: track},
     {name: "Gymnastics",image: gym},
     {name: "Dance Studios",image: dance}
-  ];
+  ];*/
 
 
   return(
@@ -74,7 +74,7 @@ const LandingPage = () => {
         
         <article className="LandingPage-SportFeature">
           <h3>Featured Facilities:</h3>
-         <FacilitySlideshow facilities={facilityData} />
+         
         </article>
 
         <article className="LandingPage-Testimonial">
