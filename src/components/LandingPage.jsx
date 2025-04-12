@@ -2,7 +2,7 @@ import React from "react";
 import "./LandingPage.css";
 import { signInWithGoogle } from "../../backend/services/auth/firebase-auth";
 import { useNavigate } from "react-router-dom";
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 
