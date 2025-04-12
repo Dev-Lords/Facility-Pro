@@ -17,7 +17,7 @@ const LandingPage = () => {
       const user = result.user;
       console.log("User signed in: ", user);
       const token = await user.getIdToken();
-      localStorage.setItem('authToken', token);
+      localStorage.setItem('authToken', token); 
       navigate('/resident-home');
     }
     catch(error){
