@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { signInWithGoogle } from "../../backend/services/auth/firebase-auth";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
+import { User } from "../../backend/services/models/user.js";
+
 
 const LoginPage = ({ onSubmit, error }) => {
   const navigate = useNavigate();
@@ -9,16 +11,53 @@ const LoginPage = ({ onSubmit, error }) => {
   async function handleSignInWithGoogle() {
     
     try{
-      const result = await signInWithGoogle();
-      const user = result.user;
-      console.log("User signed in: ", user);
-      const token = await user.getIdToken();
-      localStorage.setItem('authToken', token);
-      navigate('/admin-home');
-    }
-    catch(error){
-      console.error("Error signing in: ", error);
-    }
+		const result = await signInWithGoogle();
+		const user = result.user;
+		console.log("User signed in: ", user);
+		const token = await user.getIdToken();
+		localStorage.setItem('authToken', token);
+		const uid = user.uid;
+
+        // Check if the user exists in Firestore
+        const existingUser = await User.getByUid(uid);
+		
+		const userData = {
+			uid: user.uid,
+			email: user.email,
+			displayName: user.displayName,
+			photoURL: user.photoURL,
+			phoneNumber: user.phoneNumber,
+			providerId: user.providerId,
+			emailVerified: user.emailVerified,
+			createdAt: new Date().toISOString()
+		};
+		if (existingUser) {
+            userData.user_type = existingUser.user_type; 
+        } else {
+            userData.user_type = "resident";  
+        }
+		await User.saveUser(userData);
+
+		const userType = await User.getUserType(uid);
+		if(userType == "admin"){
+			navigate('/admin-home');			
+		}
+		else if(userType =="resident"){
+			navigate('/resident-home');
+		}
+		else if(userType=="staff"){
+			navigate('/staff-home');
+		}
+		else{
+			navigate('/');
+		}
+		
+
+		
+		}
+	catch(error){
+		console.error("Error signing in: ", error);
+		}
     
   }
 
