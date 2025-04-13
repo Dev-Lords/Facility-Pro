@@ -3,12 +3,15 @@ import "./Login.css";
 import { signInWithGoogle } from "../../backend/services/auth/firebase-auth";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../backend/services/models/user.js";
+import { signUpWithEmailAndPassword } from '../../backend/services/auth/firebase-auth';
 
 const SignupPage = () => {
 	 const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    name : '',
     email: '',
-    password: ''
+    password: '',
+    phoneNumber : ''
   });
   
   const [error, setError] = useState(null);
@@ -19,8 +22,7 @@ const SignupPage = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle the submission locally instead of relying on props
-    console.log('Form submitted with:', formData);
+	console.log('Form submitted with:', formData);
     
     // Example of form validation and error handling
     if (!formData.email || !formData.password) {
@@ -33,6 +35,19 @@ const SignupPage = () => {
     // createUser(formData)
     //   .then(() => navigate('/login'))
     //   .catch(err => setError(err.message));
+
+    signUpWithEmailAndPassword(formData.name,formData.phoneNumber,formData.email, formData.password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("User signed up:", user);
+        onSubmit(user); // Call the parent component's onSubmit function
+      })
+      .catch((error) => {
+        console.error("Error signing up:", error);
+        setError(error.message); // Set error message to state
+      });
+    
   };
   
    async function handleSignInWithGoogle() {
@@ -74,6 +89,32 @@ const SignupPage = () => {
       <section className="login-panel">
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
+
+          
+        <label>
+            <input
+              type="name"
+              name="name"
+              placeholder="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
+
+          <label>
+          
+            <input
+              type="phoneNumber"
+              name="phoneNumber"
+              placeholder="Phone Number"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              required/>
+          
+          </label>
+
           <label>
             <input
               type="email"
