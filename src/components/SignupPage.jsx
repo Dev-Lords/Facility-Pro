@@ -41,7 +41,7 @@ const SignupPage = () => {
         // Signed in
         const user = userCredential.user;
         console.log("User signed up:", user);
-        onSubmit(user); // Call the parent component's onSubmit function
+		navigate('/LoginPage');
       })
       .catch((error) => {
         console.error("Error signing up:", error);
