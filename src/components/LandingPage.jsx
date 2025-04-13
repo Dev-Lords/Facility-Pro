@@ -129,15 +129,7 @@ const LandingPage = () => {
         <article className="LandingPage-SportFeature">
           <h3>Featured Facilities:</h3>
           <FacilitySlideshow />
-          <ul className="features-list">
-            <li>Basketball Courts</li>
-            <li>Swimming Pools</li>
-            <li>Tennis Courts</li>
-            <li>Soccer Fields</li>
-            <li>Running Tracks</li>
-            <li>Gymnasiums</li>
-            <li>Dance Studios</li>
-          </ul>
+      
         </article>
 
         <article className="LandingPage-Testimonial">
