@@ -1,26 +1,28 @@
+
 export default {
-  
-    testEnvironment: "jsdom",
+  testEnvironment: 'jsdom',
 
-    moduleNameMapper: {
-      // Mock SVG files
-      "\\.svg$": "<rootDir>/__mocks__/svgMock.js",
+  setupFiles: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 
-      // Handle other file types as needed
-      "\\.(css|less|scss)$": "identity-obj-proxy"
-    },
-    setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-    collectCoverageFrom: [
-      "src/**/*.{js,jsx}",
-      "!src/**/*.test.{js,jsx}",
-      "!**/node_modules/**",
-      "!**/vendor/**"
+  transform: {
+    '^.+\\.(js|jsx)$': 'babel-jest',
+  },
 
-    ],
+  moduleFileExtensions: ['js', 'jsx'],
 
-    coverageReporters: ["json", "lcov", "text", "clover"],
+  moduleNameMapper: {
+    '\\.svg$': '<rootDir>/__mocks__/svgMock.js',
+    '\\.(css|less|scss)$': 'identity-obj-proxy',
+    '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/__mocks__/fileMock.js',
+  },
 
-    transform: {
-      "^.+\\.(js|jsx)$": "babel-jest"
-    }
-  };
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx}',
+    '!src/**/*.test.{js,jsx}',
+    '!**/node_modules/**',
+    '!**/vendor/**',
+  ],
+
+  coverageReporters: ['json', 'lcov', 'text', 'clover'],
+};
