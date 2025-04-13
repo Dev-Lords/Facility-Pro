@@ -19,19 +19,24 @@ export class User {
   static async saveUser(userData) {
     const user = new User(userData);
     const userRef = doc(db, "users", user.uid);
-    
+  
     try {
-      await setDoc(userRef, {
-        ...user,
-        updatedAt: new Date().toISOString()
-      }, { merge: true });
-      
+      await setDoc(
+        userRef,
+        {
+          ...user.toJSON(),
+          updatedAt: new Date().toISOString()
+        },
+        { merge: true }
+      );
+  
       return user;
     } catch (error) {
       console.error("Error saving user:", error);
       throw error;
     }
   }
+  
 
   // Get user by UID
   static async getByUid(uid) {
@@ -48,6 +53,23 @@ export class User {
       throw error;
     }
   }
+  // get userType
+  static async getUserType(uid) {
+    try {
+      const userRef = doc(db, "users", uid);
+      const userDoc = await getDoc(userRef);
+  
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        return data.user_type || null; 
+      }
+      return null; 
+    } catch (error) {
+      console.error("Error getting user type:", error);
+      throw error;
+    }
+  }
+  
 
   // Check if user exists
   static async exists(uid) {
@@ -76,4 +98,20 @@ export class User {
       throw error;
     }
   }
+  toJSON() {
+    return {
+      uid: this.uid,
+      email: this.email,
+      displayName: this.displayName,
+      photoURL: this.photoURL,
+      phoneNumber: this.phoneNumber,
+      providerId: this.providerId,
+      emailVerified: this.emailVerified,
+      user_type: this.user_type,
+      createdAt: this.createdAt
+    };
+  }
+  
+
+
 }

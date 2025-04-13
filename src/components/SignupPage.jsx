@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import "./Login.css";
+import { signInWithGoogle } from "../../backend/services/auth/firebase-auth";
+import { useNavigate } from "react-router-dom";
+import { User } from "../../backend/services/models/user.js";
 
-const SignUpForm = ({ onSubmit, signInWithGoogle, error }) => {
+const SignupPage = () => {
+	 const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  
+  const [error, setError] = useState(null);
   
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -13,8 +19,50 @@ const SignUpForm = ({ onSubmit, signInWithGoogle, error }) => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    // Handle the submission locally instead of relying on props
+    console.log('Form submitted with:', formData);
+    
+    // Example of form validation and error handling
+    if (!formData.email || !formData.password) {
+      setError('Please fill out all fields');
+      return;
+    }
+    
+    // Here you would typically call an API to create a user
+    // For example:
+    // createUser(formData)
+    //   .then(() => navigate('/login'))
+    //   .catch(err => setError(err.message));
   };
+  
+   async function handleSignInWithGoogle() {
+      
+      try{
+        const result = await signInWithGoogle();
+        const user = result.user;
+        console.log("Account created for user signing up with google: ", user);
+        const token = await user.getIdToken();
+        localStorage.setItem('authToken', token);
+		const userData = {
+			uid: user.uid,
+			email: user.email,
+			displayName: user.displayName,
+			photoURL: user.photoURL,
+			phoneNumber: user.phoneNumber,
+			providerId: user.providerId,
+			emailVerified: user.emailVerified,
+			user_type: user.user_type || "resident",
+			createdAt: new Date().toISOString()
+		};
+		await User.saveUser(userData);
+
+        navigate('/LoginPage');
+    }
+      catch(error){
+        console.error("Error signing up: ", error);
+      }
+      
+    }
   
   return (
     <main className="login-container">
@@ -52,7 +100,7 @@ const SignUpForm = ({ onSubmit, signInWithGoogle, error }) => {
 
           <p className="divider"><span>or</span></p>
 
-          <button type="button" className="google-btn" onClick={signInWithGoogle}>
+          <button type="button" className="google-btn" onClick={handleSignInWithGoogle}>
             Continue with Google
           </button>
 
@@ -63,4 +111,4 @@ const SignUpForm = ({ onSubmit, signInWithGoogle, error }) => {
   );
 };
 
-export default SignUpForm;
+export default SignupPage;
