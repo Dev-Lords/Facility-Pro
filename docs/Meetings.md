@@ -1,4 +1,4 @@
-# Meetings
+# Sprint One (1) Meetings
 
 ## 7 April 2025
 
@@ -169,3 +169,69 @@ The meeting  was chaired informally by available members
     Include role management for routing and access control.
 
 - Next Meeting: 13 April 2025
+
+## 13 April 2025
+
+> Date: April 13, 2025.  
+
+> Time: 16:30.  
+
+> Platform: Microsoft Teams.  
+
+> Atendees: All Team Members.  
+
+
+### Agenda:
+- Review and clean up of user stories and sub-tasks
+
+- Verification of deployment and functionality
+
+- Role assignment and testing in the deployed application
+
+- GitHub release and rubric alignment
+
+### Key Discussion Points:
+1. Deployment & Testing
+    Confirmed that the app has been successfully deployed to Azure.
+
+    Team members shared the deployment link and pinned it for easy access.
+
+    Functionality testing was performed live, with login and routing tested across different user roles (admin, staff, resident).
+
+2. Backlog & User Story Refinement
+    Clarified that:
+
+    Main GitHub Issues should represent user stories.
+
+    Sub-issues should be tasks (not acceptance tests).
+
+    Acceptance tests should be documented separately, not as sub-issues.
+
+    Some confusion over structure was resolved with examples and live edits.
+
+    Adjustments made to ensure 4 fully completed user stories exist for grading.
+
+4. Role Assignment & Routing
+    Discussed user role logic:
+
+    Admins and staff must be created/assigned manually in the database.
+
+    Residents can self-register via Google or email.
+
+    Users tested logging in with different accounts and confirmed that redirection based on roles was functioning.
+
+    Additional users were assigned different roles for testing purposes.
+
+5. GitHub Releases & Rubric Requirements
+    A v1.0.0 GitHub Release was created to fulfill the rubric requirement.
+
+6. Confirmed:
+
+    CI/CD is set up and automatically builds and deploys.
+
+    All user stories have associated tasks and assignees.
+
+    Code coverage and unit testing are included.
+
+    Deployment to Azure is successful and functional.
+
