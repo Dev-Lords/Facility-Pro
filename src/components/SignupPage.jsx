@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import "./Login.css";
+import { signUpWithEmailAndPassword } from '../../backend/services/auth/firebase-auth';
 
 const SignUpForm = ({ onSubmit, signInWithGoogle, error }) => {
   const [formData, setFormData] = useState({
+    name : '',
     email: '',
-    password: ''
+    password: '',
+    phoneNumber : ''
   });
   
   const handleChange = (e) => {
@@ -13,7 +16,19 @@ const SignUpForm = ({ onSubmit, signInWithGoogle, error }) => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    signUpWithEmailAndPassword(formData.name,formData.phoneNumber,formData.email, formData.password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("User signed up:", user);
+        onSubmit(user); // Call the parent component's onSubmit function
+      })
+      .catch((error) => {
+        console.error("Error signing up:", error);
+        setError(error.message); // Set error message to state
+      });
+    
   };
   
   return (
@@ -26,6 +41,32 @@ const SignUpForm = ({ onSubmit, signInWithGoogle, error }) => {
       <section className="login-panel">
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
+
+          
+        <label>
+            <input
+              type="name"
+              name="name"
+              placeholder="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
+
+          <label>
+          
+            <input
+              type="phoneNumber"
+              name="phoneNumber"
+              placeholder="Phone Number"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              required/>
+          
+          </label>
+
           <label>
             <input
               type="email"
