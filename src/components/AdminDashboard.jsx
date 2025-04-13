@@ -4,7 +4,6 @@ import './AdminDashboard.css';
 const AdminDashboard = () => {
   return (
     <section className="dashboard-container">
-      {/* Decorative blue blocks at the top */}
       <section className="blue-blocks">
         <span className="blue-block"></span>
         <span className="blue-block"></span>
@@ -70,7 +69,7 @@ const AdminDashboard = () => {
       </section>
 
       <footer className="dashboard-footer">
-        <p>Admin Dashboard • Version 2.4.1 • Last Updated: April 11, 2025</p>
+        <p>Facility Management System • Admin Dashboard • Version 1.0.0 </p>
         <nav className="footer-links">
           <a href="/help">Help</a>
           <a href="/support">Support</a>

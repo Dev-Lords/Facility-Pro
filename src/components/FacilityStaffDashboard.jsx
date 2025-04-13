@@ -31,7 +31,7 @@ export default function FacilityStaffHome() {
       </section>
 
       <footer className="facility-footer">
-        <p>Facility Management System • Staff Portal • Version 1.2.0</p>
+        <p>Facility Management System • Staff Portal • Version 1.0.0</p>
       </footer>
     </>
   );
