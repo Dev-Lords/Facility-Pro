@@ -11,7 +11,7 @@ export class User {
     this.phoneNumber = userData.phoneNumber || null;
     this.providerId = userData.providerId || null;
     this.emailVerified = userData.emailVerified || false;
-    this.user_type = userData.user_type || "user";
+    this.user_type = userData.user_type || "resident";
     this.createdAt = userData.createdAt || new Date().toISOString();
   }
 

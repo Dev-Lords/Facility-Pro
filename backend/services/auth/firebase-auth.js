@@ -35,7 +35,7 @@ export const signInWithGoogle = async () => {
       console.log("Existing user signed in, preserving user_type:", userData.user_type);
     } else {
       // Only set default user_type for new users
-      userData.user_type = "user";
+      userData.user_type = "resident"; // Default user_type for new users
       userData.createdAt = new Date().toISOString();
       console.log("Creating new user profile with default user_type");
     }
