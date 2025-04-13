@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1744542658418" clover="3.2.0">
-  <project timestamp="1744542658418" name="All files">
-    <metrics statements="76" coveredstatements="20" conditionals="24" coveredconditionals="2" methods="31" coveredmethods="6" elements="131" coveredelements="28" complexity="0" loc="76" ncloc="76" packages="2" files="10" classes="10"/>
+<coverage generated="1744558784845" clover="3.2.0">
+  <project timestamp="1744558784846" name="All files">
+    <metrics statements="126" coveredstatements="20" conditionals="44" coveredconditionals="2" methods="34" coveredmethods="6" elements="204" coveredelements="28" complexity="0" loc="126" ncloc="126" packages="2" files="10" classes="10"/>
     <package name="src">
       <metrics statements="2" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="App.jsx" path="C:\Users\rakhi\Facility-Pro\src\App.jsx">
@@ -14,7 +14,7 @@
       </file>
     </package>
     <package name="src.components">
-      <metrics statements="74" coveredstatements="19" conditionals="24" coveredconditionals="2" methods="30" coveredmethods="5"/>
+      <metrics statements="124" coveredstatements="19" conditionals="44" coveredconditionals="2" methods="33" coveredmethods="5"/>
       <file name="AdminDashboard.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\AdminDashboard.jsx">
         <metrics statements="2" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="4" count="1" type="stmt"/>
@@ -50,24 +50,53 @@
         <line num="94" count="1" type="stmt"/>
       </file>
       <file name="LoginPage.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\LoginPage.jsx">
-        <metrics statements="17" coveredstatements="1" conditionals="2" coveredconditionals="0" methods="4" coveredmethods="0"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="12" count="0" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
+        <metrics statements="46" coveredstatements="1" conditionals="16" coveredconditionals="0" methods="4" coveredmethods="0"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
         <line num="14" count="0" type="stmt"/>
         <line num="15" count="0" type="stmt"/>
         <line num="16" count="0" type="stmt"/>
         <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="31" count="0" type="stmt"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
+        <line num="35" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="36" count="0" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="46" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="49" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="80" count="0" type="stmt"/>
+        <line num="81" count="0" type="stmt"/>
+        <line num="82" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="83" count="0" type="stmt"/>
+        <line num="85" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="88" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="92" count="0" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="101" count="0" type="stmt"/>
       </file>
       <file name="ResidentDashboard.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\ResidentDashboard.jsx">
         <metrics statements="5" coveredstatements="1" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -78,15 +107,36 @@
         <line num="11" count="0" type="stmt"/>
       </file>
       <file name="SignupPage.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\SignupPage.jsx">
-        <metrics statements="8" coveredstatements="1" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="5" count="0" type="stmt"/>
+        <metrics statements="29" coveredstatements="1" conditionals="8" coveredconditionals="0" methods="6" coveredmethods="0"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="14" count="0" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="28" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="82" count="0" type="stmt"/>
       </file>
       <file name="StaffHomePage.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\StaffHomePage.jsx">
         <metrics statements="4" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
