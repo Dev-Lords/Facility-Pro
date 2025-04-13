@@ -1,7 +1,8 @@
 // src/services/firebase-auth.js
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut , createUserWithEmailAndPassword , signInWithEmailAndPassword as firebaseSignIn } from "firebase/auth";
 import { app } from "../firebase/firebase.config.js";
 import { User } from "../models/user.js"; // Adjust the import path as necessary
+import { use } from "react";
 
 // Initialize Firebase Authentication
 const auth = getAuth(app);
@@ -40,6 +41,20 @@ export const signInWithGoogle = async () => {
       console.log("Creating new user profile with default user_type");
     }
     
+
+        
+    // If user exists, preserve their user_type
+    if (existingUser) {
+      userData.user_type = existingUser.user_type; // Keep existing user_type
+      console.log("Existing user signed in, preserving user_type:", userData.user_type);
+    } else {
+      // Only set default user_type for new users
+      userData.user_type = "resident"; // Default user_type for new users
+      userData.createdAt = new Date().toISOString();
+      console.log("Creating new user profile with default user_type");
+    }
+    
+    
     // Save user data to Firestore
     await User.saveUser(userData);
     
@@ -49,6 +64,55 @@ export const signInWithGoogle = async () => {
     throw error;
   }
 };
+
+//sign up with email and password function
+
+export const signUpWithEmailAndPassword = async (name,phoneNumber,email, password) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+      // Check if user exists first
+    const existingUser = await User.getByUid(user.uid);
+    // Prepare user data
+    const userData = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName || name,
+      photoURL: user.photoURL || null,
+      phoneNumber: user.phoneNumber || phoneNumber,
+      providerId: "email and password",
+      emailVerified: true,
+      user_type: "resident",
+      createdAt: new Date().toISOString()
+    };
+    
+    // Save user data to Firestore
+    await User.saveUser(userData);
+    
+    return userCredential;
+  } catch (error) {
+    console.error("Error signing up:", error);
+    throw error;
+  }
+}
+
+
+//sign in with email and password
+export const signInWithEmailAndPassword = async (email, password) => {
+  try {
+    const userCredential = await firebaseSignIn(auth, email, password);
+    const user = userCredential.user;
+    console.log("User signed in:", user);
+
+    return user; // or return userCredential if you want more info like accessToken
+  } catch (error) {
+    console.error("Error signing in:", error);
+    throw error;
+  }
+};
+
+
+
 // Sign out function
 export const signOutUser = async () => {
   try {
