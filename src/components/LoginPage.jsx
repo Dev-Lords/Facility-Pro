@@ -72,12 +72,25 @@ const LoginPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Don't forget this to stop form reload
+    e.preventDefault(); 
     try {
       const user = await signInWithEmailAndPassword(formData.email, formData.password);
       const token = await user.getIdToken();
       localStorage.setItem('authToken', token);
-      navigate('/admin-home');
+	  const uid = user.uid;
+	  const userType = await User.getUserType(uid);
+		if(userType == "admin"){
+			navigate('/admin-home');			
+		}
+		else if(userType =="resident"){
+			navigate('/resident-home');
+		}
+		else if(userType=="staff"){
+			navigate('/staff-home');
+		}
+		else{
+			navigate('/');
+		}
     } catch (error) {
       console.error("Error signing in:", error);
       setError(error.message);
