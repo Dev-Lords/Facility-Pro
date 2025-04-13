@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { signInWithGoogle } from "../../backend/services/auth/firebase-auth";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
+import { signInWithEmailAndPassword } from "../../backend/services/auth/firebase-auth";
 
-const LoginPage = ({ onSubmit, error }) => {
+const LoginPage = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
 
   async function handleSignInWithGoogle() {
     
@@ -31,10 +33,19 @@ const LoginPage = ({ onSubmit, error }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Don't forget this to stop form reload
+    try {
+      const user = await signInWithEmailAndPassword(formData.email, formData.password);
+      const token = await user.getIdToken();
+      localStorage.setItem('authToken', token);
+      navigate('/admin-home');
+    } catch (error) {
+      console.error("Error signing in:", error);
+      setError(error.message);
+    }
   };
+  
 
   return (
     <main className="login-container">
