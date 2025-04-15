@@ -1,8 +1,17 @@
 import React from 'react';
 import './FacilityStaffDashboard.css';
 console.log("FacilityStaffDashboard component is loading");
+import { Navigate } from 'react-router-dom';
+
 
 export default function FacilityStaffHome() {
+    const token = localStorage.getItem('authToken');
+    const userType = localStorage.getItem('userType');
+    const isAuthenticated = token && userType === 'staff';
+
+  	if (!isAuthenticated) {
+    	return <Navigate to="/" replace />;
+  	}
   return (
     <>
       <header className="facility-header">
