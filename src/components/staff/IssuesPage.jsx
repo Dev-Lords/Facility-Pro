@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchIssues } from "../../backend/services/issuesService";
-import IssuesPageList from "./IssuesPageList";
+import { fetchIssues } from "../../../backend/services/issuesService.js";
+import IssuesPageList from "./IssuesPageList.jsx";
 
 const IssuesPage = () => {
     const [issues, setIssues] = useState([]);

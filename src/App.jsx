@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  // I
 import LandingPage from './components/LandingPage';
 import LoginPage from './components/LoginPage.jsx'; 
 import SignupPage from './components/SignupPage.jsx'; 
-import ResidentDashboard from './components/ResidentDashboard.jsx';  // 
-import AdminDashboard from './components/AdminDashboard.jsx';
-import FacilityStaffDashboard from './components/FacilityStaffDashboard.jsx'
-import IssuesPage from './components/IssuesPage.jsx';
+import ResidentDashboard from './components/resident/ResidentDashboard.jsx';  //
+import AdminDashboard from './components/admin/AdminDashboard.jsx';
+import FacilityStaffDashboard from './components/staff/FacilityStaffDashboard.jsx'
+import IssuesPage from './components/staff/IssuesPage.jsx';
 
 function App() {
   return (
@@ -18,7 +18,8 @@ function App() {
         <Route path="/SignupPage" element={<SignupPage />} /> 
         <Route path="/resident-home" element={<ResidentDashboard />} />
         <Route path ="/admin-home" element={<AdminDashboard />} />
-        <Route path ="/staff-home" element={<IssuesPage />} />
+        <Route path ="/staff-home" element={<FacilityStaffDashboard />} />
+        <Route path ="/staff-issues" element={<IssuesPage />} />
 
       </Routes>
     </Router>

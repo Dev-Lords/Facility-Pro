@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import "./Login.css";
-import { signInWithGoogle } from "../../backend/services/auth/firebase-auth";
+import { signInWithGoogle } from "../../backend/auth/firebase-auth";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../backend/services/models/user.js";
-import { signUpWithEmailAndPassword } from '../../backend/services/auth/firebase-auth';
+import { User } from "../../backend/models/user.js";
+import { signUpWithEmailAndPassword } from '../../backend/auth/firebase-auth';
 
 const SignupPage = () => {
 	 const navigate = useNavigate();
