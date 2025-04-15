@@ -5,9 +5,12 @@ import { Navigate } from 'react-router-dom';
 
 export default function ResidentPortal() {
   const token = localStorage.getItem('authToken');
-    if(!token){
-        return <Navigate to="/" />;
-    }
+    const userType = localStorage.getItem('userType')
+    const isAuthenticated = token && userType === 'resident';
+
+  	if (!isAuthenticated) {
+    	return <Navigate to="/" replace />;
+  	}
   return (
     <main className="container">
       <header className="header">

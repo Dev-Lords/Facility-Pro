@@ -69,6 +69,7 @@ export class User {
       throw error;
     }
   }
+
   
 
   // Check if user exists

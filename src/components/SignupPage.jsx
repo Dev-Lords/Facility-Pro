@@ -24,18 +24,13 @@ const SignupPage = () => {
     e.preventDefault();
 	console.log('Form submitted with:', formData);
     
-    // Example of form validation and error handling
+    
     if (!formData.email || !formData.password) {
       setError('Please fill out all fields');
       return;
     }
     
-    // Here you would typically call an API to create a user
-    // For example:
-    // createUser(formData)
-    //   .then(() => navigate('/login'))
-    //   .catch(err => setError(err.message));
-
+   
     signUpWithEmailAndPassword(formData.name,formData.phoneNumber,formData.email, formData.password)
       .then((userCredential) => {
         // Signed in
@@ -45,12 +40,12 @@ const SignupPage = () => {
       })
       .catch((error) => {
         console.error("Error signing up:", error);
-        setError(error.message); // Set error message to state
+        setError(error.message); 
       });
     
   };
   
-   async function handleSignInWithGoogle() {
+   async function handleSignUpWithGoogle() {
       
       try{
         const result = await signInWithGoogle();
@@ -58,20 +53,33 @@ const SignupPage = () => {
         console.log("Account created for user signing up with google: ", user);
         const token = await user.getIdToken();
         localStorage.setItem('authToken', token);
-		const userData = {
-			uid: user.uid,
-			email: user.email,
-			displayName: user.displayName,
-			photoURL: user.photoURL,
-			phoneNumber: user.phoneNumber,
-			providerId: user.providerId,
-			emailVerified: user.emailVerified,
-			user_type: user.user_type || "resident",
-			createdAt: new Date().toISOString()
+        const userData = {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          phoneNumber: user.phoneNumber,
+          providerId: user.providerId,
+          emailVerified: user.emailVerified,
+          user_type: user.user_type || "resident",
+          createdAt: new Date().toISOString()
 		};
-		await User.saveUser(userData);
-
-        navigate('/LoginPage');
+		    await User.saveUser(userData);
+        const uid = user.uid;
+        const userType = await User.getUserType(uid);
+        if(userType == "admin"){
+          navigate('/admin-home');			
+        }
+        else if(userType =="resident"){
+          navigate('/resident-home');
+        }
+        else if(userType=="staff"){
+          navigate('/staff-home');
+        }
+        else{
+          navigate('/');
+        }
+    
     }
       catch(error){
         console.error("Error signing up: ", error);
@@ -141,7 +149,7 @@ const SignupPage = () => {
 
           <p className="divider"><span>or</span></p>
 
-          <button type="button" className="google-btn" onClick={handleSignInWithGoogle}>
+          <button type="button" className="google-btn" onClick={handleSignUpWithGoogle}>
             Continue with Google
           </button>
 

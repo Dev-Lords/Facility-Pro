@@ -1,7 +1,16 @@
 import React from 'react';
 import './AdminDashboard.css';
+import { Navigate } from 'react-router-dom';
+
 
 const AdminDashboard = () => {
+    const token = localStorage.getItem('authToken');
+    const userType = localStorage.getItem('userType');
+    const isAuthenticated = token && userType === 'admin';
+
+  	if (!isAuthenticated) {
+    	return <Navigate to="/" replace />;
+  	}
   return (
     <section className="dashboard-container">
       <section className="blue-blocks">
