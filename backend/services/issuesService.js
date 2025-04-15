@@ -1,32 +1,45 @@
-import {  getDocs, collection } from "firebase/firestore";
+import {  getDocs, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase.config.js";
 import { Issue } from "../models/issue.js";
 
+// In your fetchIssues function
 export const fetchIssues = async () => {
   try {
-    const result = await getDocs(collection(db, "FacilityIssues"));
-
-    const issueObjects = result.docs.map(doc => {
-
+    const issuesCollection = collection(db, "issues");
+    const issuesSnapshot = await getDocs(issuesCollection);
+    const issuesList = issuesSnapshot.docs.map(doc => {
       const data = doc.data();
-
-      const issue = {
-          issueID: data.issueID,
-          issueTitle: data.issueTitle,
-          issueDescription: data.issueDescription,
-          reporter: data.reporter,
-          reportedAt: data.reportedAt,
-          issueStatus: data.status,
-          feedback: data.feedback
-      }
-
-      return new Issue(issue);
-
+      console.log("Raw Firebase doc:", doc.id, data); // Log raw data
+      return {
+        issueID: doc.id,
+        ...data
+      };
     });
-
-    return issueObjects;
-
+    console.log("Processed issues list:", issuesList); // Log processed list
+    return issuesList;
   } catch (error) {
-    console.error("Failed to fetch issues:", error);
+    console.error("Error fetching issues:", error);
+    return [];
+  }
+};
+
+
+export const UpdateIssue = async (issueID, updatedIssue) => {
+  if (!issueID) {
+    throw new Error("No issue ID provided");
+  }
+  
+  try {
+    console.log("UpdateIssue called with ID:", issueID);
+    console.log("UpdateIssue data:", updatedIssue);
+    
+    const issueRef = doc(db, "issues", issueID);
+    await setDoc(issueRef, updatedIssue, { merge: true });
+    
+    console.log("Issue updated successfully in Firebase:", issueID);
+    return true;
+  } catch (error) {
+    console.error("Error updating issue in Firebase:", error);
+    throw error; // Re-throw to handle in the component
   }
 };
