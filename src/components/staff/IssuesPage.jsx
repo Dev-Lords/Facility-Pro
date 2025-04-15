@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchIssues } from "../../backend/services/models/allissues.js";
+import { fetchIssues } from "../../backend/services/issuesService";
 import IssuesPageList from "./IssuesPageList";
 
 const IssuesPage = () => {
