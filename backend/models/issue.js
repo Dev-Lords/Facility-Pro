@@ -14,6 +14,7 @@ export class Issue {
     this.location = issue.location || "Unknown";
     this.priority = issue.priority || "medium";
     this.images = issue.images || [];
+    this.category = issue.category || "General";
   }
 }
 
