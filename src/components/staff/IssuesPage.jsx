@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchIssues } from "../../../backend/services/issuesService.js";
 import { UpdateIssue } from "../../../backend/services/issuesService.js"; // Import the UpdateIssue function
+import { toast } from "react-toastify";
 import "./IssuesPage.css";
 
 const IssuesPage = () => {
@@ -93,7 +94,15 @@ const IssuesPage = () => {
       setSelectedIssue(null);
 
       // Show success message or notification here if needed
-      alert("Issue updated successfully");
+      toast.success("Updated Succesfully!", {
+        position: "top-right",
+        autoClose: 3000, // 3 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      
     } catch (error) {
       console.error("Failed to update issue:", error);
       // Show error message if needed
@@ -121,9 +130,11 @@ const IssuesPage = () => {
           className="status-filter"
         >
           <option value="all">All Status</option>
-          <option value="open">Open</option>
+          <option value="pending">pending</option>
+          <option value="in-review">In Review</option>
           <option value="in-progress">In Progress</option>
-          <option value="completed">Completed</option>
+          <option value="resolveed">resolved</option>
+          <option value="closed">Closed</option>
         </select>
       </section>
 
@@ -220,7 +231,7 @@ const IssuesPage = () => {
       </footer>
 
       {selectedIssue && editedIssue && (
-        <section className="issue-details-modal" role="dialog" > 
+        <section className="issue-details-modal" role="dialog">
           <div className="modal-content">
             <header className="modal-header">
               <h2>{selectedIssue.issueTitle}</h2>
@@ -238,56 +249,48 @@ const IssuesPage = () => {
                   <div
                     className="status-progress-bar"
                     data-status={editedIssue.issueStatus}
-                    data-testid="status-progress-bar"  // Add this
-
-                    
+                    data-testid="status-progress-bar"
                   >
-                    <div
-                      className={`status-step ${
-                        ["open", "in-progress", "completed"].includes(
-                          editedIssue.issueStatus
-                        )
-                          ? "completed"
-                          : ""
-                      }`}
-                      onClick={() => handleEditChange("issueStatus", "open")}
-                      data-status="open"
-                    >
-                      <span className="step-circle"></span>
-                      <span className="step-label">Open</span>
-                    </div>
-                    <div
-                      className={`status-step ${
-                        editedIssue.issueStatus === "in-progress"
-                          ? "active"
-                          : ""
-                      } ${
-                        editedIssue.issueStatus === "completed"
-                          ? "completed"
-                          : ""
-                      }`}
-                      onClick={() =>
-                        handleEditChange("issueStatus", "in-progress")
-                      }
-                      data-status="in-progress"
-                    >
-                      <span className="step-circle"></span>
-                      <span className="step-label">In Progress</span>
-                    </div>
-                    <div
-                      className={`status-step ${
-                        editedIssue.issueStatus === "completed" ? "active" : ""
-                      }`}
-                      onClick={() =>
-                        handleEditChange("issueStatus", "completed")
-                      }
-                      data-status="completed"
-                    >
-                      <span className="step-circle"></span>
-                      <span className="step-label">Completed</span>
-                    </div>
+                    {[
+                      "pending",
+                      "in-review",
+                      "in-progress",
+                      "resolved",
+                      "closed",
+                    ].map((status, index) => {
+                      const currentIndex = [
+                        "pending",
+                        "in-review",
+                        "in-progress",
+                        "resolved",
+                        "closed",
+                      ].indexOf(editedIssue.issueStatus);
+                      const isCompleted = index < currentIndex;
+                      const isActive = index === currentIndex;
+
+                      return (
+                        <div
+                          key={status}
+                          className={`status-step ${
+                            isCompleted ? "completed" : ""
+                          } ${isActive ? "active" : ""}`}
+                          onClick={() =>
+                            handleEditChange("issueStatus", status)
+                          }
+                          data-status={status}
+                        >
+                          <span className="step-circle"></span>
+                          <span className="step-label">
+                            {status
+                              .replace("-", " ")
+                              .replace(/\b\w/g, (l) => l.toUpperCase())}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
+
                 <div className="detail-item">
                   <h4>Priority</h4>
                   <select

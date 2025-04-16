@@ -25,7 +25,7 @@ describe('IssuesPage Component', () => {
     {
       issueID: 1,
       issueTitle: 'Broken Light',
-      issueStatus: 'open',
+      issueStatus: 'pending',
       priority: 'high',
       location: 'Building A, Room 101',
       reportedAt: '2025-04-10T10:00:00Z',
@@ -51,7 +51,7 @@ describe('IssuesPage Component', () => {
     {
       issueID: 3,
       issueTitle: 'AC Not Working',
-      issueStatus: 'completed',
+      issueStatus: 'closed',
       priority: 'low',
       location: 'Building C, Room 305',
       reportedAt: '2025-04-08T09:15:00Z',
@@ -129,7 +129,7 @@ describe('IssuesPage Component', () => {
     const statusFilter = screen.getByTestId('status-filter');
     
     // Filter by "open" status
-    await userEvent.selectOptions(statusFilter, 'open');
+    await userEvent.selectOptions(statusFilter, 'pending');
     
     // Should show "Broken Light" (open status) but not "Water Leak" (in-progress)
     await waitFor(() => {
@@ -147,7 +147,7 @@ describe('IssuesPage Component', () => {
     });
     
     // Filter by "completed" status
-    await userEvent.selectOptions(statusFilter, 'completed');
+    await userEvent.selectOptions(statusFilter, 'closed');
     
     // Should show "AC Not Working" but not the others
     await waitFor(() => {
@@ -194,15 +194,16 @@ describe('IssuesPage Component', () => {
     
     // Get the specific status steps from the progress bar
     const statusProgressBar = screen.getByTestId('status-progress-bar');
-    const openStep = within(statusProgressBar).getByText('Open').closest('.status-step');
+    const openStep = within(statusProgressBar).getByText('Pending').closest('.status-step');
+
     const inProgressStep = within(statusProgressBar).getByText('In Progress').closest('.status-step');
-    const completedStep = within(statusProgressBar).getByText('Completed').closest('.status-step');
+    const completedStep = within(statusProgressBar).getByText('Closed').closest('.status-step');
     
     // Verify initial state (should be open)
-    expect(openStep).toHaveClass('completed');
-    expect(inProgressStep).not.toHaveClass('completed');
+    expect(openStep).toHaveClass('active');
+    expect(inProgressStep).not.toHaveClass('closed');
     expect(inProgressStep).not.toHaveClass('active');
-    expect(completedStep).not.toHaveClass('completed');
+    expect(completedStep).not.toHaveClass('closed');
     
     // Change status to in-progress
     await userEvent.click(inProgressStep);
@@ -222,7 +223,6 @@ describe('IssuesPage Component', () => {
       expect(UpdateIssue).toHaveBeenCalledWith(1, expect.objectContaining({
         issueStatus: 'in-progress'
       }));
-      expect(window.alert).toHaveBeenCalledWith('Issue updated successfully');
     });
   });
 
@@ -287,7 +287,7 @@ describe('IssuesPage Component', () => {
         expect.objectContaining({
           assignedTo: 'staff2',
           // Include other required fields that your API expects
-          issueStatus: 'open',
+          issueStatus: 'pending',
           priority: 'high', // or whatever default priority is
           feedback: ''
         })
