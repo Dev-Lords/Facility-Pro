@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom'; // Add this line
-import App from './App';
+import App from '../App.jsx';
 
 test("renders Facility Pro landing page", () => {
   render(<App />);
