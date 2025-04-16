@@ -162,13 +162,13 @@
   }
   
   .card-events .card-icon {
-    color: #1e4e8c;
-    background: linear-gradient(135deg, #c2d4ee 0%, #a0b7db 100%);
+    color: #3d6ea8;
+    background: linear-gradient(135deg, #d5e5fa 0%, #a9c5e8 100%);
   }
   
   .card-issues .card-icon {
-    color: #0f3d78;
-    background: linear-gradient(135deg, #bcc8db 0%, #a2adc3 100%);
+    color: #3d6ea8;
+    background: linear-gradient(135deg, #d5e5fa 0%, #a9c5e8 100%);
   }
   
   .card h2 {
