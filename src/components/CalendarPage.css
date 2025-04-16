@@ -1,0 +1,145 @@
+/* CalendarPage.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f3f6fa;
+  color: #0f3d78;
+  line-height: 1.6;
+}
+
+.calendar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* Header */
+.calendar-header {
+  background: linear-gradient(135deg, #0b2e5b 0%, #1e4e8c 50%, #3d6ea8 100%);
+  color: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(12, 36, 97, 0.15);
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.calendar-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.calendar-header p {
+  font-size: 18px;
+  font-weight: 300;
+  opacity: 0.9;
+  letter-spacing: 0.5px;
+}
+
+/* Month Navigation */
+.month-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+
+.month-nav button {
+  padding: 10px 15px;
+  font-size: 18px;
+  border: none;
+  background-color: #3d6ea8;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.month-nav button:hover {
+  background-color: #1e4e8c;
+}
+
+/* Calendar Table */
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.calendar-table th,
+.calendar-table td {
+  padding: 20px;
+  font-size: 18px;
+  border: 1px solid #e2e8f0;
+}
+
+.calendar-table th {
+  background-color: #3d6ea8;
+  color: white;
+}
+
+.calendar-table td {
+  background-color: white;
+  color: #2d3748;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.calendar-table td:hover {
+  background-color: #f1f5f8;
+}
+
+/* Special date classes */
+.available {
+  color: #2d3748;
+}
+
+.blocked {
+  color: #ff0000;
+  font-weight: bold;
+  cursor: not-allowed;
+}
+
+.blocked:hover {
+  background-color: #ffe5e5;
+}
+
+.past {
+  color: #999;
+  cursor: not-allowed;
+  background-color: #f9f9f9;
+}
+
+.today {
+  border: 2px solid #3d6ea8;
+  font-weight: bold;
+  background-color: #e1ecf9;
+}
+
+/* Mobile styling */
+@media (max-width: 768px) {
+  .calendar-table th,
+  .calendar-table td {
+    padding: 15px;
+    font-size: 16px;
+  }
+
+  .month-nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .month-nav button {
+    margin: 5px 0;
+  }
+}
