@@ -229,20 +229,35 @@ const IssuesPage = () => {
             </header>
             <div className="modal-body">
               <div className="details-grid">
-                <div className="detail-item">
-                  <h4>Status</h4>
-                  <select
-                    value={editedIssue.issueStatus}
-                    onChange={(e) =>
-                      handleEditChange("issueStatus", e.target.value)
-                    }
-                    className="status-select"
-                  >
-                    <option value="open">Open</option>
-                    <option value="in-progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                  </select>
-                </div>
+              <div className="detail-item status-progress-container">
+  <h4>Status</h4>
+  <div className="status-progress-bar" data-status={editedIssue.issueStatus}>
+    <div 
+      className={`status-step ${['open', 'in-progress', 'completed'].includes(editedIssue.issueStatus) ? 'completed' : ''}`}
+      onClick={() => handleEditChange('issueStatus', 'open')}
+      data-status="open"
+    >
+      <span className="step-circle"></span>
+      <span className="step-label">Open</span>
+    </div>
+    <div 
+      className={`status-step ${editedIssue.issueStatus === 'in-progress' ? 'active' : ''} ${editedIssue.issueStatus === 'completed' ? 'completed' : ''}`}
+      onClick={() => handleEditChange('issueStatus', 'in-progress')}
+      data-status="in-progress"
+    >
+      <span className="step-circle"></span>
+      <span className="step-label">In Progress</span>
+    </div>
+    <div 
+      className={`status-step ${editedIssue.issueStatus === 'completed' ? 'active' : ''}`}
+      onClick={() => handleEditChange('issueStatus', 'completed')}
+      data-status="completed"
+    >
+      <span className="step-circle"></span>
+      <span className="step-label">Completed</span>
+    </div>
+  </div>
+</div>
                 <div className="detail-item">
                   <h4>Priority</h4>
                   <select
