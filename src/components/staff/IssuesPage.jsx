@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchIssues } from "../../../backend/services/issuesService.js";
 import { UpdateIssue } from "../../../backend/services/issuesService.js"; // Import the UpdateIssue function
 import "./IssuesPage.css";
@@ -6,7 +6,7 @@ import "./IssuesPage.css";
 const IssuesPage = () => {
   const [issues, setIssues] = useState([]);
   const [selectedIssue, setSelectedIssue] = useState(null);
-  const [rowsPerPage, setRowsPerPage] = useState(100);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [currentPage, setCurrentPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState("all");
   const [isLoading, setIsLoading] = useState(false);
@@ -116,6 +116,8 @@ const IssuesPage = () => {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
+          aria-label="Filter by status"
+          data-testid="status-filter"
           className="status-filter"
         >
           <option value="all">All Status</option>
@@ -193,7 +195,7 @@ const IssuesPage = () => {
           <option value={200}>200</option>
         </select>
 
-        <span className="page-info">
+        <span className="page-info" data-testid="page-info">
           {startIndex + 1}–
           {Math.min(startIndex + rowsPerPage, filteredIssues.length)} of{" "}
           {filteredIssues.length}
@@ -203,6 +205,7 @@ const IssuesPage = () => {
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
           className="pagination-btn"
+          aria-label="Previous page"
         >
           &lt;
         </button>
@@ -210,13 +213,14 @@ const IssuesPage = () => {
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
           className="pagination-btn"
+          aria-label="Next page"
         >
           &gt;
         </button>
       </footer>
 
       {selectedIssue && editedIssue && (
-        <section className="issue-details-modal">
+        <section className="issue-details-modal" role="dialog" > 
           <div className="modal-content">
             <header className="modal-header">
               <h2>{selectedIssue.issueTitle}</h2>
@@ -229,35 +233,61 @@ const IssuesPage = () => {
             </header>
             <div className="modal-body">
               <div className="details-grid">
-              <div className="detail-item status-progress-container">
-  <h4>Status</h4>
-  <div className="status-progress-bar" data-status={editedIssue.issueStatus}>
-    <div 
-      className={`status-step ${['open', 'in-progress', 'completed'].includes(editedIssue.issueStatus) ? 'completed' : ''}`}
-      onClick={() => handleEditChange('issueStatus', 'open')}
-      data-status="open"
-    >
-      <span className="step-circle"></span>
-      <span className="step-label">Open</span>
-    </div>
-    <div 
-      className={`status-step ${editedIssue.issueStatus === 'in-progress' ? 'active' : ''} ${editedIssue.issueStatus === 'completed' ? 'completed' : ''}`}
-      onClick={() => handleEditChange('issueStatus', 'in-progress')}
-      data-status="in-progress"
-    >
-      <span className="step-circle"></span>
-      <span className="step-label">In Progress</span>
-    </div>
-    <div 
-      className={`status-step ${editedIssue.issueStatus === 'completed' ? 'active' : ''}`}
-      onClick={() => handleEditChange('issueStatus', 'completed')}
-      data-status="completed"
-    >
-      <span className="step-circle"></span>
-      <span className="step-label">Completed</span>
-    </div>
-  </div>
-</div>
+                <div className="detail-item status-progress-container">
+                  <h4>Status</h4>
+                  <div
+                    className="status-progress-bar"
+                    data-status={editedIssue.issueStatus}
+                    data-testid="status-progress-bar"  // Add this
+
+                    
+                  >
+                    <div
+                      className={`status-step ${
+                        ["open", "in-progress", "completed"].includes(
+                          editedIssue.issueStatus
+                        )
+                          ? "completed"
+                          : ""
+                      }`}
+                      onClick={() => handleEditChange("issueStatus", "open")}
+                      data-status="open"
+                    >
+                      <span className="step-circle"></span>
+                      <span className="step-label">Open</span>
+                    </div>
+                    <div
+                      className={`status-step ${
+                        editedIssue.issueStatus === "in-progress"
+                          ? "active"
+                          : ""
+                      } ${
+                        editedIssue.issueStatus === "completed"
+                          ? "completed"
+                          : ""
+                      }`}
+                      onClick={() =>
+                        handleEditChange("issueStatus", "in-progress")
+                      }
+                      data-status="in-progress"
+                    >
+                      <span className="step-circle"></span>
+                      <span className="step-label">In Progress</span>
+                    </div>
+                    <div
+                      className={`status-step ${
+                        editedIssue.issueStatus === "completed" ? "active" : ""
+                      }`}
+                      onClick={() =>
+                        handleEditChange("issueStatus", "completed")
+                      }
+                      data-status="completed"
+                    >
+                      <span className="step-circle"></span>
+                      <span className="step-label">Completed</span>
+                    </div>
+                  </div>
+                </div>
                 <div className="detail-item">
                   <h4>Priority</h4>
                   <select
@@ -266,6 +296,8 @@ const IssuesPage = () => {
                       handleEditChange("priority", e.target.value)
                     }
                     className="priority-select"
+                    aria-label="Priority" // Add this
+                    data-testid="priority-select" // And this
                   >
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
@@ -292,6 +324,8 @@ const IssuesPage = () => {
                       handleEditChange("assignedTo", e.target.value)
                     }
                     className="staff-select"
+                    aria-label="Assign to staff"
+                    data-testid="assignee-select" // Add this for reliable testing
                   >
                     <option value="">Unassigned</option>
                     <option value="staff1">John Smith</option>
