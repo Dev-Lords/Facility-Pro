@@ -10,6 +10,7 @@ import AdminDashboard from "./components/admin/AdminDashboard.jsx";
 import FacilityStaffDashboard from "./components/staff/FacilityStaffDashboard.jsx";
 import IssuesPage from "./components/staff/IssuesPage.jsx";
 import FacilitySelection from "./components/resident/FacilitySelection.jsx"
+import CalenderPage from "./components/resident/CalendarPage.jsx"
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/staff-home" element={<FacilityStaffDashboard />} />
         <Route path="/staff-issues" element={<IssuesPage />} />
         <Route path ="/Facility-selection" element={<FacilitySelection/>}/>
+        <Route path ="/calender" element={<CalenderPage/>}/>
       </Routes>
     </Router>
   );

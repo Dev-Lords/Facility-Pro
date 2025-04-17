@@ -1,4 +1,5 @@
 import { FaUser, FaSwimmer, FaDumbbell, FaFutbol, FaBasketballBall } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
 import './FacilitySelection.css';
 
 const facilities = [
@@ -29,6 +30,11 @@ const facilities = [
 ];
 
 export default function FacilitiesPage() {
+  const navigate = useNavigate();
+  
+  const handleNavigate = (path) => {
+      navigate(path);
+  };
   return (
     <main className="facilities-container">
   <header className="facilities-header">
@@ -49,7 +55,11 @@ export default function FacilitiesPage() {
         <section className="facilities-card-icon">{facility.icon}</section>
         <h2>{facility.title}</h2>
         <p>{facility.description}</p>
-        <a href="#" className="btn btn-facilities">Book Now</a>
+      
+        <button className="btn btn-facilities" onClick={() => handleNavigate("/calender")}>
+  Book Now
+</button>
+
       </article>
     ))}
   </section>
