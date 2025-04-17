@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import { signInWithGoogle } from "../../backend/services/auth/firebase-auth";
+import { signInWithGoogle } from "../../backend/auth/firebase-auth";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
-import { signInWithEmailAndPassword } from "../../backend/services/auth/firebase-auth";
-import { User } from "../../backend/services/models/user.js";
+import { signInWithEmailAndPassword } from "../../backend/auth/firebase-auth";
+import {
+  getUserByUid,
+  saveUser,
+  getUserType
+} from "../../backend/services/userServices.js";
+
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -19,7 +24,7 @@ const LoginPage = () => {
 		const uid = user.uid;
 
         // Check if the user exists in Firestore
-        const existingUser = await User.getByUid(uid);
+        const existingUser = await getUserByUid(uid);
 		
 		const userData = {
 			uid: user.uid,
@@ -36,7 +41,7 @@ const LoginPage = () => {
         } else {
             userData.user_type = "resident";  
         }
-		await User.saveUser(userData);
+		await saveUser(userData);
 
 		const userType = await User.getUserType(uid);
     const token = await user.getIdToken();

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/components/StaffHomePage.jsx</title>
+    <title>Code coverage report for src/components/IssuesPage.jsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/components</a> StaffHomePage.jsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/components</a> IssuesPage.jsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">11.11% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>1/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">11.11% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>1/9</span>
             </div>
         
             
@@ -84,18 +84,26 @@
 <a name='L19'></a><a href='#L19'>19</a>
 <a name='L20'></a><a href='#L20'>20</a>
 <a name='L21'></a><a href='#L21'>21</a>
-<a name='L22'></a><a href='#L22'>22</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -105,28 +113,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useEffect, useState } from "react";
+import { fetchIssues } from "../../backend/services/issuesService";
+import IssuesPageList from "./IssuesPageList";
 &nbsp;
-&nbsp;
-function <span class="fstat-no" title="function not covered" >StaffHomePage(</span>) {
-&nbsp;
-    const token = <span class="cstat-no" title="statement not covered" >localStorage.getItem('authToken');</span>
-<span class="cstat-no" title="statement not covered" >    if(!token){</span>
-<span class="cstat-no" title="statement not covered" >        return &lt;Navigate to="/" /&gt;;</span>
-    }
+const IssuesPage = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
+    const [issues, setIssues] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
     
-    
+<span class="cstat-no" title="statement not covered" >    useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+        const loadIssues = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+            const data = <span class="cstat-no" title="statement not covered" >await fetchIssues();</span>
+<span class="cstat-no" title="statement not covered" >            setIssues(data);</span>
+        };
+<span class="cstat-no" title="statement not covered" >        loadIssues();</span>
+    }, []);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log(issues);</span>
+  
 <span class="cstat-no" title="statement not covered" >    return (</span>
-&nbsp;
-      &lt;h1&gt;This is the Staff HomePage after successful sign-in&lt;/h1&gt;
-&nbsp;
-  );
-}
-&nbsp;
-export default StaffHomePage;
-&nbsp;</pre></td></tr></table></pre>
+      &lt;main&gt;
+        &lt;header className="IssuesPage-header"&gt;&lt;h1&gt;Issue Reports&lt;/h1&gt;&lt;/header&gt;
+        &lt;IssuesPageList issues={issues} /&gt;
+      &lt;/main&gt;
+    );
+  }
+  
+export default IssuesPage;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
