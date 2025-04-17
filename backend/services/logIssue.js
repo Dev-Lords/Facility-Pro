@@ -3,6 +3,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../firebase/firebase.config.js"; 
+import {db} from "../firebase/firebase.config.js"
 
 export async function logIssueToFirebase(data, reporter) {
   const issueID = uuidv4();
