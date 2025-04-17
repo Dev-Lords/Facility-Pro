@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">14.28% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>1/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">14.28% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>1/7</span>
             </div>
         
             
@@ -113,13 +113,21 @@
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -167,12 +175,16 @@
 import './ResidentDashboard.css';
 console.log("ResidentDashboard component is loading");
 import { Navigate } from 'react-router-dom';
+import { FaUser, FaSwimmer, FaDumbbell, FaFutbol, FaBasketballBall,FaCalendar,FaExclamationTriangle,FaCalendarCheck } from 'react-icons/fa';
 &nbsp;
 export default function <span class="fstat-no" title="function not covered" >ResidentPortal(</span>) {
   const token = <span class="cstat-no" title="statement not covered" >localStorage.getItem('authToken');</span>
-<span class="cstat-no" title="statement not covered" >    if(!token){</span>
-<span class="cstat-no" title="statement not covered" >        return &lt;Navigate to="/" /&gt;;</span>
-    }
+    const userType = <span class="cstat-no" title="statement not covered" >localStorage.getItem('userType')</span>
+    const isAuthenticated = <span class="cstat-no" title="statement not covered" >token &amp;&amp; userType === 'resident';</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  	if (!isAuthenticated) {</span>
+<span class="cstat-no" title="statement not covered" >    	return &lt;Navigate to="/" replace /&gt;;</span>
+  	}
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;main className="container"&gt;
       &lt;header className="header"&gt;
@@ -187,21 +199,21 @@ export default function <span class="fstat-no" title="function not covered" >Res
 &nbsp;
       &lt;section className="card-grid"&gt;
         &lt;article className="card card-facilities"&gt;
-          &lt;section className="card-icon"&gt;🏊&lt;/section&gt;
+          &lt;section className="card-icon"&gt;&lt;FaCalendarCheck /&gt;&lt;/section&gt;
           &lt;h2&gt;Book Facilities&lt;/h2&gt;
           &lt;p&gt;Reserve community spaces like the gym, pool, or meeting rooms.&lt;/p&gt;
           &lt;a href="#" className="btn btn-facilities"&gt;Book Now&lt;/a&gt;
         &lt;/article&gt;
 &nbsp;
         &lt;article className="card card-events"&gt;
-          &lt;section className="card-icon"&gt;📅&lt;/section&gt;
+          &lt;section className="card-icon"&gt;&lt;FaCalendar /&gt;&lt;/section&gt;
           &lt;h2&gt;View Events&lt;/h2&gt;
           &lt;p&gt;Stay updated on community gatherings, meetings, and activities.&lt;/p&gt;
           &lt;a href="#" className="btn btn-events"&gt;See Calendar&lt;/a&gt;
         &lt;/article&gt;
 &nbsp;
         &lt;article className="card card-issues"&gt;
-          &lt;section className="card-icon"&gt;🔧&lt;/section&gt;
+          &lt;section className="card-icon"&gt;&lt;FaExclamationTriangle/&gt;&lt;/section&gt;
           &lt;h2&gt;Report Issues&lt;/h2&gt;
           &lt;p&gt;Submit maintenance requests or report problems in common areas.&lt;/p&gt;
           &lt;a href="#" className="btn btn-issues"&gt;Report Problem&lt;/a&gt;
@@ -220,7 +232,7 @@ export default function <span class="fstat-no" title="function not covered" >Res
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-16T13:59:42.438Z
+                at 2025-04-17T17:31:12.433Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

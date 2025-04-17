@@ -7,12 +7,7 @@ const CalendarPage = () => {
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
 
   const unbookableDates = [
-    "2025-04-01",
-    "2025-04-05",
-    "2025-04-18",
-    "2025-05-12",
-    "2025-05-25",
-    "2025-04-02"
+    
   ];
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
