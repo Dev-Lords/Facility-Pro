@@ -5,9 +5,14 @@ import FacilityStaffDashboard from '../components/staff/FacilityStaffDashboard.j
 
 // Mock the react-router-dom's useNavigate hook
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  useNavigate: () => mockNavigate
-}));
+jest.mock('react-router-dom', () => {
+  const actual = jest.requireActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
 
 describe('FacilityStaffDashboard Component', () => {
   beforeEach(() => {

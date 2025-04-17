@@ -58,7 +58,7 @@ export default function FacilitiesPage() {
         <h2>{facility.title}</h2>
         <p>{facility.description}</p>
       
-        <button className="btn btn-facilities" onClick={() => handleNavigate("/calender")}>
+        <button className="btn btn-facilities" onClick={() => handleNavigate("/calendar")}>
   Book Now
 </button>
 

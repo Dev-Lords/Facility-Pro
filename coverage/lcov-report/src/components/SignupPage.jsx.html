@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">3.44% </span>
+                <span class="strong">2.7% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/29</span>
+                <span class='fraction'>1/37</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">3.44% </span>
+                <span class="strong">2.7% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/29</span>
+                <span class='fraction'>1/37</span>
             </div>
         
             
@@ -217,7 +217,15 @@
 <a name='L152'></a><a href='#L152'>152</a>
 <a name='L153'></a><a href='#L153'>153</a>
 <a name='L154'></a><a href='#L154'>154</a>
-<a name='L155'></a><a href='#L155'>155</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -250,11 +258,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -289,8 +292,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -397,18 +413,13 @@ const SignupPage = <span class="fstat-no" title="function not covered" >()</span
 <span class="cstat-no" title="statement not covered" >    e.preventDefault();</span>
 <span class="cstat-no" title="statement not covered" >	console.log('Form submitted with:', formData);</span>
     
-    // Example of form validation and error handling
+    
 <span class="cstat-no" title="statement not covered" >    if (!formData.email || !formData.password) {</span>
 <span class="cstat-no" title="statement not covered" >      setError('Please fill out all fields');</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
     
-    // Here you would typically call an API to create a user
-    // For example:
-    // createUser(formData)
-    //   .then(() =&gt; navigate('/login'))
-    //   .catch(err =&gt; setError(err.message));
-&nbsp;
+   
 <span class="cstat-no" title="statement not covered" >    signUpWithEmailAndPassword(formData.name,formData.phoneNumber,formData.email, formData.password)</span>
       .then(<span class="fstat-no" title="function not covered" >(u</span>serCredential) =&gt; {
         // Signed in
@@ -418,12 +429,12 @@ const SignupPage = <span class="fstat-no" title="function not covered" >()</span
       })
       .catch(<span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {
 <span class="cstat-no" title="statement not covered" >        console.error("Error signing up:", error);</span>
-<span class="cstat-no" title="statement not covered" >        setError(error.message); </span>// Set error message to state
+<span class="cstat-no" title="statement not covered" >        setError(error.message); </span>
       });
     
   };
   
-   async function <span class="fstat-no" title="function not covered" >handleSignInWithGoogle(</span>) {
+   async function <span class="fstat-no" title="function not covered" >handleSignUpWithGoogle(</span>) {
       
 <span class="cstat-no" title="statement not covered" >      try{</span>
         const result = <span class="cstat-no" title="statement not covered" >await signInWithGoogle();</span>
@@ -431,20 +442,33 @@ const SignupPage = <span class="fstat-no" title="function not covered" >()</span
 <span class="cstat-no" title="statement not covered" >        console.log("Account created for user signing up with google: ", user);</span>
         const token = <span class="cstat-no" title="statement not covered" >await user.getIdToken();</span>
 <span class="cstat-no" title="statement not covered" >        localStorage.setItem('authToken', token);</span>
-		const userData = <span class="cstat-no" title="statement not covered" >{</span>
-			uid: user.uid,
-			email: user.email,
-			displayName: user.displayName,
-			photoURL: user.photoURL,
-			phoneNumber: user.phoneNumber,
-			providerId: user.providerId,
-			emailVerified: user.emailVerified,
-			user_type: user.user_type || "resident",
-			createdAt: new Date().toISOString()
+        const userData = <span class="cstat-no" title="statement not covered" >{</span>
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          phoneNumber: user.phoneNumber,
+          providerId: user.providerId,
+          emailVerified: user.emailVerified,
+          user_type: user.user_type || "resident",
+          createdAt: new Date().toISOString()
 		};
-<span class="cstat-no" title="statement not covered" >		await User.saveUser(userData);</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        navigate('/LoginPage');</span>
+<span class="cstat-no" title="statement not covered" >		    await User.saveUser(userData);</span>
+        const uid = <span class="cstat-no" title="statement not covered" >user.uid;</span>
+        const userType = <span class="cstat-no" title="statement not covered" >await User.getUserType(uid);</span>
+<span class="cstat-no" title="statement not covered" >        if(userType == "admin"){</span>
+<span class="cstat-no" title="statement not covered" >          navigate('/admin-home');			</span>
+        }
+        else <span class="cstat-no" title="statement not covered" >if(userType =="resident"){</span>
+<span class="cstat-no" title="statement not covered" >          navigate('/resident-home');</span>
+        }
+        else <span class="cstat-no" title="statement not covered" >if(userType=="staff"){</span>
+<span class="cstat-no" title="statement not covered" >          navigate('/staff-home');</span>
+        }
+        else{
+<span class="cstat-no" title="statement not covered" >          navigate('/');</span>
+        }
+    
     }
       catch(error){
 <span class="cstat-no" title="statement not covered" >        console.error("Error signing up: ", error);</span>
@@ -514,7 +538,7 @@ const SignupPage = <span class="fstat-no" title="function not covered" >()</span
 &nbsp;
           &lt;p className="divider"&gt;&lt;span&gt;or&lt;/span&gt;&lt;/p&gt;
 &nbsp;
-          &lt;button type="button" className="google-btn" onClick={handleSignInWithGoogle}&gt;
+          &lt;button type="button" className="google-btn" onClick={handleSignUpWithGoogle}&gt;
             Continue with Google
           &lt;/button&gt;
 &nbsp;
@@ -532,7 +556,7 @@ export default SignupPage;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-16T13:59:42.438Z
+                at 2025-04-17T17:31:12.433Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
