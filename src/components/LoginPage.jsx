@@ -43,7 +43,8 @@ const LoginPage = () => {
         }
 		await saveUser(userData);
 
-		const userType = await User.getUserType(uid);
+    const userType = userData.user_type;
+
     const token = await user.getIdToken();
 		localStorage.setItem('authToken', token);
     localStorage.setItem('userType', userType);
@@ -84,7 +85,8 @@ const LoginPage = () => {
       const user = await signInWithEmailAndPassword(formData.email, formData.password);
       
       const uid = user.uid;
-      const userType = await User.getUserType(uid);
+      const userType = await getUserType(uid);
+
       const token = await user.getIdToken();
       localStorage.setItem('authToken', token);
       localStorage.setItem('userType', userType);
