@@ -1,10 +1,12 @@
 import React from 'react';
 import './ResidentDashboard.css';
 console.log("ResidentDashboard component is loading");
-import { Navigate } from 'react-router-dom';
+//import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function ResidentPortal() {
   const token = localStorage.getItem('authToken');
+  const navigate = useNavigate();
     if(!token){
         return <Navigate to="/" />;
     }
@@ -39,7 +41,8 @@ export default function ResidentPortal() {
           <section className="card-icon">🔧</section>
           <h2>Report Issues</h2>
           <p>Submit maintenance requests or report problems in common areas.</p>
-          <a href="#" className="btn btn-issues">Report Problem</a>
+          <button onClick={() => navigate("/log-issue")} className="btn btn-issues">Report Problem</button>
+
         </article>
       </section>
 

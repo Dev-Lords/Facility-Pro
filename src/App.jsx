@@ -9,6 +9,8 @@ import ResidentDashboard from "./components/resident/ResidentDashboard.jsx"; //
 import AdminDashboard from "./components/admin/AdminDashboard.jsx";
 import FacilityStaffDashboard from "./components/staff/FacilityStaffDashboard.jsx";
 import IssuesPage from "./components/staff/IssuesPage.jsx";
+import LogIssueForm from "./components/resident/logIssue.jsx";
+
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
         <Route path="/admin-home" element={<AdminDashboard />} />
         <Route path="/staff-home" element={<FacilityStaffDashboard />} />
         <Route path="/staff-issues" element={<IssuesPage />} />
+        <Route path="/log-issue" element={<LogIssueForm />} />
       </Routes>
     </Router>
   );
