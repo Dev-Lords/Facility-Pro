@@ -7,7 +7,7 @@ const CalendarPage = () => {
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
 
   const unbookableDates = [
-    
+    // Add any unbookable dates here
   ];
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -38,7 +38,7 @@ const CalendarPage = () => {
   const handleDateClick = (day) => {
     const dateString = formatDate(currentYear, currentMonth, day);
     if (!unbookableDates.includes(dateString) && new Date(currentYear, currentMonth, day) >= today) {
-      alert(`You selected ${dateString}`);
+      //Will add some logic later
     }
   };
 
@@ -57,7 +57,7 @@ const CalendarPage = () => {
         } else {
           const dateString = formatDate(currentYear, currentMonth, day);
           const isBlocked = unbookableDates.includes(dateString);
-          const isPast = new Date(currentYear, currentMonth, day) < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+          const isPast = new Date(currentYear, currentMonth, day) < today;
           const isToday = today.getDate() === day && today.getMonth() === currentMonth && today.getFullYear() === currentYear;
 
           let className = isBlocked ? 'blocked' : 'available';
@@ -70,8 +70,7 @@ const CalendarPage = () => {
               className={className}
               onClick={() => !isBlocked && !isPast && handleDateClick(day)}
             >
-              {isBlocked||isPast ? '❌' : day}
-              
+              {isBlocked || isPast ? '❌' : day}
             </td>
           );
           day++;
@@ -90,17 +89,17 @@ const CalendarPage = () => {
   ];
 
   return (
-    <section className="calendar-container">
-      <div className="calendar-header">
+    <article className="calendar-container">
+      <header className="calendar-header">
         <h1>Facility Booking Calendar</h1>
         <p>Select a date to book your preferred facility</p>
-      </div>
+      </header>
 
-      <div className="month-nav">
+      <nav className="month-nav">
         <button onClick={handlePrevMonth}>← Prev</button>
         <h2>{monthNames[currentMonth]} {currentYear}</h2>
         <button onClick={handleNextMonth}>Next →</button>
-      </div>
+      </nav>
 
       <table className="calendar-table">
         <thead>
@@ -111,7 +110,7 @@ const CalendarPage = () => {
         </thead>
         <tbody>{renderCalendar()}</tbody>
       </table>
-    </section>
+    </article>
   );
 };
 
