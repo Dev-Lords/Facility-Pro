@@ -13,6 +13,8 @@ export default function LogIssueForm() {
     images: [],
   });
 
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
   const handleChange = (e) => {
     if (e.target.name === "images") {
       setFormData({ ...formData, images: Array.from(e.target.files) });
@@ -24,7 +26,21 @@ export default function LogIssueForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await logIssueToFirebase(formData, "thembu");
-    alert("Issue submitted!");
+
+    // Reset the form data (text inputs, select inputs, etc.)
+    setFormData({
+      issueTitle: "",
+      issueDescription: "",
+      location: "",
+      priority: "medium",
+      category: "",
+      images: [],
+    });
+
+    // Reset the image input field by selecting the file input element and clearing its value
+    document.querySelector('input[type="file"]').value = "";
+
+    setShowSuccessMessage(true);
   };
 
   return (
@@ -48,6 +64,7 @@ export default function LogIssueForm() {
             name="issueTitle"
             placeholder="e.g. Broken Shower Head"
             onChange={handleChange}
+            value={formData.issueTitle}
             required
           />
 
@@ -56,6 +73,7 @@ export default function LogIssueForm() {
             name="issueDescription"
             placeholder="Describe the issue in detail..."
             onChange={handleChange}
+            value={formData.issueDescription}
             required
           />
 
@@ -64,11 +82,12 @@ export default function LogIssueForm() {
             name="location"
             placeholder="e.g. Second Floor Restroom"
             onChange={handleChange}
+            value={formData.location}
             required
           />
 
           <label>Category</label>
-          <select name="category" onChange={handleChange} required>
+          <select name="category" onChange={handleChange} value={formData.category} required>
             <option value="">Select Category</option>
             <option value="Plumbing">Plumbing</option>
             <option value="Electrical">Electrical</option>
@@ -104,8 +123,20 @@ export default function LogIssueForm() {
           <button type="submit">Submit Issue</button>
         </form>
       </div>
+
+      {showSuccessMessage && (
+        <div className="success-popup">
+          <div className="popup-content">
+            <h3>Your issue was submitted successfully!</h3>
+            <p>Thank you for your feedback. We'll address your issue as soon as possible.</p>
+            <button onClick={() => setShowSuccessMessage(false)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+
 
 

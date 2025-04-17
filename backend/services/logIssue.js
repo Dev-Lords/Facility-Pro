@@ -10,6 +10,7 @@ export async function logIssueToFirebase(data, reporter) {
   const reportedAt = new Date().toISOString();
   const imageUrls = [];
 
+  // Handle image uploads
   for (let image of data.images) {
     const imageRef = ref(storage, `issues/${issueID}/${image.name}`);
     const snapshot = await uploadBytes(imageRef, image);
@@ -32,5 +33,6 @@ export async function logIssueToFirebase(data, reporter) {
     images: imageUrls,
   };
 
+  // Log the issue to Firebase
   await setDoc(doc(db, "issues", issueID), issueData);
 }
