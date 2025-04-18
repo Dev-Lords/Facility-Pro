@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
 import { getStorage } from "firebase/storage";
+import { getFunctions, httpsCallable, connectFunctionsEmulator } from "firebase/functions";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -30,4 +31,10 @@ if (process.env.NODE_ENV !== 'test') {
   }).catch((e) => {
     console.warn("Analytics not supported:", e);
   });
+}
+
+const functions = getFunctions(app);
+
+if (window.location.hostname === "localhost") {
+  connectFunctionsEmulator(functions, "localhost", 5001);
 }

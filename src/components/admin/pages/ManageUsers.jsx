@@ -6,6 +6,9 @@ import { Pencil, Trash2,Filter,Search,Check,UserPlus} from "lucide-react";
 import { User } from "../../../../backend/models/user.js";
 import { useNavigate } from "react-router-dom";
 import "./ManageUsers.css";
+import { getFunctions, httpsCallable } from "firebase/functions";
+const functions = getFunctions();
+const createUserAccount = httpsCallable(functions, "createUserAccount");
 
 const ManageUsers = () => {
   const navigate = useNavigate();  
@@ -117,8 +120,35 @@ const ManageUsers = () => {
     setRegistrationFormData({ ...registrationFormData, [e.target.name]: e.target.value });
   };
   
-  const handleRegistrationSubmit = (e) => {
+  const handleRegistrationSubmit = async (e) => {
+
     e.preventDefault();
+
+    const data =
+    {
+      email:registrationFormData.email,
+      password:registrationFormData.password,
+      displayName: registrationFormData.name,
+      user_type: registrationFormData.user_type
+    }
+
+    try{
+      const result = await createUserAccount(data);
+      alert(result.data.message);
+      const newUser = new User(
+        registrationFormData.name,
+        registrationFormData.email,
+        registrationFormData.user_type
+      );
+      setUsers([...users, newUser]);
+      setShowRegistration(false);
+    }
+    catch(error){
+      alert("Error creating user: " + error.message);
+      setRegistrationError(error.message);
+    }
+    
+    /*
     OnboardMember(  //found in backend firebase-auth.js
       registrationFormData.name,
       registrationFormData.email,
@@ -138,6 +168,9 @@ const ManageUsers = () => {
         console.error("Error signing up:", error);
         setRegistrationError(error.message);
       });
+
+      */
+
   };
   
 
