@@ -1,30 +1,28 @@
 import React from 'react';
 import './AdminDashboard.css';
-import { Navigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { FaCheckCircle,FaUser, FaUsers, FaFileAlt, FaRegCalendarPlus,FaStamp,FaClipboardCheck } from 'react-icons/fa';
 
+export default function AdminDashboard() {
+  const token = localStorage.getItem('authToken');
+  const userType = localStorage.getItem('userType');
+  const isAuthenticated = token && userType === 'admin';
+  const navigate = useNavigate();
 
-const AdminDashboard = () => {
-    const token = localStorage.getItem('authToken');
-    const userType = localStorage.getItem('userType');
-    const isAuthenticated = token && userType === 'admin';
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
-  	if (!isAuthenticated) {
-    	return <Navigate to="/" replace />;
-  	}
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
-    <section className="dashboard-container">
-      <section className="blue-blocks">
-        <span className="blue-block"></span>
-        <span className="blue-block"></span>
-        <span className="blue-block"></span>
-      </section>
-
+    <main className="dashboard-container">
       <header className="dashboard-header">
         <section className="header-content">
-          <aside className="avatar-container">
-            <span className="avatar">👤</span>
-          </aside>
-          <section className="welcome-text">
+          <section className="admin-icon"><FaUser /></section>
+          <section>
             <h1>Welcome, Admin!</h1>
             <p>Manage your system with ease and efficiency. View all your data at a glance.</p>
           </section>
@@ -33,60 +31,37 @@ const AdminDashboard = () => {
 
       <section className="card-grid">
         <article className="dashboard-card users-card">
-          <header className="card-header">
-            <span className="card-icon">👥</span>
-            <h2>Manage Users</h2>
-          </header>
-          <p>Add, edit, or remove users and manage their access permissions across the platform.</p>
-          <nav className="card-actions">
-            <a href="/users" className="btn primary-btn">Manage Users</a>
-          </nav>
+          <section className="card-icon"><FaUsers /></section>
+          <h2>Manage Users</h2>
+          <p>Add, edit, or remove users and manage their access permissions.</p>
+          <button className="btn manage-btn" onClick={() => handleNavigate("/users")}>Manage Users</button>
         </article>
 
         <article className="dashboard-card reports-card">
-          <header className="card-header">
-            <span className="card-icon">📊</span>
-            <h2>Generate Reports</h2>
-          </header>
-          <p>Create custom reports and export your data in various formats for analysis.</p>
-          <nav className="card-actions">
-            <a href="/reports" className="btn primary-btn">Generate Reports</a>
-          </nav>
+          <section className="card-icon"><FaFileAlt /></section>
+          <h2>Generate Reports</h2>
+          <p>Create custom reports and export your data for analysis.</p>
+          <button className="btn reports-btn" onClick={() => handleNavigate("/reports")}>Generate Reports</button>
         </article>
 
-        <article className="dashboard-card settings-card">
-          <header className="card-header">
-            <span className="card-icon">⚙️</span>
-            <h2>System Settings</h2>
-          </header>
-          <p>Configure application preferences and system parameters for optimal performance.</p>
-          <nav className="card-actions">
-            <a href="/settings" className="btn primary-btn">System Settings</a>
-          </nav>
+        <article className="dashboard-card events-card">
+          <section className="card-icon"><FaRegCalendarPlus /></section>
+          <h2>Events</h2>
+          <p>Schedule and manage events to keep facilities organized and up to date.</p>
+          <button className="btn events-btn" onClick={() => handleNavigate("/events")}>Create events</button>
         </article>
 
-        <article className="dashboard-card analytics-card">
-          <header className="card-header">
-            <span className="card-icon">📈</span>
-            <h2>Analytics</h2>
-          </header>
-          <p>Monitor real-time system performance and user activity metrics in detailed graphs.</p>
-          <nav className="card-actions">
-            <a href="/analytics" className="btn primary-btn">View Analytics</a>
-          </nav>
+        <article className="dashboard-card bookings-card">
+          <section className="card-icon"><FaClipboardCheck/></section>
+          <h2>Bookings</h2>
+          <p>Review and approve pending bookings to ensure smooth scheduling and facility use.</p>
+          <button className="btn bookings-btn" onClick={() => handleNavigate("/bookings")}>Review bookings</button>
         </article>
       </section>
 
       <footer className="dashboard-footer">
-        <p>Facility Management System • Admin Dashboard • Version 1.0.0 </p>
-        <nav className="footer-links">
-          <a href="/help">Help</a>
-          <a href="/support">Support</a>
-          <a href="/privacy">Privacy Policy</a>
-        </nav>
+        <p>Facility Management System • Admin Dashboard • Version 1.0.0</p>
       </footer>
-    </section>
+    </main>
   );
-};
-
-export default AdminDashboard;
+}
