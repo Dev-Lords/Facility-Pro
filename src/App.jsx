@@ -11,6 +11,7 @@ import FacilityStaffDashboard from "./components/staff/FacilityStaffDashboard.js
 import IssuesPage from "./components/staff/IssuesPage.jsx";
 import FacilitySelection from "./components/resident/FacilitySelection.jsx"
 import CalenderPage from "./components/resident/CalendarPage.jsx"
+import ManageUsers from './components/admin/pages/ManageUsers.jsx';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/staff-issues" element={<IssuesPage />} />
         <Route path ="/Facility-selection" element={<FacilitySelection/>}/>
         <Route path ="/calender" element={<CalenderPage/>}/>
+         <Route path ="/manage-users" element={<ManageUsers/>} />
       </Routes>
     </Router>
   );
