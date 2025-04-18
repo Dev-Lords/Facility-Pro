@@ -133,7 +133,7 @@ const IssuesPage = () => {
           <option value="pending">pending</option>
           <option value="in-review">In Review</option>
           <option value="in-progress">In Progress</option>
-          <option value="resolveed">resolved</option>
+          <option value="resolved">resolved</option>
           <option value="closed">Closed</option>
         </select>
       </section>
