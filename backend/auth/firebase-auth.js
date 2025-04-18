@@ -113,4 +113,31 @@ export const getCurrentUserProfile = async () => {
   }
 };
 
+// ✍️ Admin onboarding members
+export const OnboardMember = async (name, email, password,user_type) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    const userData = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName || name,
+      photoURL: user.photoURL || null,
+      phoneNumber: user.phoneNumber || null,
+      providerId: "email",
+      emailVerified: true,
+      user_type:user.user_type || user_type,
+      createdAt: new Date().toISOString()
+    };
+
+    await saveUser(userData);
+    return userCredential;
+
+  } catch (error) {
+    console.error("Error signing up:", error);
+    throw error;
+  }
+};
+
 export { auth };

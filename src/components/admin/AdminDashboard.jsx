@@ -39,7 +39,7 @@ const AdminDashboard = () => {
           </header>
           <p>Add, edit, or remove users and manage their access permissions across the platform.</p>
           <nav className="card-actions">
-            <a href="/users" className="btn primary-btn">Manage Users</a>
+            <a href="/manage-users" className="btn primary-btn">Manage Users</a>
           </nav>
         </article>
 
