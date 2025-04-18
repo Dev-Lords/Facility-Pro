@@ -13,6 +13,7 @@ import LogIssueForm from "./components/resident/logIssue.jsx";
 
 import FacilitySelection from "./components/resident/FacilitySelection.jsx"
 import CalenderPage from "./components/resident/CalendarPage.jsx";
+import CreateEvents from './components/admin/CreateEvents.jsx';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/log-issue" element={<LogIssueForm />} />
         <Route path ="/Facility-selection" element={<FacilitySelection/>}/>
         <Route path ="/calendar" element={<CalenderPage/>}/>
+        <Route path="/events" element={<CreateEvents />} />
       </Routes>
     </Router>
   );
