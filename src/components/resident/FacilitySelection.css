@@ -45,6 +45,19 @@ body {
   position: relative;
   z-index: 2;
 }
+.resident-icon{
+  font-size: 45px;
+  margin-right: 20px;
+  background-color: rgba(255, 255, 255, 0.15);
+  height: 90px;
+  width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  pointer-events: none; /* disables all mouse interactions */
+}
 
 .facilities-header h1 {
   font-size: 32px;
@@ -100,10 +113,27 @@ body {
   color: #3d6ea8;
   box-shadow: 0 5px 15px rgba(12, 36, 97, 0.08);
 }
+.card-basketball .card-icon{
+  color: #3d6ea8;
+  background: linear-gradient(135deg, #d5e5fa 0%, #a9c5e8 100%);
+}
+.card-soccer .card-icon{
+  color: #3d6ea8;
+  background: linear-gradient(135deg, #d5e5fa 0%, #a9c5e8 100%);
+}
+.card-gym .card-icon{
+  color: #3d6ea8;
+  background: linear-gradient(135deg, #d5e5fa 0%, #a9c5e8 100%);
+}
+.card-pool .card-icon{
+  color: #3d6ea8;
+  background: linear-gradient(135deg, #d5e5fa 0%, #a9c5e8 100%);
+}
 
 .facilities-card:hover .facilities-card-icon {
   transform: scale(1.1);
 }
+
 
 .facilities-card h2 {
   font-size: 24px;
