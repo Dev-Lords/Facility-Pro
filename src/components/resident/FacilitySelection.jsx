@@ -1,74 +1,71 @@
-import { FaUser, FaSwimmer, FaDumbbell, FaFutbol, FaBasketballBall } from 'react-icons/fa';
-import { useNavigate } from "react-router-dom";
-import './FacilitySelection.css';
 import React from 'react';
-
-
-const facilities = [
-  {
-    title: 'Swimming Pool',
-    description: 'Cool off and relax in our clean, well-maintained swimming pool.',
-    icon: <FaSwimmer />,
-    class: 'pool'
-  },
-  {
-    title: 'Gym',
-    description: 'Stay fit and healthy with our state-of-the-art gym equipment.',
-    icon: <FaDumbbell />,
-    class: 'gym'
-  },
-  {
-    title: 'Soccer Field',
-    description: 'Enjoy a friendly game or practice your skills on the soccer field.',
-    icon: <FaFutbol />,
-    class: 'soccer'
-  },
-  {
-    title: 'Basketball Court',
-    description: 'Shoot some hoops or challenge friends to a game of basketball.',
-    icon: <FaBasketballBall />,
-    class: 'basketball'
-  }
-];
+import './FacilitySelection.css';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { FaUser, FaSwimmer, FaDumbbell, FaFutbol, FaBasketballBall } from 'react-icons/fa';
 
 export default function FacilitiesPage() {
+  const token = localStorage.getItem('authToken');
+  const userType = localStorage.getItem('userType');
+  const isAuthenticated = token && userType === 'resident';
   const navigate = useNavigate();
-  
+
   const handleNavigate = (path) => {
-      navigate(path);
+    navigate(path);
   };
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
-    <main className="facilities-container">
-  <header className="facilities-header">
-    <section className="header-content">
-      <aside className="resident-icon">
-        <FaUser />
-      </aside>
-      <article>
-        <h1>Choose a Facility to Book</h1>
-        <p>Select one of the available facilities below</p>
-      </article>
-    </section>
-  </header>
+    <main className="container">
+      <header className="header">
+        <section className="header-content">
+          <section className="resident-icon"><FaUser /></section>
+          <section>
+            <h1>Choose a Facility to Book</h1>
+            <p>Select one of the available facilities below</p>
+          </section>
+        </section>
+      </header>
 
-  <section className="facilities-card-grid">
-    {facilities.map((facility, index) => (
-      <article className={`facilities-card ${facility.class}`} key={index}>
-        <section className="facilities-card-icon">{facility.icon}</section>
-        <h2>{facility.title}</h2>
-        <p>{facility.description}</p>
-      
-        <button className="btn btn-facilities" onClick={() => handleNavigate("/calendar")}>
-  Book Now
-</button>
+      <section className="card-grid">
 
-      </article>
-    ))}
-  </section>
+        <article className="card card-pool">
+          <section className="card-icon"><FaSwimmer /></section>
+          <h2>Swimming Pool</h2>
+          <p>Cool off and relax in our clean, well-maintained swimming pool.</p>
+          <button className="btn btn-facilities" onClick={() => {sessionStorage.setItem("facility", "pool");handleNavigate("/calendar")}
+          }>Book Now</button>
+        </article>
 
-  <footer className="facilities-footer">
-    &copy; {new Date().getFullYear()} Resident Booking System. All rights reserved.
-  </footer>
-</main>
+        <article className="card card-gym">
+          <section className="card-icon"><FaDumbbell /></section>
+          <h2>Gym</h2>
+          <p>Stay fit and healthy with our state-of-the-art gym equipment.</p>
+          <button className="btn btn-facilities" onClick={() => {sessionStorage.setItem("facility", "gym");handleNavigate("/calendar")}
+          }>Book Now</button>
+        </article>
+
+        <article className="card card-soccer">
+          <section className="card-icon"><FaFutbol /></section>
+          <h2>Soccer Field</h2>
+          <p>Enjoy a friendly game or practice your skills on the soccer field.</p>
+          <button className="btn btn-facilities" onClick={() =>{sessionStorage.setItem("facility", "soccer"); handleNavigate("/calendar")}}>Book Now</button>
+        </article>
+
+        <article className="card card-basketball">
+          <section className="card-icon"><FaBasketballBall /></section>
+          <h2>Basketball Court</h2>
+          <p>Shoot some hoops or challenge friends to a game of basketball.</p>
+          <button className="btn btn-facilities" onClick={() => {sessionStorage.setItem("facility", "basketball");handleNavigate("/calendar")}}>Book Now</button>
+        </article>
+
+      </section>
+
+      <footer className="footer">
+        <p>Resident Booking System • Your Community • Copyright © {new Date().getFullYear()}</p>
+      </footer>
+    </main>
   );
 }

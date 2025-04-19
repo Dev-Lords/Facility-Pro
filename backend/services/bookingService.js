@@ -1,110 +1,195 @@
-import { getDocs, collection, doc, getDoc, query, where } from "firebase/firestore";
+import { getDocs, collection, doc, getDoc, query, where, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase.config.js";
 
-
+// Function to fetch available numeric slots
 export const fetchAvailableNumericSlots = async (facilityId, selectedDate) => {
   try {
-    const facilityRef = doc(db, "facilities", facilityId);
-    const facilitySnap = await getDoc(facilityRef);
-
-    if (!facilitySnap.exists()) {
-      console.log("Facility not found");
+    console.log("Function called with facilityId:", facilityId, "and selectedDate:", selectedDate);
+    
+    // First, query for the facility document where facilityID matches the passed parameter
+    const facilitiesRef = collection(db, "facilities");
+    const facilityQuery = query(facilitiesRef, where("facilityID", "==", facilityId));
+    const facilityQuerySnapshot = await getDocs(facilityQuery);
+    
+    if (facilityQuerySnapshot.empty) {
+      console.log("Facility not found with facilityID:", facilityId);
       return [];
     }
+    
+    // Get the first matching facility document
+    const facilityDoc = facilityQuerySnapshot.docs[0];
+    const facilityData = facilityDoc.data();
+    const allSlots = facilityData.slots || [];
+    console.log("All slots from facility:", allSlots);
 
-    const facilityData = facilitySnap.data();
-    const allSlots = facilityData.availableSlots || [];
-
+    // Make sure selectedDate is properly formatted to match "2024-04-18" format
+    let formattedDate = selectedDate;
+    if (selectedDate instanceof Date) {
+      formattedDate = selectedDate.toISOString().split('T')[0]; // format: "YYYY-MM-DD"
+    }
+    console.log("Formatted date for query:", formattedDate);
     // Query for bookings on the given date and facility
     const bookingsRef = collection(db, "bookings");
-    const q = query(
-      bookingsRef,
-      where("facilityId", "==", facilityId),
-      where("date", "==", selectedDate)
-    );
-
+    const q = query(bookingsRef,where("facilityID", "==", facilityId),where("date", "==", formattedDate));
+    
     const bookingSnap = await getDocs(q);
-
+    console.log("Booking snapshot size:", bookingSnap.size); 
+    console.log("Number of booking documents found:", bookingSnap.size);
+    
+    // If no bookings exist for the selected date, return all available slots
+    if (bookingSnap.empty) {
+      console.log("No bookings found for this date and facility. All slots are available.");
+      return allSlots;
+    }
+    
     let takenSlots = [];
     bookingSnap.forEach(doc => {
       const data = doc.data();
-      takenSlots = [...takenSlots, ...data.bookedSlots];
+      console.log("Booking document ID:", doc.id);
+      console.log("Booking facilityID:", data.facilityID);
+      console.log("Booking date:", data.date);
+      
+      if (Array.isArray(data.bookedSlots)) {
+        console.log("Booked slots in this document:", data.bookedSlots);
+        takenSlots = [...takenSlots, ...data.bookedSlots];
+      } else {
+        console.warn("WARNING: Document", doc.id, "has no bookedSlots array");
+      }
     });
-
-    const availableSlots = allSlots.filter(slot => !takenSlots.includes(slot));
-    console.log("Available slots:", availableSlots); 
+    
+    console.log("Combined taken slots:", takenSlots);
+    
+    
+    const uniqueTakenSlots = [...new Set(takenSlots)];
+    console.log("Unique taken slots:", uniqueTakenSlots);
+    
+    
+    const takenSlotsAsNumbers = uniqueTakenSlots.map(slot => Number(slot));
+    const allSlotsAsNumbers = allSlots.map(slot => Number(slot));
+    
+    console.log("Taken slots as numbers:", takenSlotsAsNumbers);
+    console.log("All slots as numbers:", allSlotsAsNumbers);
+    
+    
+    const availableSlots = allSlotsAsNumbers.filter(slot => !takenSlotsAsNumbers.includes(slot));
+    console.log("Final available slots:", availableSlots);
+    
     return availableSlots;
   } catch (error) {
     console.error("Error fetching available numeric slots:", error);
-    return [];
+    console.error("Error stack:", error.stack);
+    throw error;
   }
 };
 
-
-export const updateBookingSlots = async (bookingId, updatedBooking) => {
-  if (!bookingId) {
-    throw new Error("No booking ID provided");
-  }
-
+export const createBooking = async (facilityId, selectedDate, slotsToBook, userId) => {
   try {
-    console.log("UpdateBooking called with ID:", bookingId);
-    console.log("UpdateBooking data:", updatedBooking);
+    if (!facilityId || !selectedDate || !Array.isArray(slotsToBook) || slotsToBook.length === 0) {
+      throw new Error("Missing or invalid parameters for createBooking.");
+    }
 
-    const bookingRef = doc(db, "bookings", bookingId);
-    await setDoc(bookingRef, updatedBooking, { merge: true });
+    let formattedDate = selectedDate;
+    if (selectedDate instanceof Date) {
+      formattedDate = selectedDate.toISOString().split('T')[0];
+    }
 
-    console.log("Booking updated successfully in Firebase:", bookingId);
-    return true;
-  } catch (error) {
-    console.error("Error updating booking in Firebase:", error);
-    throw error; // Re-throw to handle in the component
-  }
-};
-export const fetchUnbookableDays = async (facilityId, year, month) => {
-  try {
-    // Step 1: Get all slots for the facility
-    const facilityRef = doc(db, 'facilities', facilityId);
-    const facilitySnap = await getDoc(facilityRef);
-    if (!facilitySnap.exists()) return [];
-
-    const facilitySlots = facilitySnap.data().slots || [];
-
-    // Step 2: Get all bookings for the current month
-    const startDate = `${year}-${String(month + 1).padStart(2, '0')}-01`;
-    const endDate = `${year}-${String(month + 1).padStart(2, '0')}-${new Date(year, month + 1, 0).getDate()}`;
-
-    const bookingsRef = collection(db, 'bookings');
-    const q = query(
-      bookingsRef,
-      where('facilityID', '==', facilityId),
-      where('date', '>=', startDate),
-      where('date', '<=', endDate)
+    const bookingsRef = collection(db, "bookings");
+    const q = query(bookingsRef, 
+      where("facilityID", "==", facilityId),
+      where("date", "==", formattedDate),
+      where("userID", "==", userId)
     );
 
-    const snapshot = await getDocs(q);
-    const slotMap = {}; // { 'YYYY-MM-DD': Set([...]) }
+    const querySnapshot = await getDocs(q);
 
-    snapshot.forEach(docSnap => {
-      const data = docSnap.data();
-      const date = data.date;
+    let totalBookedSlots = 0;
+    let existingData = null;
+    let bookingDoc = null;
 
-      if (!slotMap[date]) {
-        slotMap[date] = new Set();
+    if (!querySnapshot.empty) {
+      bookingDoc = querySnapshot.docs[0];
+      existingData = bookingDoc.data();
+      const existingSlots = Array.isArray(existingData.bookedSlots) ? existingData.bookedSlots : [];
+      totalBookedSlots = existingSlots.length;
+
+      // Check if adding the new slots would exceed the limit
+      if (totalBookedSlots + slotsToBook.length > 3) {
+        throw new Error("You cannot book more than 3 slots for one facility in one day.");
       }
 
-      data.bookedSlots.forEach(slot => slotMap[date].add(slot));
-    });
+      // Combine and remove duplicates
+      const updatedSlots = Array.from(new Set([...existingSlots, ...slotsToBook.map(Number)]));
+      
+      await setDoc(doc(db, "bookings", bookingDoc.id), {
+        ...existingData,
+        bookedSlots: updatedSlots
+      });
 
-    // Step 3: Find fully booked dates
-    const fullyBooked = Object.entries(slotMap)
-      .filter(([_, slotSet]) =>
-        facilitySlots.every(slot => slotSet.has(slot))
-      )
-      .map(([date]) => date);
+      console.log("Booking updated successfully.");
+    } else {
+      // No existing booking — check if new booking exceeds limit
+      if (slotsToBook.length > 3) {
+        throw new Error("You cannot book more than 3 slots for one facility in one day.");
+      }
 
-    return fullyBooked;
+
+      const bookingData = {
+        facilityID: facilityId,
+        date: formattedDate,
+        bookedSlots: slotsToBook.map(Number),
+        bookingID: "", // Optional
+        userID: userId
+      };
+
+      const newDocRef = doc(collection(db, "bookings"));
+      bookingData.bookingID = newDocRef.id;
+
+      await setDoc(newDocRef, bookingData);
+      console.log("New booking created successfully with ID:", newDocRef.id);
+    }
   } catch (error) {
-    console.error("Error fetching unbookable days:", error);
-    return [];
+    console.error("Error creating or updating booking:", error);
+    throw error;
   }
 };
+
+export const validBooking = async (facilityId, selectedDate, slotsToBook, userId) => {
+  
+  try {
+    
+    let formattedDate = selectedDate;
+    if (selectedDate instanceof Date) {
+      formattedDate = selectedDate.toISOString().split('T')[0];
+    }
+
+    const bookingsRef = collection(db, "bookings");
+    const q = query(bookingsRef, 
+      where("facilityID", "==", facilityId),
+      where("date", "==", formattedDate),
+      where("userID", "==", userId)
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    let totalBookedSlots = 0;
+    let existingData = null;
+    let bookingDoc = null;
+
+    if (!querySnapshot.empty) {
+      bookingDoc = querySnapshot.docs[0];
+      existingData = bookingDoc.data();
+      const existingSlots = Array.isArray(existingData.bookedSlots) ? existingData.bookedSlots : [];
+      totalBookedSlots = existingSlots.length;
+
+      // Check if adding the new slots would exceed the limit
+      if (totalBookedSlots + slotsToBook.length > 3) {
+        return "booking limit exceeded";
+      }
+      return "valid";
+    }
+  }
+ catch (error) {
+  console.error("Error creating or updating booking:", error);
+  return "error creating booking"
+ }
+}

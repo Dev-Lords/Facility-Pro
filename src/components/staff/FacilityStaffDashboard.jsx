@@ -1,14 +1,12 @@
 import React from "react";
 import "./FacilityStaffDashboard.css";
 import { useNavigate } from "react-router-dom";
-console.log("FacilityStaffDashboard component is loading");
 import { Navigate } from 'react-router-dom';
 
 export default function FacilityStaffDashboard() {
   const navigate = useNavigate();
 
-  //handle routing
-
+  
   const handleNavigate = (path) => {
     navigate(path);
   };
