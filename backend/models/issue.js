@@ -16,7 +16,26 @@ export class Issue {
     this.images = issue.images || [];
     this.category = issue.category || "General";
   }
+
+  toJSON() {
+    return {
+      issueID: this.issueID,
+      issueTitle: this.issueTitle,
+      issueDescription: this.issueDescription,
+      reporter: this.reporter,
+      reportedAt: this.reportedAt,
+      issueStatus: this.issueStatus,
+      feedback: this.feedback,
+      assignedTo: this.assignedTo,
+      location: this.location,
+      priority: this.priority,
+      images: this.images,
+      category: this.category
+    };
+  }
+
 }
+
 
 
 

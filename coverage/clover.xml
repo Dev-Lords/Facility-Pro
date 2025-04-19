@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1745022026659" clover="3.2.0">
-  <project timestamp="1745022026659" name="All files">
-    <metrics statements="293" coveredstatements="86" conditionals="128" coveredconditionals="35" methods="89" coveredmethods="27" elements="510" coveredelements="148" complexity="0" loc="293" ncloc="293" packages="5" files="14" classes="14"/>
+<coverage generated="1745069782304" clover="3.2.0">
+  <project timestamp="1745069782304" name="All files">
+    <metrics statements="321" coveredstatements="90" conditionals="149" coveredconditionals="36" methods="93" coveredmethods="28" elements="563" coveredelements="154" complexity="0" loc="321" ncloc="321" packages="5" files="14" classes="14"/>
     <package name="src">
       <metrics statements="2" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="App.jsx" path="C:\Users\rakhi\Facility-Pro\src\App.jsx">
@@ -169,7 +169,7 @@
       </file>
     </package>
     <package name="src.components.resident">
-      <metrics statements="79" coveredstatements="2" conditionals="38" coveredconditionals="0" methods="24" coveredmethods="0"/>
+      <metrics statements="101" coveredstatements="2" conditionals="59" coveredconditionals="0" methods="27" coveredmethods="0"/>
       <file name="CalendarPage.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\resident\CalendarPage.jsx">
         <metrics statements="46" coveredstatements="1" conditionals="30" coveredconditionals="0" methods="11" coveredmethods="0"/>
         <line num="4" count="1" type="stmt"/>
@@ -245,25 +245,47 @@
         <line num="52" count="0" type="stmt"/>
       </file>
       <file name="logIssue.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\resident\logIssue.jsx">
-        <metrics statements="14" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="4" coveredmethods="0"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
+        <metrics statements="36" coveredstatements="0" conditionals="25" coveredconditionals="0" methods="7" coveredmethods="0"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
-        <line num="19" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="19" count="0" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
-        <line num="22" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
         <line num="27" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
         <line num="31" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
         <line num="43" count="0" type="stmt"/>
+        <line num="45" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="46" count="0" type="stmt"/>
-        <line num="132" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="82" count="0" type="stmt"/>
+        <line num="83" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="90" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="92" count="0" type="stmt"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="201" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.components.staff">
-      <metrics statements="78" coveredstatements="67" conditionals="40" coveredconditionals="33" methods="29" coveredmethods="21"/>
+      <metrics statements="84" coveredstatements="71" conditionals="40" coveredconditionals="34" methods="30" coveredmethods="22"/>
       <file name="FacilityStaffDashboard.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\staff\FacilityStaffDashboard.jsx">
         <metrics statements="11" coveredstatements="9" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="1"/>
         <line num="4" count="2" type="stmt"/>
@@ -279,71 +301,77 @@
         <line num="41" count="0" type="stmt"/>
       </file>
       <file name="IssuesPage.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\staff\IssuesPage.jsx">
-        <metrics statements="64" coveredstatements="58" conditionals="36" coveredconditionals="29" methods="24" coveredmethods="20"/>
-        <line num="7" count="2" type="stmt"/>
-        <line num="8" count="77" type="stmt"/>
+        <metrics statements="70" coveredstatements="62" conditionals="36" coveredconditionals="30" methods="25" coveredmethods="21"/>
+        <line num="8" count="2" type="stmt"/>
         <line num="9" count="77" type="stmt"/>
         <line num="10" count="77" type="stmt"/>
         <line num="11" count="77" type="stmt"/>
         <line num="12" count="77" type="stmt"/>
         <line num="13" count="77" type="stmt"/>
         <line num="14" count="77" type="stmt"/>
+        <line num="15" count="77" type="stmt"/>
         <line num="16" count="77" type="stmt"/>
-        <line num="17" count="13" type="stmt"/>
-        <line num="18" count="13" type="stmt"/>
+        <line num="18" count="77" type="stmt"/>
         <line num="19" count="13" type="stmt"/>
         <line num="20" count="13" type="stmt"/>
-        <line num="21" count="12" type="stmt"/>
-        <line num="23" count="1" type="stmt"/>
-        <line num="25" count="13" type="stmt"/>
-        <line num="28" count="13" type="stmt"/>
-        <line num="32" count="77" type="stmt"/>
-        <line num="33" count="27" type="cond" truecount="2" falsecount="0"/>
-        <line num="34" count="8" type="stmt"/>
-        <line num="36" count="19" type="stmt"/>
-        <line num="42" count="77" type="cond" truecount="2" falsecount="0"/>
-        <line num="44" count="9" type="stmt"/>
-        <line num="47" count="77" type="stmt"/>
-        <line num="48" count="77" type="stmt"/>
-        <line num="49" count="77" type="stmt"/>
-        <line num="54" count="77" type="stmt"/>
-        <line num="55" count="8" type="stmt"/>
+        <line num="21" count="13" type="stmt"/>
+        <line num="22" count="13" type="stmt"/>
+        <line num="23" count="12" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="27" count="13" type="stmt"/>
+        <line num="30" count="13" type="stmt"/>
+        <line num="34" count="77" type="stmt"/>
+        <line num="36" count="27" type="stmt"/>
+        <line num="37" count="27" type="cond" truecount="2" falsecount="0"/>
+        <line num="38" count="8" type="stmt"/>
+        <line num="39" count="8" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="43" count="19" type="stmt"/>
+        <line num="48" count="27" type="stmt"/>
+        <line num="53" count="77" type="cond" truecount="2" falsecount="0"/>
+        <line num="55" count="9" type="stmt"/>
         <line num="58" count="77" type="stmt"/>
-        <line num="59" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="64" count="77" type="stmt"/>
-        <line num="65" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="66" count="0" type="stmt"/>
-        <line num="71" count="77" type="stmt"/>
-        <line num="72" count="5" type="stmt"/>
-        <line num="79" count="77" type="stmt"/>
-        <line num="80" count="6" type="cond" truecount="1" falsecount="1"/>
-        <line num="82" count="6" type="stmt"/>
-        <line num="83" count="6" type="stmt"/>
-        <line num="84" count="6" type="stmt"/>
-        <line num="87" count="5" type="stmt"/>
-        <line num="89" count="15" type="cond" truecount="2" falsecount="0"/>
-        <line num="94" count="5" type="stmt"/>
-        <line num="97" count="5" type="stmt"/>
-        <line num="107" count="1" type="stmt"/>
-        <line num="109" count="1" type="stmt"/>
-        <line num="111" count="6" type="stmt"/>
-        <line num="115" count="77" type="stmt"/>
-        <line num="127" count="3" type="stmt"/>
-        <line num="163" count="126" type="stmt"/>
-        <line num="165" count="8" type="stmt"/>
-        <line num="201" count="0" type="stmt"/>
-        <line num="239" count="1" type="stmt"/>
-        <line num="261" count="100" type="stmt"/>
-        <line num="268" count="100" type="stmt"/>
-        <line num="269" count="100" type="stmt"/>
-        <line num="271" count="100" type="stmt"/>
-        <line num="278" count="1" type="stmt"/>
-        <line num="286" count="140" type="stmt"/>
-        <line num="299" count="2" type="stmt"/>
-        <line num="327" count="1" type="stmt"/>
-        <line num="351" count="0" type="stmt"/>
-        <line num="368" count="1" type="stmt"/>
+        <line num="59" count="77" type="stmt"/>
+        <line num="60" count="77" type="stmt"/>
+        <line num="65" count="77" type="stmt"/>
+        <line num="66" count="8" type="stmt"/>
+        <line num="69" count="77" type="stmt"/>
+        <line num="70" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="75" count="77" type="stmt"/>
+        <line num="76" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="82" count="77" type="stmt"/>
+        <line num="83" count="5" type="stmt"/>
+        <line num="90" count="77" type="stmt"/>
+        <line num="91" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="93" count="6" type="stmt"/>
+        <line num="94" count="6" type="stmt"/>
+        <line num="95" count="6" type="stmt"/>
+        <line num="98" count="5" type="stmt"/>
+        <line num="100" count="15" type="cond" truecount="2" falsecount="0"/>
+        <line num="105" count="5" type="stmt"/>
+        <line num="108" count="5" type="stmt"/>
+        <line num="118" count="1" type="stmt"/>
+        <line num="120" count="1" type="stmt"/>
+        <line num="122" count="6" type="stmt"/>
+        <line num="130" count="77" type="stmt"/>
+        <line num="142" count="3" type="stmt"/>
+        <line num="178" count="126" type="stmt"/>
+        <line num="180" count="8" type="stmt"/>
+        <line num="216" count="0" type="stmt"/>
+        <line num="254" count="1" type="stmt"/>
+        <line num="276" count="100" type="stmt"/>
+        <line num="283" count="100" type="stmt"/>
+        <line num="284" count="100" type="stmt"/>
+        <line num="286" count="100" type="stmt"/>
+        <line num="293" count="1" type="stmt"/>
+        <line num="301" count="140" type="stmt"/>
+        <line num="314" count="2" type="stmt"/>
+        <line num="342" count="1" type="stmt"/>
+        <line num="366" count="0" type="stmt"/>
+        <line num="383" count="1" type="stmt"/>
       </file>
       <file name="IssuesPageList.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\staff\IssuesPageList.jsx">
         <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>

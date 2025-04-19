@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.39% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>59/66</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">80.55% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>29/36</span>
+                <span class='fraction'>63/72</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">83.33% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>20/24</span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>30/36</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.62% </span>
+                <span class="strong">84% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>21/25</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">88.57% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>58/64</span>
+                <span class='fraction'>62/70</span>
             </div>
         
             
@@ -455,13 +455,30 @@
 <a name='L390'></a><a href='#L390'>390</a>
 <a name='L391'></a><a href='#L391'>391</a>
 <a name='L392'></a><a href='#L392'>392</a>
-<a name='L393'></a><a href='#L393'>393</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L393'></a><a href='#L393'>393</a>
+<a name='L394'></a><a href='#L394'>394</a>
+<a name='L395'></a><a href='#L395'>395</a>
+<a name='L396'></a><a href='#L396'>396</a>
+<a name='L397'></a><a href='#L397'>397</a>
+<a name='L398'></a><a href='#L398'>398</a>
+<a name='L399'></a><a href='#L399'>399</a>
+<a name='L400'></a><a href='#L400'>400</a>
+<a name='L401'></a><a href='#L401'>401</a>
+<a name='L402'></a><a href='#L402'>402</a>
+<a name='L403'></a><a href='#L403'>403</a>
+<a name='L404'></a><a href='#L404'>404</a>
+<a name='L405'></a><a href='#L405'>405</a>
+<a name='L406'></a><a href='#L406'>406</a>
+<a name='L407'></a><a href='#L407'>407</a>
+<a name='L408'></a><a href='#L408'>408</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">77x</span>
 <span class="cline-any cline-yes">77x</span>
 <span class="cline-any cline-yes">77x</span>
 <span class="cline-any cline-yes">77x</span>
@@ -487,11 +504,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">77x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -566,6 +592,10 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -852,6 +882,7 @@ import { fetchIssues } from "../../../backend/services/issuesService.js";
 import { UpdateIssue } from "../../../backend/services/issuesService.js"; // Import the UpdateIssue function
 import { toast } from "react-toastify";
 import "./IssuesPage.css";
+import { getUserByUid } from "../../../backend/services/userServices.js";
 &nbsp;
 const IssuesPage = () =&gt; {
   const [issues, setIssues] = useState([]);
@@ -861,6 +892,7 @@ const IssuesPage = () =&gt; {
   const [statusFilter, setStatusFilter] = useState("all");
   const [isLoading, setIsLoading] = useState(false);
   const [editedIssue, setEditedIssue] = useState(null);
+  const [reporter, setReporter] = useState(null); // State to hold reporter data
 &nbsp;
   useEffect(() =&gt; {
     const loadIssues = async () =&gt; {
@@ -878,12 +910,21 @@ const IssuesPage = () =&gt; {
   }, []);
 &nbsp;
   // Set up editedIssue whenever selectedIssue changes
-  useEffect(() =&gt; {
-    if (selectedIssue) {
+  useEffect(()   =&gt; {
+&nbsp;
+    const selectIssue = async ()  =&gt; {
+    if (selectedIssue)  {
       setEditedIssue({ ...selectedIssue });
+      const reporter = await  getUserByUid(selectedIssue.reporter);
+<span class="cstat-no" title="statement not covered" >      console.log("Reporter data:", reporter.displayName); </span>// Log the reporter data
+<span class="cstat-no" title="statement not covered" >      setReporter(reporter.displayName); </span>// Set the reporter state
     } else {
       setEditedIssue(null);
     }
+&nbsp;
+  }
+&nbsp;
+  selectIssue();
   }, [selectedIssue]);
 &nbsp;
   // Filter issues based on status
@@ -960,6 +1001,10 @@ const IssuesPage = () =&gt; {
       setIsLoading(false);
     }
   };
+&nbsp;
+&nbsp;
+&nbsp;
+ 
 &nbsp;
   return (
     &lt;main className="issues-page"&gt;
@@ -1162,7 +1207,7 @@ const IssuesPage = () =&gt; {
                 &lt;/div&gt;
                 &lt;div className="detail-item"&gt;
                   &lt;h4&gt;Reported By&lt;/h4&gt;
-                  &lt;p&gt;{editedIssue.reporter || <span class="branch-1 cbranch-no" title="branch not covered" >"Anonymous"}</span>&lt;/p&gt;
+                  &lt;p&gt;{reporter || "Anonymous"}&lt;/p&gt;
                 &lt;/div&gt;
                 &lt;div className="detail-item"&gt;
                   &lt;h4&gt;Reported At&lt;/h4&gt;
@@ -1246,7 +1291,7 @@ export default IssuesPage;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-19T00:20:26.617Z
+                at 2025-04-19T13:36:22.270Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

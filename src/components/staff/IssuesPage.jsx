@@ -3,6 +3,7 @@ import { fetchIssues } from "../../../backend/services/issuesService.js";
 import { UpdateIssue } from "../../../backend/services/issuesService.js"; // Import the UpdateIssue function
 import { toast } from "react-toastify";
 import "./IssuesPage.css";
+import { getUserByUid } from "../../../backend/services/userServices.js";
 
 const IssuesPage = () => {
   const [issues, setIssues] = useState([]);
@@ -12,6 +13,7 @@ const IssuesPage = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [isLoading, setIsLoading] = useState(false);
   const [editedIssue, setEditedIssue] = useState(null);
+  const [reporter, setReporter] = useState(null); // State to hold reporter data
 
   useEffect(() => {
     const loadIssues = async () => {
@@ -29,12 +31,21 @@ const IssuesPage = () => {
   }, []);
 
   // Set up editedIssue whenever selectedIssue changes
-  useEffect(() => {
-    if (selectedIssue) {
+  useEffect(()   => {
+
+    const selectIssue = async ()  => {
+    if (selectedIssue)  {
       setEditedIssue({ ...selectedIssue });
+      const reporter = await  getUserByUid(selectedIssue.reporter);
+      console.log("Reporter data:", reporter.displayName); // Log the reporter data
+      setReporter(reporter.displayName); // Set the reporter state
     } else {
       setEditedIssue(null);
     }
+
+  }
+
+  selectIssue();
   }, [selectedIssue]);
 
   // Filter issues based on status
@@ -111,6 +122,10 @@ const IssuesPage = () => {
       setIsLoading(false);
     }
   };
+
+
+
+ 
 
   return (
     <main className="issues-page">
@@ -313,7 +328,7 @@ const IssuesPage = () => {
                 </div>
                 <div className="detail-item">
                   <h4>Reported By</h4>
-                  <p>{editedIssue.reporter || "Anonymous"}</p>
+                  <p>{reporter || "Anonymous"}</p>
                 </div>
                 <div className="detail-item">
                   <h4>Reported At</h4>
