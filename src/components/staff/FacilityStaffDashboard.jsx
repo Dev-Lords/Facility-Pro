@@ -42,25 +42,6 @@ export default function FacilityStaffDashboard() {
           </button>
         </article>
 
-        <article className="facility-card card-availability">
-          <h2 className="card-title">📋 Facility Status</h2>
-          <p className="card-description">
-            Update the availability and status of various facility areas.
-          </p>
-          <a href="availability.html" className="facility-btn">
-            Update Status
-          </a>
-        </article>
-
-        <article className="facility-card card-bookings">
-          <h2 className="card-title">📅 Booking Calendar</h2>
-          <p className="card-description">
-            View and manage all current and upcoming facility bookings.
-          </p>
-          <a href="bookings.html" className="facility-btn">
-            View Bookings
-          </a>
-        </article>
       </section>
 
       <footer className="facility-footer">
