@@ -51,7 +51,6 @@ export const signInWithGoogle = async () => {
   }
 };
 
-// ✍️ Sign up with Email & Password
 export const signUpWithEmailAndPassword = async (name, phoneNumber, email, password) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
