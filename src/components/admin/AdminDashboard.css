@@ -61,7 +61,6 @@ body {
   justify-content: center;
   border-radius: 50%;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
 }
 
 .dashboard-header h1 {
@@ -164,8 +163,6 @@ body {
   color: #3d6ea8;
   background: linear-gradient(135deg, #d5e5fa 0%, #a9c5e8 100%);
 }
-
-
 
 
 .dashboard-card h2 {
