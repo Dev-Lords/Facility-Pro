@@ -1,6 +1,6 @@
 // src/services/UserService.js
 
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc ,getDocs,collection,deleteDoc,updateDoc,query,orderBy,addDoc} from "firebase/firestore";
 import { db } from "../firebase/firebase.config.js";
 import { User } from "../models/user.js"; // Adjust the import path as necessary
 
@@ -83,6 +83,35 @@ export const updateUserType = async (uid, newUserType) => {
     return true;
   } catch (error) {
     console.error("Error updating user type:", error);
+    throw error;
+  }
+};
+
+
+//returning all users in database
+export const fetchUsers = async () => {
+  try {
+    const usersCol = query(collection(db, "users"), orderBy("displayName"));
+    const usersSnapshot = await getDocs(usersCol);
+    const usersList = usersSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    return usersList;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    throw error; // let caller handle the error
+  }
+};
+
+
+//deleting user from database: to be modified via admin sdk
+export const deleteUser = async (userId) => {
+  try {
+    await deleteDoc(doc(db, "users", userId));
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting user:", error);
     throw error;
   }
 };

@@ -1,58 +1,81 @@
+//Importing important packages,functions and databases
 import React, { useState, useEffect } from "react";
-import { db } from "../../../../backend/firebase/firebase.config";
-import { OnboardMember } from '../../../../backend/auth/firebase-auth';
-import { collection, getDocs, deleteDoc,updateDoc, doc , query, orderBy,addDoc}from "firebase/firestore";
-import { Pencil, Trash2,Filter,Search,Check,UserPlus} from "lucide-react";
 import { User } from "../../../../backend/models/user.js";
-import { useNavigate } from "react-router-dom";
-import "./ManageUsers.css";
+//import { OnboardMember } from '../../../../backend/auth/firebase-auth';
 import { getFunctions, httpsCallable } from "firebase/functions";
+import { fetchUsers,deleteUser,updateUserType } from '../../../../backend/services/userServices.js';
+import { Navigate,useNavigate } from 'react-router-dom';
+
+//importing graphics/icons and css for UI appearance
+import "./ManageUsers.css";
+import { Pencil, Trash2,Filter,Search,Check,UserPlus} from "lucide-react";
+
+//admin sdk:
 const functions = getFunctions();
 const createUserAccount = httpsCallable(functions, "createUserAccount");
 
-const ManageUsers = () => {
-  const navigate = useNavigate();  
-  //pop up to confirm delete
+
+const ManageUsers = () => { 
+  const navigate = useNavigate();
+
+  //UI improvements
+  const formatDateOnly = (isoString) => {
+    if (!isoString) return ""; // Handle undefined/null gracefully
+    const date = new Date(isoString);
+    return date.toLocaleDateString("en-ZA", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  //handle routing
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+  const token = localStorage.getItem('authToken');
+  const userType = localStorage.getItem('userType');
+  const isAuthenticated = token && userType === 'admin';
+
+  if (!isAuthenticated) {
+  	return <Navigate to="/" replace />;
+  }
+
+  //pop up state tracking for confirming delete
   const [showPopup, setShowPopup] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
-  //pop up to edit user
+
+  //pop up state tracking for editing user
   const [editUser, setEditUser] = useState(null);
   const [newUserType, setNewUserType] = useState("");
-  //pop up to onboard member 
+
+  //pop up state tracking for onboarding user
   const [showRegistration, setShowRegistration] = useState(false);
   const [registrationFormData, setRegistrationFormData] = useState({
-  name: '',
-  email: '',
-  password: '',
-  user_type: ''
-  });
+  name: '', email: '', password: '', user_type: '' });
   const [registrationError, setRegistrationError] = useState(null);
 
-
   //filter and search properties
-  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+//getting users in the database using fetchUsers() for display purposes
+const [users, setUsers] = useState([]);
   useEffect(() => {
-    const fetchUsers = async () => {
+    const loadUsers = async () => {
       try {
-        const usersCol = query(collection(db, "users"), orderBy("displayName"));
-        const usersSnapshot = await getDocs(usersCol);
-        const usersList = usersSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
+        const usersList = await fetchUsers();
         setUsers(usersList);
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error("Failed to load users:", error);
       }
     };
 
-    fetchUsers();
+    loadUsers();
   }, []);
 
+//filtering and searching through users
   const filteredUsers = users.filter(user => {
     const matchesSearch =
       user.displayName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -72,15 +95,15 @@ const ManageUsers = () => {
   };
 
 
-  //deleting users from system
+//deleting users from system using deleteUser()
   const confirmDelete = (userId) => {
     setSelectedUserId(userId);
     setShowPopup(true);
   };
-  
+
   const handleDelete = async () => {
     try {
-      await deleteDoc(doc(db, "users", selectedUserId));
+      await deleteUser(selectedUserId);
       setUsers(prev => prev.filter(user => user.id !== selectedUserId));
       setShowPopup(false);
       setSelectedUserId(null);
@@ -91,7 +114,7 @@ const ManageUsers = () => {
     }
   };
   
-  //edit user pop-up and function
+  //editing user-types/roles using updateUserType()
   const openEditModal = (user) => {
     setEditUser(user);
     setNewUserType(user.user_type || "");
@@ -99,15 +122,16 @@ const ManageUsers = () => {
 
   const handleUpdateUserType = async () => {
     if (!editUser) return;
-  
+
     try {
-      const userRef = doc(db, "users", editUser.id);
-      await updateDoc(userRef, { user_type: newUserType });
+      await updateUserType(editUser.id, newUserType);
+    
       setUsers((prev) =>
         prev.map((user) =>
           user.id === editUser.id ? { ...user, user_type: newUserType } : user
         )
       );
+    
       setEditUser(null);
     } catch (error) {
       console.error("Error updating user:", error);
@@ -115,7 +139,8 @@ const ManageUsers = () => {
     }
   };
 
-  //add user pop-up and function
+
+  //Onboarding user function : to be edited using admin sdk
   const handleRegistrationChange = (e) => {
     setRegistrationFormData({ ...registrationFormData, [e.target.name]: e.target.value });
   };
@@ -177,14 +202,18 @@ const ManageUsers = () => {
 
 
   return (
-    <section className="user-management-container">
+    <main className="users-page">
       <header className="user-management-header">
-        <h2>Manage Users</h2>
-        <button className="onboard-button" onClick={() => setShowRegistration(true)}>
-          <span className="icon-plus">+</span>
-          <span>Onboard Member</span>
-        </button>
+        <h1 className="management-title">Manage Users</h1>
+        <p className="management-subtitle">
+          Onboard members, revoke access and assign roles.
+        </p>
       </header>
+
+      <button className="onboard-button" onClick={() => setShowRegistration(true)}>
+          <span className="icon-plus">+</span>
+          <span> Onboard Member</span>
+        </button>
 
       <form className="search-filter-container" onSubmit={(e) => e.preventDefault()}>
         <fieldset className="search-container">
@@ -235,6 +264,7 @@ const ManageUsers = () => {
               <th>Username</th>
               <th>Email</th>
               <th>User Type</th>
+              <th>Last Modified</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>
@@ -242,28 +272,26 @@ const ManageUsers = () => {
           <tbody>
             {filteredUsers.length === 0 ? (
               <tr>
-                <td colSpan="5" className="no-users-message">
-                  No users found
+                <td colSpan="6" className="no-users-message">
+                  Loading users...
                 </td>
               </tr>
             ) : (
               filteredUsers.map((user) => (
                 <tr key={user.id}>
-                    <td className="username-cell">{user.displayName || 'N/A'}</td>
-                    <td className="email-cell">{user.email || 'N/A'}</td>
-                    <td className="user-type-cell">
-                        <span className="user-type-badge">{user.user_type || 'N/A'}</span>
-                    </td>
+                    <td >{user.displayName}</td>
+                    <td>{user.email}</td>
+                    <td><span className="user-type-badge">{user.user_type}</span></td>
+                    <td>{formatDateOnly(user.updatedAt)}</td>
                     <td className="actions-cell">
-                        <button className="edit-button"  onClick={() => openEditModal(user)}>
-                            <Pencil size={18} className="icon" />
-                        </button></td>
-                        <td className="actions-cell"> 
-                            <button className="delete-button" 
-                            onClick={() => confirmDelete(user.id)}>
-                            <Trash2 size={18} className="icon" /> 
-                        </button>
-                    </td>
+                      <button className="edit-button"  onClick={() => openEditModal(user)}>
+                        <Pencil size={18} className="icon" />
+                      </button></td>
+                    <td className="actions-cell"> 
+                      <button className="delete-button" 
+                        onClick={() => confirmDelete(user.id)}>
+                        <Trash2 size={18} className="icon" /> 
+                      </button></td>
                 </tr>
               ))
             )}
@@ -272,6 +300,7 @@ const ManageUsers = () => {
       </section>
     
 
+{/*Pop up screen for deleting user */}
       {showPopup && (
     <>
       <section className="modal-overlay">
@@ -292,12 +321,14 @@ const ManageUsers = () => {
    )}
 
 
+
+{/*Pop up screen for editing user type */}
 {editUser && (
   <section className="modal-overlay">
-    <section className="modal-box">
+    <section className="modal-box edit-modal-box">
       <h3>Edit User Type</h3>
-      <h5><strong>Name:</strong> {editUser.displayName}</h5>
-      <h5><strong>Email:</strong> {editUser.email}</h5>
+      <p>Name: {editUser.displayName}</p>
+      <p>Email: {editUser.email}</p>
       <label htmlFor="userType">User Type:</label>
       <select
         id="userType"
@@ -319,6 +350,8 @@ const ManageUsers = () => {
 )}
 
 
+
+{/*Pop up screen for onboarding a user */}
 {showRegistration && (
   <section className="modal-overlay">
     <section className="modal-box">
@@ -360,7 +393,7 @@ const ManageUsers = () => {
           value={registrationFormData.user_type}
           onChange={handleRegistrationChange}
           required
-          className="form-select"
+          className="form-input"
         >
           <option value="">Select type</option>
           <option value="resident">resident</option>
@@ -379,7 +412,11 @@ const ManageUsers = () => {
   </section>
 )}
 
-    </section>
+      <footer className="facility-footer">
+        <p>Facility Management System • Staff Portal • Version 1.0.0</p>
+      </footer>
+
+    </main>
   );
   
 };
