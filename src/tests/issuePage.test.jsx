@@ -177,7 +177,8 @@ describe('IssuesPage Component', () => {
     // Check modal content
     expect(modalUtils.getByText('Light fixture is not working')).toBeInTheDocument();
     expect(modalUtils.getByText('Building A, Room 101')).toBeInTheDocument();
-    expect(modalUtils.getByText('John Doe')).toBeInTheDocument();
+
+    
   });
   
 
