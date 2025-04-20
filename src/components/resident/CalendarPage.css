@@ -148,6 +148,7 @@ body {
   width: 100vw;
   height: 100vh;
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(10px);
   background-color: rgba(243, 246, 250, 0.2);
   z-index: 999;
   animation: fadeBlur 0.3s ease-in-out;
@@ -175,7 +176,7 @@ body {
   font-size: 24px;
   margin-bottom: 20px;
   background: linear-gradient(to right, #0b2e5b, #3d6ea8);
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -272,6 +273,7 @@ body {
   margin-bottom: 20px;
   background: linear-gradient(to right, #0b2e5b, #3d6ea8);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -282,8 +284,17 @@ body {
   margin-bottom: 20px;
   list-style: none;
   scrollbar-width: none;
+  
   -ms-overflow-style: none;
 }
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
 
 .popup2 ul::-webkit-scrollbar {
   display: none;
@@ -324,10 +335,12 @@ body {
 @keyframes fadeBlur {
   from {
     backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(10px);
     background-color: rgba(243, 246, 250, 0);
   }
   to {
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(10px);
     background-color: rgba(243, 246, 250, 0.2);
   }
 }
