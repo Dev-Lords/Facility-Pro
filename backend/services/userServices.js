@@ -1,8 +1,8 @@
 // src/services/UserService.js
 
-import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase.config.js";
 import { User } from "../models/user.js"; // Adjust the import path as necessary
+import { collection, getDocs, deleteDoc,updateDoc, doc , query, orderBy,addDoc,getDoc,setDoc}from "firebase/firestore";
 
 // Create or update user in Firestore
 export const saveUser = async (userData) => {
@@ -84,5 +84,22 @@ export const updateUserType = async (uid, newUserType) => {
   } catch (error) {
     console.error("Error updating user type:", error);
     throw error;
+  }
+};
+
+
+//fetch all users in database
+export const fetchUsers = async () => {
+  try {
+    const usersCol = query(collection(db, "users"), orderBy("displayName"));
+    const usersSnapshot = await getDocs(usersCol);
+    const usersList = usersSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    return usersList;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    throw error; // let caller handle the error
   }
 };

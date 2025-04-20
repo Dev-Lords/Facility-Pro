@@ -17,6 +17,7 @@ import CalenderPage from "./components/resident/CalendarPage.jsx";
 import IssueMenu from "./components/resident/issueMenu.jsx";
 import IssueHistory from "./components/resident/IssueHistory.jsx";
 import ManageUsers from "./components/admin/ManageUsers.jsx";
+import CreateEvents from './components/admin/CreateEvents.jsx';
 
 function App() {
   return (
