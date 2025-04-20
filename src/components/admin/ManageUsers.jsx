@@ -193,6 +193,7 @@ const ManageUsers = () => {
           <span className="icon-plus">+</span>
           <span>Onboard Member</span>
         </button>
+          </header>
     
   
 
