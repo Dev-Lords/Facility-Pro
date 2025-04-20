@@ -16,6 +16,7 @@ import CalenderPage from "./components/resident/CalendarPage.jsx";
 import IssueMenu from "./components/resident/issueMenu.jsx";
 import IssueHistory from "./components/resident/IssueHistory.jsx";
 import ManageUsers from "./components/admin/ManageUsers.jsx";
+import CreateEvents from './components/admin/CreateEvents.jsx';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path ="/Facility-selection" element={<FacilitySelection/>}/>
         <Route path ="/calendar" element={<CalenderPage/>}/>
         <Route path ="/manage-users" element={<ManageUsers/>}/>
+        <Route path="/events" element={<CreateEvents />} />
       </Routes>
     </Router>
   );
