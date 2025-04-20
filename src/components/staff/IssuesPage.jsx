@@ -31,21 +31,19 @@ const IssuesPage = () => {
   }, []);
 
   // Set up editedIssue whenever selectedIssue changes
-  useEffect(()   => {
+  useEffect(() => {
+    const selectIssue = async () => {
+      if (selectedIssue) {
+        setEditedIssue({ ...selectedIssue });
+        const reporter = await getUserByUid(selectedIssue.reporter);
+        console.log("Reporter data:", reporter.displayName); // Log the reporter data
+        setReporter(reporter.displayName); // Set the reporter state
+      } else {
+        setEditedIssue(null);
+      }
+    };
 
-    const selectIssue = async ()  => {
-    if (selectedIssue)  {
-      setEditedIssue({ ...selectedIssue });
-      const reporter = await  getUserByUid(selectedIssue.reporter);
-      console.log("Reporter data:", reporter.displayName); // Log the reporter data
-      setReporter(reporter.displayName); // Set the reporter state
-    } else {
-      setEditedIssue(null);
-    }
-
-  }
-
-  selectIssue();
+    selectIssue();
   }, [selectedIssue]);
 
   // Filter issues based on status
@@ -105,7 +103,7 @@ const IssuesPage = () => {
       setSelectedIssue(null);
 
       // Show success message or notification here if needed
-      toast.success("Updated Succesfully!", {
+      toast.success("Updated Successfully!", {
         position: "top-right",
         autoClose: 3000, // 3 seconds
         hideProgressBar: false,
@@ -113,7 +111,6 @@ const IssuesPage = () => {
         pauseOnHover: true,
         draggable: true,
       });
-      
     } catch (error) {
       console.error("Failed to update issue:", error);
       // Show error message if needed
@@ -123,12 +120,11 @@ const IssuesPage = () => {
     }
   };
 
-
-
- 
-
   return (
     <main className="issues-page">
+
+      
+
       <header className="facility-header">
         <h1 className="facility-title">Issue Reports</h1>
         <p className="facility-subtitle">
@@ -169,7 +165,7 @@ const IssuesPage = () => {
             {isLoading ? (
               <tr>
                 <td colSpan="6" className="loading-cell">
-                  <div className="table-spinner"></div>
+                  <span className="table-spinner"></span>
                   <p>Loading issues...</p>
                 </td>
               </tr>
@@ -246,8 +242,8 @@ const IssuesPage = () => {
       </footer>
 
       {selectedIssue && editedIssue && (
-        <section className="issue-details-modal" role="dialog">
-          <div className="modal-content">
+        <aside className="issue-details-modal" role="dialog">
+          <article className="modal-content">
             <header className="modal-header">
               <h2>{selectedIssue.issueTitle}</h2>
               <button
@@ -257,11 +253,11 @@ const IssuesPage = () => {
                 ×
               </button>
             </header>
-            <div className="modal-body">
-              <div className="details-grid">
-                <div className="detail-item status-progress-container">
+            <section className="modal-body">
+              <section className="details-grid">
+                <article className="detail-item status-progress-container">
                   <h4>Status</h4>
-                  <div
+                  <nav
                     className="status-progress-bar"
                     data-status={editedIssue.issueStatus}
                     data-testid="status-progress-bar"
@@ -284,7 +280,7 @@ const IssuesPage = () => {
                       const isActive = index === currentIndex;
 
                       return (
-                        <div
+                        <span
                           key={status}
                           className={`status-step ${
                             isCompleted ? "completed" : ""
@@ -300,13 +296,13 @@ const IssuesPage = () => {
                               .replace("-", " ")
                               .replace(/\b\w/g, (l) => l.toUpperCase())}
                           </span>
-                        </div>
+                        </span>
                       );
                     })}
-                  </div>
-                </div>
+                  </nav>
+                </article>
 
-                <div className="detail-item">
+                <article className="detail-item">
                   <h4>Priority</h4>
                   <select
                     value={editedIssue.priority}
@@ -314,27 +310,27 @@ const IssuesPage = () => {
                       handleEditChange("priority", e.target.value)
                     }
                     className="priority-select"
-                    aria-label="Priority" // Add this
-                    data-testid="priority-select" // And this
+                    aria-label="Priority"
+                    data-testid="priority-select"
                   >
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
                     <option value="high">High</option>
                   </select>
-                </div>
-                <div className="detail-item">
+                </article>
+                <article className="detail-item">
                   <h4>Location</h4>
                   <p>{editedIssue.location}</p>
-                </div>
-                <div className="detail-item">
+                </article>
+                <article className="detail-item">
                   <h4>Reported By</h4>
                   <p>{reporter || "Anonymous"}</p>
-                </div>
-                <div className="detail-item">
+                </article>
+                <article className="detail-item">
                   <h4>Reported At</h4>
                   <p>{new Date(editedIssue.reportedAt).toLocaleString()}</p>
-                </div>
-                <div className="detail-item">
+                </article>
+                <article className="detail-item">
                   <h4>Assigned To</h4>
                   <select
                     value={editedIssue.assignedTo || ""}
@@ -343,25 +339,25 @@ const IssuesPage = () => {
                     }
                     className="staff-select"
                     aria-label="Assign to staff"
-                    data-testid="assignee-select" // Add this for reliable testing
+                    data-testid="assignee-select"
                   >
                     <option value="">Unassigned</option>
                     <option value="staff1">John Smith</option>
                     <option value="staff2">Sarah Johnson</option>
                     <option value="staff3">Michael Brown</option>
                   </select>
-                </div>
-              </div>
+                </article>
+              </section>
 
-              <div className="description-section">
+              <section className="description-section">
                 <h4>Description</h4>
                 <p>{editedIssue.issueDescription}</p>
-              </div>
+              </section>
 
               {editedIssue.images && editedIssue.images.length > 0 && (
-                <div className="images-section">
+                <section className="images-section">
                   <h4>Images</h4>
-                  <div className="image-gallery">
+                  <figure className="image-gallery">
                     {editedIssue.images.map((image, index) => (
                       <img
                         key={index}
@@ -372,11 +368,11 @@ const IssuesPage = () => {
                         className="issue-image"
                       />
                     ))}
-                  </div>
-                </div>
+                  </figure>
+                </section>
               )}
 
-              <div className="feedback-section">
+              <section className="feedback-section">
                 <h4>Staff Feedback</h4>
                 <textarea
                   value={editedIssue.feedback || ""}
@@ -384,8 +380,8 @@ const IssuesPage = () => {
                   placeholder="Enter feedback or resolution notes here..."
                   className="feedback-textarea"
                 />
-              </div>
-            </div>
+              </section>
+            </section>
             <footer className="modal-footer">
               <button
                 className={`facility-btn update-btn ${
@@ -397,8 +393,8 @@ const IssuesPage = () => {
                 {isLoading ? "Updating..." : "Update Issue"}
               </button>
             </footer>
-          </div>
-        </section>
+          </article>
+        </aside>
       )}
     </main>
   );

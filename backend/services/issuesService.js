@@ -109,3 +109,27 @@ export async function createIssue(data) {
     throw error; // Re-throw to handle in the component
   }
 }
+
+
+
+export const getIssueByUserId = async (userId) => {
+  try {
+    const issuesCollection = collection(db, "issues");
+    const issuesSnapshot = await getDocs(issuesCollection);
+    const issuesList = issuesSnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        issueID: doc.id,
+        ...data
+      };
+    });
+    
+    // Filter issues by userId
+    const userIssues = issuesList.filter(issue => issue.reporter === userId);
+    
+    return userIssues;
+  } catch (error) {
+    console.error("Error fetching issues by user ID:", error);
+    return [];
+  }
+}

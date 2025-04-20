@@ -91,6 +91,7 @@ const LoginPage = () => {
       const token = await user.getIdToken();
       localStorage.setItem('authToken', token);
       localStorage.setItem('userType', userType);
+      localStorage.setItem("userID",uid);
       if(userType == "admin"){
         navigate('/admin-home');			
       }
