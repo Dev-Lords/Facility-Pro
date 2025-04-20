@@ -19,6 +19,7 @@ export default function FacilitiesPage() {
 
   return (
     <main className="container">
+      
       <header className="header">
         <section className="header-content">
           <section className="resident-icon"><FaUser /></section>

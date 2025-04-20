@@ -13,6 +13,8 @@ import LogIssueForm from "./components/resident/logIssue.jsx";
 
 import FacilitySelection from "./components/resident/FacilitySelection.jsx"
 import CalenderPage from "./components/resident/CalendarPage.jsx";
+import IssueMenu from "./components/resident/issueMenu.jsx";
+import IssueHistory from "./components/resident/IssueHistory.jsx";
 
 function App() {
   return (
@@ -27,7 +29,9 @@ function App() {
         <Route path="/admin-home" element={<AdminDashboard />} />
         <Route path="/staff-home" element={<FacilityStaffDashboard />} />
         <Route path="/staff-issues" element={<IssuesPage />} />
+        <Route path="/issue-menu" element={<IssueMenu />} />
         <Route path="/log-issue" element={<LogIssueForm />} />
+        <Route path="/issue-history" element={<IssueHistory />} />
         <Route path ="/Facility-selection" element={<FacilitySelection/>}/>
         <Route path ="/calendar" element={<CalenderPage/>}/>
       </Routes>

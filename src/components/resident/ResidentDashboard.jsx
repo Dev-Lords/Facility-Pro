@@ -49,7 +49,7 @@ export default function ResidentPortal() {
           <section className="card-icon"><FaExclamationTriangle/></section>
           <h2>Report Issues</h2>
           <p>Submit maintenance requests or report problems in common areas.</p>
-          <button onClick={() => navigate("/log-issue")} className="btn btn-issues">Report Problem</button>
+          <button onClick={() => navigate("/issue-menu")} className="btn btn-issues">Report Problem</button>
 
         </article>
       </section>

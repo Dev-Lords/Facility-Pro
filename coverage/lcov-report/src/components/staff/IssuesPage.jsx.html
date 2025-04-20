@@ -465,12 +465,7 @@
 <a name='L400'></a><a href='#L400'>400</a>
 <a name='L401'></a><a href='#L401'>401</a>
 <a name='L402'></a><a href='#L402'>402</a>
-<a name='L403'></a><a href='#L403'>403</a>
-<a name='L404'></a><a href='#L404'>404</a>
-<a name='L405'></a><a href='#L405'>405</a>
-<a name='L406'></a><a href='#L406'>406</a>
-<a name='L407'></a><a href='#L407'>407</a>
-<a name='L408'></a><a href='#L408'>408</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L403'></a><a href='#L403'>403</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -504,7 +499,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">77x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-yes">8x</span>
@@ -513,7 +507,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -586,7 +579,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -595,11 +587,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">77x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -876,7 +867,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from "react";
 import { fetchIssues } from "../../../backend/services/issuesService.js";
 import { UpdateIssue } from "../../../backend/services/issuesService.js"; // Import the UpdateIssue function
@@ -910,21 +900,19 @@ const IssuesPage = () =&gt; {
   }, []);
 &nbsp;
   // Set up editedIssue whenever selectedIssue changes
-  useEffect(()   =&gt; {
+  useEffect(() =&gt; {
+    const selectIssue = async () =&gt; {
+      if (selectedIssue) {
+        setEditedIssue({ ...selectedIssue });
+        const reporter = await getUserByUid(selectedIssue.reporter);
+<span class="cstat-no" title="statement not covered" >        console.log("Reporter data:", reporter.displayName); </span>// Log the reporter data
+<span class="cstat-no" title="statement not covered" >        setReporter(reporter.displayName); </span>// Set the reporter state
+      } else {
+        setEditedIssue(null);
+      }
+    };
 &nbsp;
-    const selectIssue = async ()  =&gt; {
-    if (selectedIssue)  {
-      setEditedIssue({ ...selectedIssue });
-      const reporter = await  getUserByUid(selectedIssue.reporter);
-<span class="cstat-no" title="statement not covered" >      console.log("Reporter data:", reporter.displayName); </span>// Log the reporter data
-<span class="cstat-no" title="statement not covered" >      setReporter(reporter.displayName); </span>// Set the reporter state
-    } else {
-      setEditedIssue(null);
-    }
-&nbsp;
-  }
-&nbsp;
-  selectIssue();
+    selectIssue();
   }, [selectedIssue]);
 &nbsp;
   // Filter issues based on status
@@ -984,7 +972,7 @@ const IssuesPage = () =&gt; {
       setSelectedIssue(null);
 &nbsp;
       // Show success message or notification here if needed
-      toast.success("Updated Succesfully!", {
+      toast.success("Updated Successfully!", {
         position: "top-right",
         autoClose: 3000, // 3 seconds
         hideProgressBar: false,
@@ -992,7 +980,6 @@ const IssuesPage = () =&gt; {
         pauseOnHover: true,
         draggable: true,
       });
-      
     } catch (error) {
       console.error("Failed to update issue:", error);
       // Show error message if needed
@@ -1002,12 +989,11 @@ const IssuesPage = () =&gt; {
     }
   };
 &nbsp;
-&nbsp;
-&nbsp;
- 
-&nbsp;
   return (
     &lt;main className="issues-page"&gt;
+&nbsp;
+      
+&nbsp;
       &lt;header className="facility-header"&gt;
         &lt;h1 className="facility-title"&gt;Issue Reports&lt;/h1&gt;
         &lt;p className="facility-subtitle"&gt;
@@ -1048,7 +1034,7 @@ const IssuesPage = () =&gt; {
             {isLoading ? (
               &lt;tr&gt;
                 &lt;td colSpan="6" className="loading-cell"&gt;
-                  &lt;div className="table-spinner"&gt;&lt;/div&gt;
+                  &lt;span className="table-spinner"&gt;&lt;/span&gt;
                   &lt;p&gt;Loading issues...&lt;/p&gt;
                 &lt;/td&gt;
               &lt;/tr&gt;
@@ -1125,8 +1111,8 @@ const IssuesPage = () =&gt; {
       &lt;/footer&gt;
 &nbsp;
       {selectedIssue &amp;&amp; editedIssue &amp;&amp; (
-        &lt;section className="issue-details-modal" role="dialog"&gt;
-          &lt;div className="modal-content"&gt;
+        &lt;aside className="issue-details-modal" role="dialog"&gt;
+          &lt;article className="modal-content"&gt;
             &lt;header className="modal-header"&gt;
               &lt;h2&gt;{selectedIssue.issueTitle}&lt;/h2&gt;
               &lt;button
@@ -1136,11 +1122,11 @@ const IssuesPage = () =&gt; {
                 ×
               &lt;/button&gt;
             &lt;/header&gt;
-            &lt;div className="modal-body"&gt;
-              &lt;div className="details-grid"&gt;
-                &lt;div className="detail-item status-progress-container"&gt;
+            &lt;section className="modal-body"&gt;
+              &lt;section className="details-grid"&gt;
+                &lt;article className="detail-item status-progress-container"&gt;
                   &lt;h4&gt;Status&lt;/h4&gt;
-                  &lt;div
+                  &lt;nav
                     className="status-progress-bar"
                     data-status={editedIssue.issueStatus}
                     data-testid="status-progress-bar"
@@ -1163,7 +1149,7 @@ const IssuesPage = () =&gt; {
                       const isActive = index === currentIndex;
 &nbsp;
                       return (
-                        &lt;div
+                        &lt;span
                           key={status}
                           className={`status-step ${
                             isCompleted ? "completed" : ""
@@ -1179,13 +1165,13 @@ const IssuesPage = () =&gt; {
                               .replace("-", " ")
                               .replace(/\b\w/g, (l) =&gt; l.toUpperCase())}
                           &lt;/span&gt;
-                        &lt;/div&gt;
+                        &lt;/span&gt;
                       );
                     })}
-                  &lt;/div&gt;
-                &lt;/div&gt;
+                  &lt;/nav&gt;
+                &lt;/article&gt;
 &nbsp;
-                &lt;div className="detail-item"&gt;
+                &lt;article className="detail-item"&gt;
                   &lt;h4&gt;Priority&lt;/h4&gt;
                   &lt;select
                     value={editedIssue.priority}
@@ -1193,27 +1179,27 @@ const IssuesPage = () =&gt; {
                       handleEditChange("priority", e.target.value)
                     }
                     className="priority-select"
-                    aria-label="Priority" // Add this
-                    data-testid="priority-select" // And this
+                    aria-label="Priority"
+                    data-testid="priority-select"
                   &gt;
                     &lt;option value="low"&gt;Low&lt;/option&gt;
                     &lt;option value="medium"&gt;Medium&lt;/option&gt;
                     &lt;option value="high"&gt;High&lt;/option&gt;
                   &lt;/select&gt;
-                &lt;/div&gt;
-                &lt;div className="detail-item"&gt;
+                &lt;/article&gt;
+                &lt;article className="detail-item"&gt;
                   &lt;h4&gt;Location&lt;/h4&gt;
                   &lt;p&gt;{editedIssue.location}&lt;/p&gt;
-                &lt;/div&gt;
-                &lt;div className="detail-item"&gt;
+                &lt;/article&gt;
+                &lt;article className="detail-item"&gt;
                   &lt;h4&gt;Reported By&lt;/h4&gt;
                   &lt;p&gt;{reporter || "Anonymous"}&lt;/p&gt;
-                &lt;/div&gt;
-                &lt;div className="detail-item"&gt;
+                &lt;/article&gt;
+                &lt;article className="detail-item"&gt;
                   &lt;h4&gt;Reported At&lt;/h4&gt;
                   &lt;p&gt;{new Date(editedIssue.reportedAt).toLocaleString()}&lt;/p&gt;
-                &lt;/div&gt;
-                &lt;div className="detail-item"&gt;
+                &lt;/article&gt;
+                &lt;article className="detail-item"&gt;
                   &lt;h4&gt;Assigned To&lt;/h4&gt;
                   &lt;select
                     value={editedIssue.assignedTo || ""}
@@ -1222,25 +1208,25 @@ const IssuesPage = () =&gt; {
                     }
                     className="staff-select"
                     aria-label="Assign to staff"
-                    data-testid="assignee-select" // Add this for reliable testing
+                    data-testid="assignee-select"
                   &gt;
                     &lt;option value=""&gt;Unassigned&lt;/option&gt;
                     &lt;option value="staff1"&gt;John Smith&lt;/option&gt;
                     &lt;option value="staff2"&gt;Sarah Johnson&lt;/option&gt;
                     &lt;option value="staff3"&gt;Michael Brown&lt;/option&gt;
                   &lt;/select&gt;
-                &lt;/div&gt;
-              &lt;/div&gt;
+                &lt;/article&gt;
+              &lt;/section&gt;
 &nbsp;
-              &lt;div className="description-section"&gt;
+              &lt;section className="description-section"&gt;
                 &lt;h4&gt;Description&lt;/h4&gt;
                 &lt;p&gt;{editedIssue.issueDescription}&lt;/p&gt;
-              &lt;/div&gt;
+              &lt;/section&gt;
 &nbsp;
               {editedIssue.images &amp;&amp; editedIssue.images.length &gt; 0 &amp;&amp; (
-<span class="branch-2 cbranch-no" title="branch not covered" >                &lt;div className="images-section"&gt;</span>
+<span class="branch-2 cbranch-no" title="branch not covered" >                &lt;section className="images-section"&gt;</span>
                   &lt;h4&gt;Images&lt;/h4&gt;
-                  &lt;div className="image-gallery"&gt;
+                  &lt;figure className="image-gallery"&gt;
                     {editedIssue.images.map(<span class="fstat-no" title="function not covered" >(i</span>mage, index) =&gt; (
 <span class="cstat-no" title="statement not covered" >                      &lt;img</span>
                         key={index}
@@ -1251,11 +1237,11 @@ const IssuesPage = () =&gt; {
                         className="issue-image"
                       /&gt;
                     ))}
-                  &lt;/div&gt;
-                &lt;/div&gt;
+                  &lt;/figure&gt;
+                &lt;/section&gt;
               )}
 &nbsp;
-              &lt;div className="feedback-section"&gt;
+              &lt;section className="feedback-section"&gt;
                 &lt;h4&gt;Staff Feedback&lt;/h4&gt;
                 &lt;textarea
                   value={editedIssue.feedback || ""}
@@ -1263,8 +1249,8 @@ const IssuesPage = () =&gt; {
                   placeholder="Enter feedback or resolution notes here..."
                   className="feedback-textarea"
                 /&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
+              &lt;/section&gt;
+            &lt;/section&gt;
             &lt;footer className="modal-footer"&gt;
               &lt;button
                 className={`facility-btn update-btn ${
@@ -1276,22 +1262,21 @@ const IssuesPage = () =&gt; {
                 {isLoading ? "Updating..." : "Update Issue"}
               &lt;/button&gt;
             &lt;/footer&gt;
-          &lt;/div&gt;
-        &lt;/section&gt;
+          &lt;/article&gt;
+        &lt;/aside&gt;
       )}
     &lt;/main&gt;
   );
 };
 &nbsp;
-export default IssuesPage;
-&nbsp;</pre></td></tr></table></pre>
+export default IssuesPage;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-19T13:36:22.270Z
+                at 2025-04-20T04:59:51.188Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
