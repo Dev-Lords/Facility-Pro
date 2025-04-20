@@ -284,7 +284,7 @@ setShowRegistration(false);
           <p>This action cannot be undone!</p>
           <section className="modal-buttons">
             <button onClick={handleDelete} className="confirm-btn">
-              Delete
+              delete
             </button>
             <button onClick={() => setShowPopup(false)} className="cancel-btn">
               Cancel
