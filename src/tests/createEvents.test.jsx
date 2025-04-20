@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import CreateEvents from '../components/admin/CreateEvents';
+import CreateEvents from '../components/admin/CreateEvent.jsx';
 import { MemoryRouter } from 'react-router-dom';
 import * as firestore from 'firebase/firestore';
 import { app } from '../../backend/firebase/firebase.config.js';

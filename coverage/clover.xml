@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1745190030944" clover="3.2.0">
-  <project timestamp="1745190030945" name="All files">
+<coverage generated="1745190653769" clover="3.2.0">
+  <project timestamp="1745190653769" name="All files">
     <metrics statements="637" coveredstatements="550" conditionals="300" coveredconditionals="229" methods="172" coveredmethods="139" elements="1109" coveredelements="918" complexity="0" loc="637" ncloc="637" packages="5" files="18" classes="18"/>
     <package name="src">
       <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -169,6 +169,67 @@
         <line num="51" count="1" type="stmt"/>
         <line num="58" count="1" type="stmt"/>
       </file>
+      <file name="CreateEvent.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\admin\CreateEvent.jsx">
+        <metrics statements="58" coveredstatements="48" conditionals="30" coveredconditionals="16" methods="6" coveredmethods="5"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="17" count="33" type="stmt"/>
+        <line num="18" count="33" type="stmt"/>
+        <line num="19" count="33" type="stmt"/>
+        <line num="20" count="33" type="stmt"/>
+        <line num="22" count="33" type="stmt"/>
+        <line num="34" count="33" type="stmt"/>
+        <line num="35" count="33" type="cond" truecount="1" falsecount="1"/>
+        <line num="41" count="33" type="stmt"/>
+        <line num="42" count="24" type="stmt"/>
+        <line num="43" count="24" type="stmt"/>
+        <line num="50" count="33" type="stmt"/>
+        <line num="51" count="12" type="stmt"/>
+        <line num="52" count="12" type="stmt"/>
+        <line num="56" count="33" type="stmt"/>
+        <line num="57" count="2" type="stmt"/>
+        <line num="60" count="2" type="stmt"/>
+        <line num="61" count="2" type="stmt"/>
+        <line num="68" count="2" type="stmt"/>
+        <line num="71" count="2" type="stmt"/>
+        <line num="72" count="2" type="stmt"/>
+        <line num="75" count="2" type="stmt"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="79" count="1" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="83" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="88" count="1" type="stmt"/>
+        <line num="95" count="1" type="stmt"/>
+        <line num="100" count="33" type="stmt"/>
+        <line num="101" count="3" type="stmt"/>
+        <line num="102" count="3" type="stmt"/>
+        <line num="103" count="3" type="stmt"/>
+        <line num="105" count="3" type="stmt"/>
+        <line num="107" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="108" count="1" type="stmt"/>
+        <line num="109" count="1" type="stmt"/>
+        <line num="110" count="1" type="stmt"/>
+        <line num="114" count="2" type="stmt"/>
+        <line num="116" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="117" count="1" type="stmt"/>
+        <line num="118" count="1" type="stmt"/>
+        <line num="119" count="1" type="stmt"/>
+        <line num="123" count="1" type="stmt"/>
+        <line num="126" count="1" type="stmt"/>
+        <line num="136" count="1" type="stmt"/>
+        <line num="148" count="1" type="stmt"/>
+        <line num="150" count="0" type="stmt"/>
+        <line num="153" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="154" count="0" type="stmt"/>
+        <line num="155" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="156" count="0" type="stmt"/>
+        <line num="157" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="158" count="0" type="stmt"/>
+        <line num="160" count="0" type="stmt"/>
+        <line num="163" count="3" type="stmt"/>
+        <line num="167" count="33" type="stmt"/>
+        <line num="297" count="0" type="stmt"/>
+        <line num="298" count="0" type="stmt"/>
+      </file>
       <file name="ManageUsers.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\admin\ManageUsers.jsx">
         <metrics statements="102" coveredstatements="79" conditionals="42" coveredconditionals="35" methods="32" coveredmethods="21"/>
         <line num="10" count="2" type="stmt"/>
@@ -273,67 +334,6 @@
         <line num="338" count="0" type="stmt"/>
         <line num="348" count="0" type="stmt"/>
         <line num="406" count="0" type="stmt"/>
-      </file>
-      <file name="createEvents.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\admin\createEvents.jsx">
-        <metrics statements="58" coveredstatements="48" conditionals="30" coveredconditionals="16" methods="6" coveredmethods="5"/>
-        <line num="16" count="2" type="stmt"/>
-        <line num="17" count="33" type="stmt"/>
-        <line num="18" count="33" type="stmt"/>
-        <line num="19" count="33" type="stmt"/>
-        <line num="20" count="33" type="stmt"/>
-        <line num="22" count="33" type="stmt"/>
-        <line num="34" count="33" type="stmt"/>
-        <line num="35" count="33" type="cond" truecount="1" falsecount="1"/>
-        <line num="41" count="33" type="stmt"/>
-        <line num="42" count="24" type="stmt"/>
-        <line num="43" count="24" type="stmt"/>
-        <line num="50" count="33" type="stmt"/>
-        <line num="51" count="12" type="stmt"/>
-        <line num="52" count="12" type="stmt"/>
-        <line num="56" count="33" type="stmt"/>
-        <line num="57" count="2" type="stmt"/>
-        <line num="60" count="2" type="stmt"/>
-        <line num="61" count="2" type="stmt"/>
-        <line num="68" count="2" type="stmt"/>
-        <line num="71" count="2" type="stmt"/>
-        <line num="72" count="2" type="stmt"/>
-        <line num="75" count="2" type="stmt"/>
-        <line num="76" count="1" type="stmt"/>
-        <line num="79" count="1" type="stmt"/>
-        <line num="80" count="1" type="stmt"/>
-        <line num="83" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="88" count="1" type="stmt"/>
-        <line num="95" count="1" type="stmt"/>
-        <line num="100" count="33" type="stmt"/>
-        <line num="101" count="3" type="stmt"/>
-        <line num="102" count="3" type="stmt"/>
-        <line num="103" count="3" type="stmt"/>
-        <line num="105" count="3" type="stmt"/>
-        <line num="107" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="108" count="1" type="stmt"/>
-        <line num="109" count="1" type="stmt"/>
-        <line num="110" count="1" type="stmt"/>
-        <line num="114" count="2" type="stmt"/>
-        <line num="116" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="117" count="1" type="stmt"/>
-        <line num="118" count="1" type="stmt"/>
-        <line num="119" count="1" type="stmt"/>
-        <line num="123" count="1" type="stmt"/>
-        <line num="126" count="1" type="stmt"/>
-        <line num="136" count="1" type="stmt"/>
-        <line num="148" count="1" type="stmt"/>
-        <line num="150" count="0" type="stmt"/>
-        <line num="153" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="154" count="0" type="stmt"/>
-        <line num="155" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="156" count="0" type="stmt"/>
-        <line num="157" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="158" count="0" type="stmt"/>
-        <line num="160" count="0" type="stmt"/>
-        <line num="163" count="3" type="stmt"/>
-        <line num="167" count="33" type="stmt"/>
-        <line num="297" count="0" type="stmt"/>
-        <line num="298" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.components.resident">
