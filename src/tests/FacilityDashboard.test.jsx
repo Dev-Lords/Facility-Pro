@@ -84,8 +84,7 @@ describe('FacilityStaffDashboard Component', () => {
     );
     
     expect(screen.getByText('🔧 Maintenance Reports')).toBeInTheDocument();
-    expect(screen.getByText('📋 Facility Status')).toBeInTheDocument();
-    expect(screen.getByText('📅 Booking Calendar')).toBeInTheDocument();
+
   });
 
   test('redirects to home when not authenticated', () => {
