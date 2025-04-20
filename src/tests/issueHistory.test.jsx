@@ -1,6 +1,6 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import IssueHistory from '../components/resident/issueHistory.jsx';
+import IssueHistory from '../components/resident/IssueHistory.jsx';
 import { getIssueByUserId } from '../../backend/services/issuesService.js';
 import React from 'react';
 import '@testing-library/jest-dom';
