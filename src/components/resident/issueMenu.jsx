@@ -1,5 +1,5 @@
 import React from 'react';
-import './IssueMenu.css';
+import './issueMenu.css'; // Import your CSS file for styling
 import { useNavigate } from 'react-router-dom';
 
 const IssueMenu = () => {
