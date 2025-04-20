@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getIssueByUserId } from '../../../backend/services/issuesService';
 import { Issue } from '../../../backend/models/issue';
-import './IssueHistory.css'; // We'll add the CSS styles in a separate file
+import './issueHistory.css'; // We'll add the CSS styles in a separate file
 
 const IssueHistory = () => {
   const navigate = useNavigate();
