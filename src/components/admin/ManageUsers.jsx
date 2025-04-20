@@ -50,6 +50,7 @@ const ManageUsers = () => {
     setIsLoading(false); 
   }
   };
+
   
   useEffect(() => {
     const getUsers = async () => {
@@ -162,14 +163,23 @@ const ManageUsers = () => {
       await fetchUsers(); // Refresh the list after registration
 setShowRegistration(false);
 
-  
-      
-
     
     } catch (error) {
       alert("Error creating user: " + error.message);
       setRegistrationError(error.message);
     }
+  };
+
+//UI improvements:
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleString("en-ZA", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
   
   
@@ -177,14 +187,20 @@ setShowRegistration(false);
 
 
   return (
-    <section className="user-management-container">
+    <main className="users-page">
+
       <header className="user-management-header">
-        <h2>Manage Users</h2>
-        <button className="onboard-button" onClick={() => setShowRegistration(true)}>
-          <span className="icon-plus">+</span>
-          <span>Onboard Member</span>
-        </button>
+        <h1 className="user-management-title">Manage Users</h1>
+        <p className="user-management-subtitle">
+        Onboard members, revoke access and assign roles!
+        </p>
       </header>
+
+      <button className="onboard-button" onClick={() => setShowRegistration(true)}>
+        <span className="icon-plus">+</span>
+        <span>Onboard Member</span>
+      </button>
+  
 
       <form className="search-filter-container" onSubmit={(e) => e.preventDefault()}>
         <fieldset className="search-container">
@@ -218,13 +234,11 @@ setShowRegistration(false);
                     onClick={() => {
                     setFilterType(type);
                     setIsFilterOpen(false);
-                    }}
-  >
-    {type === "all" ? "All user types" : type}
-  </li>
-))}
-
-            </ul>
+                    }}>
+                  {type === "all" ? "All user types" : type}
+              </li>
+           ))}
+           </ul>
           )}
         </fieldset>
       </form>
@@ -236,6 +250,7 @@ setShowRegistration(false);
               <th>Username</th>
               <th>Email</th>
               <th>User Type</th>
+              <th>Last Modified</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>
@@ -244,18 +259,19 @@ setShowRegistration(false);
   {isLoading ? null : (
     filteredUsers.length === 0 ? (
       <tr>
-        <td colSpan="5" className="no-users-message">
-          No users found
+        <td colSpan="6" className="no-users-message">
+          Loading users...
         </td>
       </tr>
     ) : (
       filteredUsers.map((user, index) => (
         <tr key={user.id || `user-${index}`}>
-          <td className="username-cell">{user.displayName || 'N/A'}</td>
-          <td className="email-cell">{user.email || 'N/A'}</td>
+          <td >{user.displayName }</td>
+          <td >{user.email}</td>
           <td className="user-type-cell">
-            <span className="user-type-badge">{user.user_type || 'N/A'}</span>
+            <span className="user-type-badge">{user.user_type}</span>
           </td>
+          <td>{formatDate(user.updatedAt)}</td>
           <td className="actions-cell">
             <button className="edit-button" onClick={() => openEditModal(user)}>
               <Pencil size={18} className="icon" />
@@ -298,10 +314,10 @@ setShowRegistration(false);
 
 {editUser && (
   <section className="modal-overlay">
-    <section className="modal-box">
-      <h3>Edit User Type</h3>
-      <h5><strong>Name:</strong> {editUser.displayName}</h5>
-      <h5><strong>Email:</strong> {editUser.email}</h5>
+    <section className="modal-box edit-modal-box">
+      <h4>Edit User Type</h4>
+      <p>Name: {editUser.displayName}</p>
+      <p>Email: {editUser.email}</p>
       <label htmlFor="userType">User Type:</label>
       <select
         id="userType"
@@ -364,7 +380,7 @@ setShowRegistration(false);
           value={registrationFormData.user_type}
           onChange={handleRegistrationChange}
           required
-          className="form-select"
+          className="form-input"
         >
           <option value="">Select type</option>
           <option value="resident">resident</option>
@@ -383,7 +399,11 @@ setShowRegistration(false);
   </section>
 )}
 
-    </section>
+      <footer className="facility-footer">
+        <p>Facility Management System • Admin services • Version 1.0.0</p>
+      </footer>
+
+    </main>
   );
   
 };
