@@ -3,6 +3,9 @@
   font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+
+
+
 .facility-header {
   background: linear-gradient(135deg, #0b2e5b 0%, #1e4e8c 100%);
   color: white;
@@ -504,7 +507,7 @@
 }
 
 .status-progress-bar[data-status="resolved"]::after {
-  width: 75%;
+  width: 70%;
   background-color: #4caf50;
 }
 
