@@ -128,6 +128,7 @@ const ManageUsers = () => {
   
   const createAccount = async (e) => {
     e.preventDefault();
+    setRegistrationError("");
     if (!registrationFormData.email || !registrationFormData.password || !registrationFormData.name || !registrationFormData.user_type) {
         alert('Please fill in all fields');
         return;
@@ -154,20 +155,16 @@ const ManageUsers = () => {
       if (!response.ok) {
         const errorResponse = await response.json();
         console.error("Error response:", errorResponse);
-        throw new Error('Failed to create account');
+        throw new Error(errorResponse.error);
       }
   
-      const data = await response.json();
       console.log("Account created");
-      await fetchUsers(); // Refresh the list after registration
-setShowRegistration(false);
-
-  
-      
+      await fetchUsers(); 
+      setShowRegistration(false);
+      setRegistrationError("");
 
     
     } catch (error) {
-      alert("Error creating user: " + error.message);
       setRegistrationError(error.message);
     }
   };
@@ -180,7 +177,8 @@ setShowRegistration(false);
     <section className="user-management-container">
       <header className="user-management-header">
         <h2>Manage Users</h2>
-        <button className="onboard-button" onClick={() => setShowRegistration(true)}>
+        <button className="onboard-button" onClick={() =>{setRegistrationError("");
+            setShowRegistration(true)}}>
           <span className="icon-plus">+</span>
           <span>Onboard Member</span>
         </button>

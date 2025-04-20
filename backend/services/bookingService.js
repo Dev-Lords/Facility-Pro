@@ -154,9 +154,7 @@ export const createBooking = async (facilityId, selectedDate, slotsToBook, userI
 };
 
 export const validBooking = async (facilityId, selectedDate, slotsToBook, userId) => {
-  
   try {
-    
     let formattedDate = selectedDate;
     if (selectedDate instanceof Date) {
       formattedDate = selectedDate.toISOString().split('T')[0];
@@ -172,24 +170,20 @@ export const validBooking = async (facilityId, selectedDate, slotsToBook, userId
     const querySnapshot = await getDocs(q);
 
     let totalBookedSlots = 0;
-    let existingData = null;
-    let bookingDoc = null;
 
-    if (!querySnapshot.empty) {
-      bookingDoc = querySnapshot.docs[0];
-      existingData = bookingDoc.data();
-      const existingSlots = Array.isArray(existingData.bookedSlots) ? existingData.bookedSlots : [];
-      totalBookedSlots = existingSlots.length;
+    querySnapshot.forEach(doc => {
+      const data = doc.data();
+      const slots = Array.isArray(data.bookedSlots) ? data.bookedSlots : [];
+      totalBookedSlots += slots.length;
+    });
 
-      // Check if adding the new slots would exceed the limit
-      if (totalBookedSlots + slotsToBook.length > 3) {
-        return "booking limit exceeded";
-      }
-      return "valid";
+    if (totalBookedSlots + slotsToBook.length > 3) {
+      return "booking limit exceeded";
     }
+
+    return "valid";
+  } catch (error) {
+    console.error("Error validating booking:", error);
+    return "error creating booking";
   }
- catch (error) {
-  console.error("Error creating or updating booking:", error);
-  return "error creating booking"
- }
 }

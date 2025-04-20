@@ -344,6 +344,13 @@ body {
     background-color: rgba(243, 246, 250, 0.2);
   }
 }
+.popupButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;     
+  gap: 30px;                
+}
+
 
 /* Responsive */
 @media (max-width: 768px) {

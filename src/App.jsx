@@ -10,6 +10,7 @@ import AdminDashboard from "./components/admin/AdminDashboard.jsx";
 import FacilityStaffDashboard from "./components/staff/FacilityStaffDashboard.jsx";
 import IssuesPage from "./components/staff/IssuesPage.jsx";
 import LogIssueForm from "./components/resident/logIssue.jsx";
+import CreateEvents from './components/admin/CreateEvents.jsx';
 
 import FacilitySelection from "./components/resident/FacilitySelection.jsx"
 import CalenderPage from "./components/resident/CalendarPage.jsx";
@@ -36,6 +37,7 @@ function App() {
         <Route path ="/Facility-selection" element={<FacilitySelection/>}/>
         <Route path ="/calendar" element={<CalenderPage/>}/>
         <Route path ="/manage-users" element={<ManageUsers/>}/>
+        <Route path="/events" element={<CreateEvents />} />
       </Routes>
     </Router>
   );
