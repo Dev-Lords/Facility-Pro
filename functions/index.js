@@ -9,7 +9,7 @@ const app = express();
 app.use(cors({
     origin: [
       'http://localhost:5174', 
-      'https://purple-flower-02549321e.6.azurestaticapps.net/'
+      'https://purple-flower-02549321e.6.azurestaticapps.net'
     ]
 }));
 app.use(express.json());
@@ -33,7 +33,7 @@ app.post('/create-account', async (req, res) => {
       user_type: user_type,
       createdAt: admin.firestore.FieldValue.serverTimestamp()
     });
-    
+
 
   
     await admin.auth().setCustomUserClaims(userRecord.uid, { user_type: user_type });
