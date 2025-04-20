@@ -187,13 +187,16 @@ const ManageUsers = () => {
     <main className="users-page">
 
       <header className="user-management-header">
-        <h2>Manage Users</h2>
+        <h1 className="user-management-title">Manage Users</h1>
+        <p className="user-management-subtitle">
+        Onboard members, revoke access and assign roles!
+        </p>
+      </header>
         <button className="onboard-button" onClick={() =>{setRegistrationError("");
             setShowRegistration(true)}}>
           <span className="icon-plus">+</span>
           <span>Onboard Member</span>
         </button>
-          </header>
     
   
 
