@@ -20,14 +20,11 @@ export default function LogIssueForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   
-  // Get the current user when component mounts
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = auth.onAuthStateChanged(user => {
       setCurrentUser(user);
     });
-    
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
@@ -51,7 +48,6 @@ export default function LogIssueForm() {
     setError(null);
     
     try {
-      // Create a copy of formData without modifying the state directly
       const issueData = {
         issueTitle: formData.issueTitle,
         issueDescription: formData.issueDescription,
@@ -63,12 +59,9 @@ export default function LogIssueForm() {
         reportedAt: new Date().toISOString()
       };
       
-      // Call the createIssue function with the issueData
       const issueId = await createIssue(issueData);
       
       setSubmittedIssueId(issueId);
-      
-      // Reset the form data
       setFormData({
         issueTitle: "",
         issueDescription: "",
@@ -78,7 +71,6 @@ export default function LogIssueForm() {
         images: [],
       });
 
-      // Reset the image input field
       const fileInput = document.querySelector('input[type="file"]');
       if (fileInput) {
         fileInput.value = "";
@@ -121,8 +113,9 @@ export default function LogIssueForm() {
             </div>
           )}
 
-          <label>Issue Title</label>
+          <label htmlFor="issueTitle">Issue Title</label>
           <input
+            id="issueTitle"
             name="issueTitle"
             placeholder="e.g. Broken Shower Head"
             onChange={handleChange}
@@ -130,8 +123,9 @@ export default function LogIssueForm() {
             required
           />
 
-          <label>Description</label>
+          <label htmlFor="issueDescription">Description</label>
           <textarea
+            id="issueDescription"
             name="issueDescription"
             placeholder="Describe the issue in detail..."
             onChange={handleChange}
@@ -139,8 +133,9 @@ export default function LogIssueForm() {
             required
           />
 
-          <label>Location</label>
+          <label htmlFor="location">Location</label>
           <input
+            id="location"
             name="location"
             placeholder="e.g. Second Floor Restroom"
             onChange={handleChange}
@@ -148,8 +143,14 @@ export default function LogIssueForm() {
             required
           />
 
-          <label>Category</label>
-          <select name="category" onChange={handleChange} value={formData.category} required>
+          <label htmlFor="category">Category</label>
+          <select
+            id="category"
+            name="category"
+            onChange={handleChange}
+            value={formData.category}
+            required
+          >
             <option value="">Select Category</option>
             <option value="Plumbing">Plumbing</option>
             <option value="Electrical">Electrical</option>
@@ -161,8 +162,9 @@ export default function LogIssueForm() {
             <option value="General">General</option>
           </select>
 
-          <label>Priority</label>
+          <label htmlFor="priority">Priority</label>
           <select
+            id="priority"
             name="priority"
             value={formData.priority}
             onChange={handleChange}
@@ -173,8 +175,9 @@ export default function LogIssueForm() {
             <option value="high">High</option>
           </select>
 
-          <label>Upload Images</label>
+          <label htmlFor="images">Upload Images</label>
           <input
+            id="images"
             type="file"
             name="images"
             accept="image/*"

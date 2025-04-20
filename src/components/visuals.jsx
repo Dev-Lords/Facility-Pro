@@ -23,24 +23,32 @@ const FacilitySlideshow = ({ facilities }) => {
   return (
     <section className="facility-slideshow">
       <figure className="slideshow-container">
-        <button className="arrow left-arrow" onClick={goToPrevious}>
+        <button
+          className="arrow left-arrow"
+          onClick={goToPrevious}
+          aria-label="Go to previous slide"
+        >
           &lt;
         </button>
         <figure className="slide">
-          <img 
-            src={facilities[currentIndex].image} 
-            alt={facilities[currentIndex].name} 
+          <img
+            src={facilities[currentIndex].image}
+            alt={facilities[currentIndex].name}
             className="facility-image"
           />
           <figcaption className="facility-name">{facilities[currentIndex].name}</figcaption>
         </figure>
-        <button className="arrow right-arrow" onClick={goToNext}>
+        <button
+          className="arrow right-arrow"
+          onClick={goToNext}
+          aria-label="Go to next slide"
+        >
           &gt;
         </button>
       </figure>
       <nav className="dots-container">
         {facilities.map((_, index) => (
-          <button 
+          <button
             key={index}
             className={`dot ${index === currentIndex ? "active" : ""}`}
             onClick={() => setCurrentIndex(index)}

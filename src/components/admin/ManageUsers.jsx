@@ -34,6 +34,8 @@ const ManageUsers = () => {
   const [filterType, setFilterType] = useState("all");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const [deleteError, setDeleteError] = useState(null);
+
   const fetchUsers = async () => {
     try {
         setIsLoading(true); 
@@ -91,9 +93,10 @@ const ManageUsers = () => {
       setUsers(prev => prev.filter(user => user.id !== selectedUserId));
       setShowPopup(false);
       setSelectedUserId(null);
+      setDeleteError(null);
     } catch (error) {
       console.error("Error deleting user:", error);
-      alert("You don't have permission to delete this user.");
+      setDeleteError("You don't have permission to delete this user.");
       setShowPopup(false);
     }
   };
@@ -184,7 +187,17 @@ const ManageUsers = () => {
 
 
   return (
+
+    
     <main className="users-page">
+
+{/* Error message at top of page */}
+{deleteError && (
+    <div className="error-banner" data-testid="delete-error">
+      {deleteError}
+      <button onClick={() => setDeleteError(null)}>×</button>
+    </div>
+  )}
 
     <header className="user-management-header">
         <h1 className="user-management-title">Manage Users</h1>
@@ -297,9 +310,11 @@ const ManageUsers = () => {
           <h3>Delete User?</h3>
           <p>This action cannot be undone!</p>
           <section className="modal-buttons">
+
             <button onClick={handleDelete} className="confirm-btn">
               delete
             </button>
+            
             <button onClick={() => setShowPopup(false)} className="cancel-btn">
               Cancel
             </button>

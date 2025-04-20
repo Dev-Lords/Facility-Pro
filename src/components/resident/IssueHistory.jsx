@@ -9,6 +9,7 @@ const IssueHistory = () => {
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchIssues = async () => {
@@ -19,6 +20,7 @@ const IssueHistory = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching issues:", error);
+        setError("Error fetching issues");  // Set the error message
         setLoading(false);
       }
     };
@@ -72,6 +74,9 @@ const IssueHistory = () => {
   return (
     <main className="issue-history-page">
       {/* Header Banner */}
+
+      {error && <div role="alert" className="error-message">{error}</div>}
+
       <header className="page-banner">
         <div className="banner-content">
           <div className="icon-container">

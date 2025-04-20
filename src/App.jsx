@@ -15,7 +15,7 @@ import LogIssueForm from "./components/resident/logIssue.jsx";
 import FacilitySelection from "./components/resident/FacilitySelection.jsx"
 import CalenderPage from "./components/resident/CalendarPage.jsx";
 import IssueMenu from "./components/resident/issueMenu.jsx";
-import IssueHistory from "./components/resident/IssueHistory.jsx";
+import IssueHistory from "./components/resident/issueHistory.jsx";
 import ManageUsers from "./components/admin/ManageUsers.jsx";
 import CreateEvents from './components/admin/CreateEvents.jsx';
 
