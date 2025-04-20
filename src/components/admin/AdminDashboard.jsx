@@ -1,7 +1,7 @@
 import React from 'react';
 import './AdminDashboard.css';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { FaCheckCircle,FaUser, FaUsers, FaFileAlt, FaRegCalendarPlus,FaStamp,FaClipboardCheck } from 'react-icons/fa';
+import { FaUser, FaUsers, FaFileAlt, FaRegCalendarPlus,FaClipboardCheck } from 'react-icons/fa';
 
 export default function AdminDashboard() {
   const token = localStorage.getItem('authToken');
@@ -34,7 +34,7 @@ export default function AdminDashboard() {
           <section className="card-icon"><FaUsers /></section>
           <h2>Manage Users</h2>
           <p>Add, edit, or remove users and manage their access permissions.</p>
-          <button className="btn manage-btn" onClick={() => handleNavigate("/users")}>Manage Users</button>
+          <button className="btn manage-btn" onClick={() => handleNavigate("/manage-users")}>Manage Users</button>
         </article>
 
         <article className="dashboard-card reports-card">
