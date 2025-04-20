@@ -182,9 +182,8 @@ const CreateEvents = () => {
 
           {errorMessage && <div className="error-message">{errorMessage}</div>}
 
-          <label htmlFor="title">Event Title</label>
+          <label>Event Title</label>
           <input
-            id="title"
             name="title"
             placeholder="e.g. Summer Pool Party"
             onChange={handleChange}
@@ -192,9 +191,8 @@ const CreateEvents = () => {
             required
           />
 
-          <label htmlFor="description">Description</label>
+          <label>Description</label>
           <textarea
-            id="description"
             name="description"
             placeholder="Describe the event in detail..."
             onChange={handleChange}
@@ -204,9 +202,8 @@ const CreateEvents = () => {
 
           <div style={{ display: 'flex', gap: '1rem' }}>
             <div style={{ flex: 1 }}>
-              <label htmlFor="date">Date</label>
+              <label>Date</label>
               <input
-                id="date"
                 type="date"
                 name="date"
                 onChange={handleChange}
@@ -215,9 +212,8 @@ const CreateEvents = () => {
               />
             </div>
             <div style={{ flex: 1 }}>
-              <label htmlFor="startTime">Start Time</label>
+              <label>Start Time</label>
               <input
-                id="startTime"
                 type="time"
                 name="startTime"
                 onChange={handleChange}
@@ -226,9 +222,8 @@ const CreateEvents = () => {
               />
             </div>
             <div style={{ flex: 1 }}>
-              <label htmlFor="endTime">End Time</label>
+              <label>End Time</label>
               <input
-                id="endTime"
                 type="time"
                 name="endTime"
                 onChange={handleChange}
@@ -238,9 +233,8 @@ const CreateEvents = () => {
             </div>
           </div>
 
-          <label htmlFor="location">Location</label>
+          <label>Location</label>
           <select 
-            id="location"
             name="location" 
             onChange={handleChange} 
             value={eventData.location} 
@@ -254,9 +248,8 @@ const CreateEvents = () => {
             <option value="community-hall">Community Hall</option>
           </select>
 
-          <label htmlFor="eventType">Event Type</label>
+          <label>Event Type</label>
           <select 
-            id="eventType"
             name="eventType" 
             onChange={handleChange} 
             value={eventData.eventType} 
@@ -270,9 +263,8 @@ const CreateEvents = () => {
             <option value="other">Other</option>
           </select>
 
-          <label htmlFor="maxParticipants">Maximum Participants</label>
+          <label>Maximum Participants</label>
           <input
-            id="maxParticipants"
             type="number"
             name="maxParticipants"
             placeholder="e.g. 20"
