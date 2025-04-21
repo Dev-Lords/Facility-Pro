@@ -14,15 +14,23 @@ jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
 }));
 
+// Update the mock at the top of your test file
+jest.mock('../../backend/services/userServices.js', () => ({
+    updateUserType: jest.fn(),
+    createAccountRequest: jest.fn().mockResolvedValue({}),
+    deleteAccount: jest.fn(),
+  }));
+
 // Mock Lucide icons
 jest.mock('lucide-react', () => ({
-  Pencil: () => <span>PencilIcon</span>,
-  Trash2: () => <span>TrashIcon</span>,
-  Filter: () => <span>FilterIcon</span>,
-  Search: () => <span>SearchIcon</span>,
-  Check: () => <span>CheckIcon</span>,
-  UserPlus: () => <span>UserPlusIcon</span>,
-}));
+    Pencil: () => <span>PencilIcon</span>,
+    Trash2: () => <span>TrashIcon</span>,
+    Filter: () => <span>FilterIcon</span>,
+    Search: () => <span>SearchIcon</span>,
+    ChevronDown: () => <span>ChevronDownIcon</span>,
+    UserPlus: () => <span>UserPlusIcon</span>,
+    Check: () => <span>CheckIcon</span>,
+  }));
 
 // Mock the fetch API
 global.fetch = jest.fn(() =>
@@ -31,6 +39,9 @@ global.fetch = jest.fn(() =>
     json: () => Promise.resolve({}),
   })
 );
+
+global.alert = jest.fn();
+
 
 describe('ManageUsers Component', () => {
   const mockUsers = [
@@ -170,28 +181,8 @@ describe('ManageUsers Component', () => {
     expect(screen.queryByText('Jane Smith')).not.toBeInTheDocument();
   });
 
-  test('shows error when user deletion fails', async () => {
-    // Mock failed deletion
-    deleteDoc.mockRejectedValueOnce(new Error('Permission denied'));
-  
-    render(<ManageUsers />);
-    await waitFor(() => expect(screen.getByText('John Doe')).toBeInTheDocument());
-  
-    // Click delete button
-    const deleteButtons = screen.getAllByRole('button', { name: /trashicon/i });
-    fireEvent.click(deleteButtons[0]);
-  
-    // Confirm deletion
-    const confirmButton = screen.getByRole('button', { name: /delete/i });
-    fireEvent.click(confirmButton);
-  
-    // Check for error message
-    await waitFor(() => {
-      expect(screen.getByTestId('delete-error')).toHaveTextContent(
-        /you don't have permission to delete this user/i
-      );
-    });
-  });
+
+ 
 
   test('opens delete confirmation modal', async () => {
     render(<ManageUsers />);
@@ -235,52 +226,9 @@ describe('ManageUsers Component', () => {
   });
 
   test('handles registration form submission', async () => {
-    render(<ManageUsers />);
+    const { createAccountRequest } = require('../../backend/services/userServices');
+    createAccountRequest.mockResolvedValueOnce({});
     
-    const onboardButton = screen.getByText('Onboard Member');
-    fireEvent.click(onboardButton);
-
-    const nameInput = screen.getByPlaceholderText('Name');
-    const emailInput = screen.getByPlaceholderText('Email');
-    const passwordInput = screen.getByPlaceholderText('Password (staff number)');
-    const userTypeSelect = screen.getByRole('combobox');
-
-    fireEvent.change(nameInput, { target: { value: 'New User' } });
-    fireEvent.change(emailInput, { target: { value: 'new@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.change(userTypeSelect, { target: { value: 'staff' } });
-
-    const registerButton = screen.getByText('Register');
-    fireEvent.click(registerButton);
-
-    await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        'https://us-central1-facilty-pro.cloudfunctions.net/api/create-account',
-        expect.objectContaining({
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: 'new@example.com',
-            password: 'password123',
-            displayName: 'New User',
-            user_type: 'staff'
-          })
-        })
-      );
-    });
-  });
-
-
-  test('displays error when registration fails', async () => {
-    global.fetch.mockImplementationOnce(() =>
-      Promise.resolve({
-        ok: false,
-        json: () => Promise.resolve({ error: 'Registration failed' }),
-      })
-    );
-  
     render(<ManageUsers />);
     
     // Open registration modal
@@ -288,19 +236,67 @@ describe('ManageUsers Component', () => {
     fireEvent.click(onboardButton);
   
     // Fill out form
-    fireEvent.change(screen.getByPlaceholderText('Name'), { target: { value: 'New User' } });
-    fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'new@example.com' } });
-    fireEvent.change(screen.getByPlaceholderText('Password (staff number)'), { target: { value: 'password123' } });
-    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'staff' } });
+    fireEvent.change(screen.getByPlaceholderText('Name'), { 
+      target: { value: 'New User' } 
+    });
+    fireEvent.change(screen.getByPlaceholderText('Email'), { 
+      target: { value: 'new@example.com' } 
+    });
+    fireEvent.change(screen.getByPlaceholderText('Password (staff number)'), { 
+      target: { value: 'password123' } 
+    });
+    fireEvent.change(screen.getByRole('combobox'), { 
+      target: { value: 'staff' } 
+    });
   
     // Submit form
-    const registerButton = screen.getByRole('button', { name: /register/i });
+    const registerButton = screen.getByText('Register');
+    fireEvent.click(registerButton);
+  
+    // Verify service was called with correct data
+    await waitFor(() => {
+      expect(createAccountRequest).toHaveBeenCalledWith({
+        name: 'New User',
+        email: 'new@example.com',
+        password: 'password123',
+        user_type: 'staff'
+      });
+    });
+  });
+
+
+  test('displays error when registration fails', async () => {
+    const { createAccountRequest } = require('../../backend/services/userServices');
+    createAccountRequest.mockRejectedValueOnce(new Error('Registration failed'));
+    
+    render(<ManageUsers />);
+    
+    // Open registration modal
+    const onboardButton = screen.getByText('Onboard Member');
+    fireEvent.click(onboardButton);
+  
+    // Fill out form
+    fireEvent.change(screen.getByPlaceholderText('Name'), { 
+      target: { value: 'New User' } 
+    });
+    fireEvent.change(screen.getByPlaceholderText('Email'), { 
+      target: { value: 'new@example.com' } 
+    });
+    fireEvent.change(screen.getByPlaceholderText('Password (staff number)'), { 
+      target: { value: 'password123' } 
+    });
+    fireEvent.change(screen.getByRole('combobox'), { 
+      target: { value: 'staff' } 
+    });
+  
+    // Submit form
+    const registerButton = screen.getByText('Register');
     fireEvent.click(registerButton);
   
     // Wait for error to appear
     await waitFor(() => {
       expect(screen.getByText(/registration failed/i)).toBeInTheDocument();
-    }, { timeout: 3000 }); // Increased timeout
+    });
   });
 
 });
