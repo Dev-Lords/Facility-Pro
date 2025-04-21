@@ -39,7 +39,7 @@ app.post('/create-account', async (req, res) => {
       email,
       displayName,
       user_type: user_type,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),  // Firebase's server timestamp
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),  
       updatedAt: nowFormatted  
     });
 
@@ -62,5 +62,29 @@ app.post('/create-account', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+app.delete('/delete-account/:uid',async(req,res)=>{
+  const {uid} = req.params;
+  if (!uid) {
+    return res.status(400).json({ error: 'Missing UID in URL' });
+  }
+  try{
+
+  
+  await admin.auth().deleteUser(uid)
+  
+  const userDocRef = admin.firestore().collection('users').doc(uid);
+  await userDocRef.delete();
+  console.log(`user${uid} deleted from firestore`);
+  res.status(200).json({
+    message: `${uid} deleted`})
+
+  }
+  catch(error){
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: error.message });
+  }
+
+}
+)
 
 exports.api = functions.https.onRequest(app); 
