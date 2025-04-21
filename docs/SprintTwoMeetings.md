@@ -250,3 +250,69 @@ Next Meeting: 19 April 2025
 
 Next Meeting: 20 April 2025
 
+## 20 April 2025
+
+> Date: 20 April 2025.
+
+> Time: 19:00.
+
+> Platform: Miscrosoft Teams.
+
+> Attendees: All Team Members
+
+
+### Agenda:
+
+- Review of individual progress and latest changes
+
+- Code testing and test coverage
+
+- UI feedback and fixes
+
+- Firebase Firestore user data issues
+
+- Planning meeting with Chloe and finalizing Sprint 2
+
+### Key Discussion Points:
+
+1. Progress Updates
+
+    Team member added functionality for residents to view previously logged issues.
+
+    Tasks were updated and documented, with user stories and UML diagrams completed.
+
+2. Testing and Code Coverage
+
+    Reach 50% test coverage by Monday.
+
+    Some tests failed due to deleted UI elements, which were then fixed.
+
+    Issues were encountered running tests.
+
+    Team committed to writing and running more tests before Tuesday.
+
+3. UI and Functional Issues
+
+    UI update pushed to production
+    
+    New user type dropdown in onboarding form had visibility issues.
+
+    Color bug inconsistently affected different machines and browsers.
+
+    Users missing expected attributes caused UI errors or invalid data formatting.
+
+    Need to handle missing fields in user objects and ensure data consistency in Firestore.
+
+4. Database and Sync Issues
+
+    Users deleted in Firestore were not being removed from Firebase Authentication.
+
+    Discussion around tracking and formatting createdAt and updatedAt fields.
+
+    Agreed on formatting dates using toISOString and fixing formatting mismatches causing errors.
+
+5. Sprint Wrap-up and Meeting Planning
+
+    Chloe is available to meet on Tuesday between 12:00–2:00 PM or 2:00–4:00 PM.
+
+    Team opted for Tuesday 12:00–2:00 PM.
