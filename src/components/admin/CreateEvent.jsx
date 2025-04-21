@@ -165,22 +165,22 @@ const CreateEvents = () => {
   };
 
   return (
-    <div className="issue-form-container">
-      <div className="issue-form">
-        <div className="form-image">
-          <div className="form-message-bounce">
-            <p>Create memorable events for our community members to enjoy!</p>
-          </div>
-          <div className="form-icon-stack">
+    <section className="issue-form-container">
+      <article className="issue-form">
+        <aside className="form-image">
+          <p className="form-message-bounce">
+            Create memorable events for our community members to enjoy!
+          </p>
+          <figure className="form-icon-stack">
             <FaCalendarAlt className="form-icon" />
             <FaClock className="form-icon" />
-          </div>
-        </div>
+          </figure>
+        </aside>
 
         <form className="form-fields" onSubmit={handleSubmit}>
           <h2>Create New Event</h2>
 
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
 
           <label htmlFor="title">Event Title</label>
           <input
@@ -202,41 +202,38 @@ const CreateEvents = () => {
             required
           />
 
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <div style={{ flex: 1 }}>
-              <label htmlFor="date">Date</label>
-              <input
-                id="date"
-                type="date"
-                name="date"
-                onChange={handleChange}
-                value={eventData.date}
-                required
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <label htmlFor="startTime">Start Time</label>
-              <input
-                id="startTime"
-                type="time"
-                name="startTime"
-                onChange={handleChange}
-                value={eventData.startTime}
-                required
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <label htmlFor="endTime">End Time</label>
-              <input
-                id="endTime"
-                type="time"
-                name="endTime"
-                onChange={handleChange}
-                value={eventData.endTime}
-                required
-              />
-            </div>
-          </div>
+          <fieldset className="form-row">
+            <legend>Event Schedule</legend>
+            <label htmlFor="date">Date</label>
+            <input
+              id="date"
+              type="date"
+              name="date"
+              onChange={handleChange}
+              value={eventData.date}
+              required
+            />
+            
+            <label htmlFor="startTime">Start Time</label>
+            <input
+              id="startTime"
+              type="time"
+              name="startTime"
+              onChange={handleChange}
+              value={eventData.startTime}
+              required
+            />
+            
+            <label htmlFor="endTime">End Time</label>
+            <input
+              id="endTime"
+              type="time"
+              name="endTime"
+              onChange={handleChange}
+              value={eventData.endTime}
+              required
+            />
+          </fieldset>
 
           <label htmlFor="location">Location</label>
           <select 
@@ -286,21 +283,21 @@ const CreateEvents = () => {
             {isSubmitting ? 'Creating...' : 'Create Event'}
           </button>
         </form>
-      </div>
+      </article>
 
       {showSuccessMessage && (
-        <div className="success-popup">
-          <div className="popup-content">
+        <dialog className="success-popup" open>
+          <article className="popup-content">
             <h3>Your event was created successfully!</h3>
             <p>The event has been added to the calendar and is now visible to community members.</p>
             <button onClick={() => {
               setShowSuccessMessage(false);
               navigate('/admin-home');
             }}>Return to Dashboard</button>
-          </div>
-        </div>
+          </article>
+        </dialog>
       )}
-    </div>
+    </section>
   );
 };
 
