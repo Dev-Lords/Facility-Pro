@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../../backend/firebase/firebase.config";
+import{updateUserType,createAccountRequest,deleteAccount} from "../../../backend/services/userServices";
 
-import { collection, getDocs, deleteDoc,updateDoc, doc , query, orderBy,addDoc}from "firebase/firestore";
+import { collection, getDocs , query, orderBy,}from "firebase/firestore";
 import { Pencil, Trash2,Filter,Search,Check,UserPlus} from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
@@ -33,9 +34,10 @@ const ManageUsers = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-
   const [deleteError, setDeleteError] = useState(null);
 
+
+  //fetching users
   const fetchUsers = async () => {
     try {
         setIsLoading(true); 
@@ -50,18 +52,17 @@ const ManageUsers = () => {
       console.error("Error fetching users:", error);
     }finally {
     setIsLoading(false); 
-  }
-  };
+  }};
 
-  
   useEffect(() => {
     const getUsers = async () => {
       await fetchUsers();
     };
-  
     getUsers();
   }, []);  
 
+
+  //filtering through users
   const filteredUsers = users.filter(user => {
     const matchesSearch =
       user.displayName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -87,7 +88,7 @@ const ManageUsers = () => {
     setShowPopup(true);
   };
   
-  const handleDelete = async () => {
+  /*const handleDelete = async () => {
     try {
       await deleteDoc(doc(db, "users", selectedUserId));
       setUsers(prev => prev.filter(user => user.id !== selectedUserId));
@@ -99,31 +100,52 @@ const ManageUsers = () => {
       setDeleteError("You don't have permission to delete this user.");
       setShowPopup(false);
     }
+  };*/
+
+
+  const handleDelete = async () => {
+    if (!selectedUserId) return;
+  
+    try {
+      await deleteAccount(selectedUserId);
+      console.log("User deleted");
+      await fetchUsers(); // Refresh the UI
+      setShowPopup(false);
+      setSelectedUserId(null);
+      setDeleteError(null);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Error deleting user: " + error.message);
+      setDeleteError("You don't have permission to delete this user.");
+      setShowPopup(false);
+    }
   };
   
-  //edit user pop-up and function
+  
+  //edit user type pop-up and function
   const openEditModal = (user) => {
     setEditUser(user);
     setNewUserType(user.user_type || "");
   };
+ 
+const handleUpdateUserType = async () => {
+  if (!editUser) return;
 
-  const handleUpdateUserType = async () => {
-    if (!editUser) return;
-  
-    try {
-      const userRef = doc(db, "users", editUser.id);
-      await updateDoc(userRef, { user_type: newUserType });
-      setUsers((prev) =>
-        prev.map((user) =>
-          user.id === editUser.id ? { ...user, user_type: newUserType } : user
-        )
-      );
-      setEditUser(null);
-    } catch (error) {
-      console.error("Error updating user:", error);
-      alert("You don't have permission to edit this user.");
-    }
-  };
+  try {
+    await updateUserType(editUser.id, newUserType);
+
+    setUsers((prev) =>
+      prev.map((user) =>
+        user.id === editUser.id ? { ...user, user_type: newUserType } : user
+      )
+    );
+    setEditUser(null);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    alert("You don't have permission to edit this user.");
+  }
+};
+
 
   //add user pop-up and function
   const handleRegistrationChange = (e) => {
@@ -131,6 +153,26 @@ const ManageUsers = () => {
   };
   
   const createAccount = async (e) => {
+    e.preventDefault();
+    setRegistrationError("");
+  
+    if (!registrationFormData.email || !registrationFormData.password || !registrationFormData.name || !registrationFormData.user_type) {
+      alert('Please fill in all fields');
+      return;
+    }
+  
+    try {
+      await createAccountRequest(registrationFormData);
+      console.log("Account created");
+      await fetchUsers(); 
+      setShowRegistration(false);
+      setRegistrationError("");
+    } catch (error) {
+      setRegistrationError(error.message);
+    }
+  };
+  
+  /*const createAccount = async (e) => {
     e.preventDefault();
     setRegistrationError("");
     if (!registrationFormData.email || !registrationFormData.password || !registrationFormData.name || !registrationFormData.user_type) {
@@ -171,7 +213,7 @@ const ManageUsers = () => {
     } catch (error) {
       setRegistrationError(error.message);
     }
-  };
+  };*/
 
 //UI improvements:
   const formatDate = (isoString) => {
@@ -188,16 +230,15 @@ const ManageUsers = () => {
 
   return (
 
-    
     <main className="users-page">
 
-{/* Error message at top of page */}
-{deleteError && (
-    <div className="error-banner" data-testid="delete-error">
-      {deleteError}
-      <button onClick={() => setDeleteError(null)}>×</button>
-    </div>
-  )}
+    {/* Error message at top of page - testing */}
+    {deleteError && (
+      <section className="error-banner" data-testid="delete-error">
+        {deleteError}
+        <button onClick={() => setDeleteError(null)}>×</button>
+      </section>
+    )}
 
     <header className="user-management-header">
         <h1 className="user-management-title">Manage Users</h1>
@@ -298,12 +339,12 @@ const ManageUsers = () => {
     )
   )}
 </tbody>
-
-        </table>
-      </section>
+</table>
+</section>
     
+{/*Popups: delete,edit and onboard respectively*/}
 
-      {showPopup && (
+{showPopup && (
     <>
       <section className="modal-overlay">
         <section className="modal-box">
@@ -412,11 +453,11 @@ const ManageUsers = () => {
   </section>
 )}
 
-      <footer className="facility-footer">
-        <p>Facility Management System • Admin services • Version 1.0.0</p>
-      </footer>
+<footer className="facility-footer">
+  <p>Facility Management System • Admin services • Version 1.0.0</p>
+</footer>
 
-    </main>
+</main>
   );
   
 };

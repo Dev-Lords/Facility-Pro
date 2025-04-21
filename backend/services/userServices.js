@@ -88,18 +88,59 @@ export const updateUserType = async (uid, newUserType) => {
 };
 
 
-//fetch all users in database
-export const fetchUsers = async () => {
-  try {
-    const usersCol = query(collection(db, "users"), orderBy("displayName"));
-    const usersSnapshot = await getDocs(usersCol);
-    const usersList = usersSnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-    return usersList;
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    throw error; // let caller handle the error
+//Admin-functions:
+
+
+//onboard member
+export const createAccountRequest = async (formData) => {
+  console.log("createAccount function hit", formData);
+  const url = 'https://us-central1-facilty-pro.cloudfunctions.net/api/create-account';
+
+  const payload = {
+    email: formData.email,
+    password: formData.password,
+    displayName: formData.name,
+    user_type: formData.user_type
+  };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    console.error("Error response:", errorResponse);
+    throw new Error(errorResponse.error);
   }
+
+  return true;
+};
+
+
+//delete user
+export const deleteAccount = async (uid) => {
+  console.log("deleteAccount function hit", uid);
+  const url = 'https://us-central1-facilty-pro.cloudfunctions.net/api/delete-account';
+
+  const payload = { uid };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    console.error("Delete account error:", errorResponse);
+    throw new Error(errorResponse.error);
+  }
+
+  return true;
 };
