@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../../backend/firebase/firebase.config";
 import{updateUserType,createAccountRequest,deleteAccount} from "../../../backend/services/userServices";
-
 import { collection, getDocs , query, orderBy,}from "firebase/firestore";
-import { Pencil, Trash2,Filter,Search,Check,UserPlus} from "lucide-react";
-
-import { useNavigate } from "react-router-dom";
+import { Pencil, Trash2,Filter,Search,UserPlus,ChevronDown} from "lucide-react";
 import "./ManageUsers.css";
 
-const ManageUsers = () => {
-  const navigate = useNavigate();  
+
+const ManageUsers = () => { 
   //pop up to confirm delete
   const [showPopup, setShowPopup] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -87,21 +84,6 @@ const ManageUsers = () => {
     setSelectedUserId(userId);
     setShowPopup(true);
   };
-  
-  /*const handleDelete = async () => {
-    try {
-      await deleteDoc(doc(db, "users", selectedUserId));
-      setUsers(prev => prev.filter(user => user.id !== selectedUserId));
-      setShowPopup(false);
-      setSelectedUserId(null);
-      setDeleteError(null);
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      setDeleteError("You don't have permission to delete this user.");
-      setShowPopup(false);
-    }
-  };*/
-
 
   const handleDelete = async () => {
     if (!selectedUserId) return;
@@ -128,21 +110,21 @@ const ManageUsers = () => {
     setNewUserType(user.user_type || "");
   };
  
-const handleUpdateUserType = async () => {
-  if (!editUser) return;
+  const handleUpdateUserType = async () => {
+    if (!editUser) return;
 
-  try {
-    await updateUserType(editUser.id, newUserType);
+    try {
+      await updateUserType(editUser.id, newUserType);
 
-    setUsers((prev) =>
-      prev.map((user) =>
-        user.id === editUser.id ? { ...user, user_type: newUserType } : user
-      )
-    );
-    setEditUser(null);
-  } catch (error) {
-    console.error("Error updating user:", error);
-    alert("You don't have permission to edit this user.");
+      setUsers((prev) =>
+        prev.map((user) =>
+          user.id === editUser.id ? { ...user, user_type: newUserType } : user
+        )
+      );
+      setEditUser(null);
+    } catch (error) {
+      console.error("Error updating user:", error);
+      alert("You don't have permission to edit this user.");
   }
 };
 
@@ -172,50 +154,8 @@ const handleUpdateUserType = async () => {
     }
   };
   
-  /*const createAccount = async (e) => {
-    e.preventDefault();
-    setRegistrationError("");
-    if (!registrationFormData.email || !registrationFormData.password || !registrationFormData.name || !registrationFormData.user_type) {
-        alert('Please fill in all fields');
-        return;
-      }
-  
-    const url = 'https://us-central1-facilty-pro.cloudfunctions.net/api/create-account';
-  
-    const payload = {
-      email: registrationFormData.email,
-      password: registrationFormData.password,
-      displayName: registrationFormData.name,
-      user_type: registrationFormData.user_type
-    };
-  
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-  
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        console.error("Error response:", errorResponse);
-        throw new Error(errorResponse.error);
-      }
-  
-      console.log("Account created");
-      await fetchUsers(); 
-      setShowRegistration(false);
-      setRegistrationError("");
 
-    
-    } catch (error) {
-      setRegistrationError(error.message);
-    }
-  };*/
-
-//UI improvements:
+//UI improvements: Last Modified date 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     return date.toLocaleString("en-ZA", {
@@ -232,28 +172,22 @@ const handleUpdateUserType = async () => {
 
     <main className="users-page">
 
-    {/* Error message at top of page - testing */}
-    {deleteError && (
-      <section className="error-banner" data-testid="delete-error">
-        {deleteError}
-        <button onClick={() => setDeleteError(null)}>×</button>
-      </section>
-    )}
+      {/* Error message at top of page - testing */}
+      {deleteError && (
+        <section className="error-banner" data-testid="delete-error">
+          {deleteError}
+          <button onClick={() => setDeleteError(null)}>×</button>
+        </section>
+      )}
 
-    <header className="user-management-header">
-        <h1 className="user-management-title">Manage Users</h1>
-        <p className="user-management-subtitle">
-        Onboard members, revoke access and assign roles!
-        </p>
+      <header className="user-management-header">
+          <h1 className="user-management-title">Manage Users</h1>
+          <p className="user-management-subtitle">Onboard members, revoke access and assign roles!</p>
       </header>
-        <button className="onboard-button" onClick={() =>{setRegistrationError("");
-            setShowRegistration(true)}}>
-          <span className="icon-plus">+</span>
-          <span>Onboard Member</span>
-        </button>
+      <button className="onboard-button" onClick={() =>{setRegistrationError("");setShowRegistration(true)}}>
+        <UserPlus className="icon-plus" size={18} />Onboard Member
+      </button>
     
-  
-
       <form className="search-filter-container" onSubmit={(e) => e.preventDefault()}>
         <fieldset className="search-container">
         <Search size={18} className="search-icon" />
@@ -266,22 +200,22 @@ const handleUpdateUserType = async () => {
           />
         </fieldset>
 
-        <fieldset className="filter-container">
-          <button
-            type="button"
-            onClick={toggleFilterDropdown}
-            className="filter-button"
-          >
-            <Filter size={16} className="filter-icon" />
-            <span>{filterType === "all" ? "All user types" : filterType}</span>
-            <span className="dropdown-icon">▼</span>
-          </button>
+          <fieldset className="filter-container">
+            <button
+              type="button"
+              onClick={toggleFilterDropdown}
+              className="filter-button"
+            >
+            <Filter size={16} />
+            {filterType === "all" ? "All user types" : filterType}
+             <ChevronDown size={16} className="chevron-icon" />
+            </button>
 
           {isFilterOpen && (
             <ul className="filter-dropdown">
               {userTypes.map((type, index) => (
                 <li
-                    key={`${type}-${index}`} // Combines value with index to guarantee uniqueness
+                    key={`${type}-${index}`} 
                     className="filter-option"
                     onClick={() => {
                     setFilterType(type);
@@ -321,7 +255,7 @@ const handleUpdateUserType = async () => {
           <td >{user.displayName }</td>
           <td >{user.email}</td>
           <td className="user-type-cell">
-            <span className="user-type-badge">{user.user_type}</span>
+            <mark className="user-type-badge">{user.user_type}</mark>
           </td>
           <td>{formatDate(user.updatedAt)}</td>
           <td className="actions-cell">
@@ -456,12 +390,10 @@ const handleUpdateUserType = async () => {
 <footer className="facility-footer">
   <p>Facility Management System • Admin services • Version 1.0.0</p>
 </footer>
-
 </main>
-  );
-  
-};
 
+); 
+};
 
 
 export default ManageUsers;

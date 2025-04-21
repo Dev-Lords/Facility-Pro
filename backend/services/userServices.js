@@ -90,10 +90,8 @@ export const updateUserType = async (uid, newUserType) => {
 
 //Admin-functions:
 
-
 //onboard member
 export const createAccountRequest = async (formData) => {
-  console.log("createAccount function hit", formData);
   const url = 'https://us-central1-facilty-pro.cloudfunctions.net/api/create-account';
 
   const payload = {
