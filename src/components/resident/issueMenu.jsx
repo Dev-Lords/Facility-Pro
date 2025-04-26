@@ -1,82 +1,62 @@
 import React from 'react';
 import './issueMenu.css'; // Import your CSS file for styling
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { FaWrench, FaExclamationTriangle, FaHistory, FaFutbol, FaBasketballBall } from 'react-icons/fa';
 
-const IssueMenu = () => {
+
+export default function IssueMenu(){
+  const token = localStorage.getItem('authToken');
+  const userType = localStorage.getItem('userType');
+  const isAuthenticated = token && userType === 'resident';
   const navigate = useNavigate();   
 
   const handleNavigate = (path) => {
     console.log(`Navigating to ${path}`);
     navigate(path);
   };
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
-    <div className="page-container">
-      {/* Header Section */}
-      <header className="welcome-header">
-        <div className="header-content">
-          <div className="header-icon">
-            <span className="icon">🏠</span>
-          </div>
-          <div className="header-text">
-            <h1 className="header-title">Report Issues</h1>
-            <p className="header-subtitle">Manage maintenance requests and track issues</p>
-          </div>
-        </div>
+    <main className="container">
+      <header className="header">
+        <section className="header-content">
+          <section className="issues-icon"><FaWrench/></section>
+          <section>
+          <h1 className="header-title">Report Issues</h1>
+          <p className="header-subtitle">Manage maintenance requests and track issues</p>
+          </section>
+        </section>
       </header>
+   
+      <section className = "card-grid">
 
-      {/* Breadcrumb */}
-      <nav className="breadcrumb-nav">
-        <button 
-          onClick={() => handleNavigate('/LoginPage')} 
-          className="breadcrumb-link"
-        >
-          <span className="home-icon">🏠</span> Dashboard
-        </button>
-        <span className="separator">/</span>
-        <span className="current-page">Report Issues</span>
-      </nav>
-
-      {/* Card Grid */}
-      <section className="card-grid">
-        {/* Log New Issue Card */}
-        <article className="menu-card">
-          <div className="card-icon">
-            <span className="icon-circle">⚠️</span>
-          </div>
-          <h2 className="card-title">Log New Issue</h2>
-          <p className="card-description">
-            Report a maintenance problem or facility issue that needs attention.
-          </p>
-          <button 
-            className="card-button"
-            onClick={() => handleNavigate('/log-issue')}
-            type="button"
-          >
+        <article className ="card card-log-issues">
+          <section className="card-icon"><FaExclamationTriangle/></section>
+          <h2>Log New Issue</h2>
+          <p> Report a maintenance problem or facility issue that needs attention.</p>
+          <button className="btn btn-issues" onClick={() => handleNavigate('/log-issue')}>
             Log Issue
           </button>
         </article>
 
-        {/* View Issue History Card */}
-        <article className="menu-card">
-          <div className="card-icon">
-            <span className="icon-circle">🕒</span>
-          </div>
+        <article className='card card-log-history'>
+          <section className="card-icon"><FaHistory/></section>
           <h2 className="card-title">Track Issue History</h2>
-          <p className="card-description">
-            View status and history of your previously reported issues.
-          </p>
-          <button 
-            className="card-button"
-            onClick={() => handleNavigate('/issue-history')}
-            type="button"
-          >
+          <p className="card-description">View status and history of your previously reported issues.</p>
+          <button className="btn btn-issues" onClick={() => handleNavigate('/issue-history')}>
             View History
           </button>
         </article>
-      </section>
-    </div>
-  );
-};
 
-export default IssueMenu;
+
+      </section>
+      <footer className="footer">
+        <p>Resident Booking System • Your Community • Copyright © {new Date().getFullYear()}</p>
+      </footer>
+    </main>
+
+  );
+}
+

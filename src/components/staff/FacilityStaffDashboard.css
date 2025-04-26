@@ -13,7 +13,19 @@
     margin: 0 auto;
     line-height: 1.6;
   }
-  
+  .staff-icon {
+    font-size: 45px;
+    margin-right: 20px;
+    background-color: rgba(255, 255, 255, 0.15);
+    height: 90px;
+    width: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
   .facility-header {
     background: linear-gradient(135deg, #0b2e5b 0%, #1e4e8c 100%);
     color: white;
@@ -55,20 +67,20 @@
     margin: 0 auto;
   }
   
-  .staff-icon,
-  .card-icon {
-    font-size: 36px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-    height: 80px;
-    width: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    margin: 0 auto 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease;
-  }
+  .staff-icon{
+      font-size: 45px;
+      margin-right: 20px;
+      background-color: rgba(255, 255, 255, 0.15);
+      height: 90px;
+      width: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+  
+  
   
   .facility-card:hover .card-icon {
     transform: scale(1.1);

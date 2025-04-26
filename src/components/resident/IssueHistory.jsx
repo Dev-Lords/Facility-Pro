@@ -173,7 +173,7 @@ const IssueHistory = () => {
         <div className="action-container">
           <button 
             type="button"
-            className="action-button"
+            className="btn btn-issues"
             onClick={() => handleNavigate('/log-issue')}
           >
             Log New Issue

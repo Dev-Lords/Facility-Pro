@@ -2,7 +2,7 @@ import React from 'react';
 import './ResidentDashboard.css';
 import { useNavigate } from "react-router-dom";
 import { Navigate } from 'react-router-dom';
-import { FaUser, FaSwimmer, FaDumbbell, FaFutbol, FaBasketballBall, FaCalendar, FaExclamationTriangle, FaCalendarCheck } from 'react-icons/fa';
+import { FaHome, FaCalendar, FaExclamationTriangle, FaCalendarCheck } from 'react-icons/fa';
 
 export default function ResidentPortal() {
     const token = localStorage.getItem('authToken');
@@ -22,7 +22,7 @@ export default function ResidentPortal() {
     <main className="container">
       <header className="header">
         <section className="header-content">
-          <section className="resident-icon">🏠</section>
+          <section className="resident-icon"><FaHome/></section>
           <section>
             <h1>Welcome Resident</h1>
             <p>Access community services with ease</p>

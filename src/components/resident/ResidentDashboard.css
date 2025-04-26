@@ -128,11 +128,11 @@
   }
   
   .card-events {
-    border-top-color: #1e4e8c;
+    border-top-color: #3d6ea8;
   }
   
   .card-issues {
-    border-top-color: #0f3d78;
+    border-top-color: #3d6ea8;
   }
   
   .card-icon {
@@ -150,6 +150,7 @@
     z-index: 1;
     transition: all 0.3s ease;
     box-shadow: 0 5px 15px rgba(12, 36, 97, 0.08);
+    color: #3d6ea8;
   }
   
   .card:hover .card-icon {
@@ -217,11 +218,11 @@
   }
   
   .btn-facilities {
-    background: linear-gradient(to right, #3d6ea8, #6a8fc5);
+    background: linear-gradient(to right, #0f3d78, #1e4e8c);
   }
   
   .btn-events {
-    background: linear-gradient(to right, #1e4e8c, #3b5d9c);
+    background: linear-gradient(to right, #0f3d78, #1e4e8c);
   }
   
   .btn-issues {
@@ -229,11 +230,11 @@
   }
   
   .btn-facilities:hover {
-    background: linear-gradient(to right, #2f5f96, #567cb5);
+    background: linear-gradient(to right, #0b2e5b, #143f6d);
   }
   
   .btn-events:hover {
-    background: linear-gradient(to right, #193f72, #30538d);
+     background: linear-gradient(to right, #0b2e5b, #143f6d);
   }
   
   .btn-issues:hover {
@@ -244,12 +245,24 @@
     text-align: center;
     margin-top: 40px;
     padding: 25px;
-    color: #4a5568;
-    font-size: 15px;
-    border-top: 1px solid #e2e8f0;
-    background-color: rgba(98, 125, 165, 0.1);
-    border-radius: 10px;
+    color: #546e7a;
+    font-size: 14px;
+    position: relative;
   }
+  
+  .footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 25%;
+    width: 50%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #b0c7e1, transparent);
+  }
+  .header::after {
+    background: none;
+  }
+  
   
   @media (max-width: 768px) {
     .card-grid {

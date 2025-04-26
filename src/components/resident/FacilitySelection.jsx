@@ -36,7 +36,7 @@ export default function FacilitiesPage() {
           <section className="card-icon"><FaSwimmer /></section>
           <h2>Swimming Pool</h2>
           <p>Cool off and relax in our clean, well-maintained swimming pool.</p>
-          <button className="btn btn-facilities" onClick={() => {sessionStorage.setItem("facility", "pool");handleNavigate("/calendar")}
+          <button className="btn btn-issues" onClick={() => {sessionStorage.setItem("facility", "pool");handleNavigate("/calendar")}
           }>Book Now</button>
         </article>
 
@@ -44,7 +44,7 @@ export default function FacilitiesPage() {
           <section className="card-icon"><FaDumbbell /></section>
           <h2>Gym</h2>
           <p>Stay fit and healthy with our state-of-the-art gym equipment.</p>
-          <button className="btn btn-facilities" onClick={() => {sessionStorage.setItem("facility", "gym");handleNavigate("/calendar")}
+          <button className="btn btn-issues" onClick={() => {sessionStorage.setItem("facility", "gym");handleNavigate("/calendar")}
           }>Book Now</button>
         </article>
 
@@ -52,14 +52,14 @@ export default function FacilitiesPage() {
           <section className="card-icon"><FaFutbol /></section>
           <h2>Soccer Field</h2>
           <p>Enjoy a friendly game or practice your skills on the soccer field.</p>
-          <button className="btn btn-facilities" onClick={() =>{sessionStorage.setItem("facility", "soccer"); handleNavigate("/calendar")}}>Book Now</button>
+          <button className="btn btn-issues" onClick={() =>{sessionStorage.setItem("facility", "soccer"); handleNavigate("/calendar")}}>Book Now</button>
         </article>
 
         <article className="card card-basketball">
           <section className="card-icon"><FaBasketballBall /></section>
           <h2>Basketball Court</h2>
           <p>Shoot some hoops or challenge friends to a game of basketball.</p>
-          <button className="btn btn-facilities" onClick={() => {sessionStorage.setItem("facility", "basketball");handleNavigate("/calendar")}}>Book Now</button>
+          <button className="btn btn-issues" onClick={() => {sessionStorage.setItem("facility", "basketball");handleNavigate("/calendar")}}>Book Now</button>
         </article>
 
       </section>
