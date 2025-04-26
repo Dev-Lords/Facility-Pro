@@ -1,8 +1,8 @@
 // src/services/UserService.js
 
-import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase.config.js";
 import { User } from "../models/user.js"; // Adjust the import path as necessary
+import { collection, getDocs, deleteDoc,updateDoc, doc , query, orderBy,addDoc,getDoc,setDoc}from "firebase/firestore";
 
 // Create or update user in Firestore
 export const saveUser = async (userData) => {
@@ -85,4 +85,56 @@ export const updateUserType = async (uid, newUserType) => {
     console.error("Error updating user type:", error);
     throw error;
   }
+};
+
+
+//Admin-functions:
+
+//onboard member
+export const createAccountRequest = async (formData) => {
+  const url = 'https://us-central1-facilty-pro.cloudfunctions.net/api/create-account';
+
+  const payload = {
+    email: formData.email,
+    password: formData.password,
+    displayName: formData.name,
+    user_type: formData.user_type
+  };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    console.error("Error response:", errorResponse);
+    throw new Error(errorResponse.error);
+  }
+
+  return true;
+};
+
+
+//delete user
+export const deleteAccount = async (uid) => {
+  console.log("deleteAccount function hit", uid);
+  const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/delete-account/${uid}`;
+
+
+
+  const response = await fetch(url, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    console.error("Delete account error:", errorResponse);
+    throw new Error(errorResponse.error);
+  }
+
+  return true;
 };

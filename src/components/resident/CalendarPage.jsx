@@ -49,6 +49,8 @@ const CalendarPage = () => {
 
   const [popupVisible, setPopupVisible] = useState(false);
   const [confirmationVisible, setConfirmationVisible] = useState(false);
+  const [bookingSubmittedVisible, setBookingSubmittedVisible] = useState(false);
+
 
   const [availableSlots, setAvailableSlots] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -137,6 +139,8 @@ const CalendarPage = () => {
       await createBooking(sessionStorage.getItem("facility"),selectedDate,chosenSlots,localStorage.getItem("userID"));
       const updatedSlots = await fetchAvailableNumericSlots(sessionStorage.getItem("facility"), selectedDate);
       setAvailableSlots(convertToTimeSlots(updatedSlots));
+      setBookingSubmittedVisible(true); 
+      setTimeout(() => setBookingSubmittedVisible(false), 5000); 
       console.log("Booking successful!");
     } catch (error) {
       console.error("Error creating booking:", error);
@@ -154,6 +158,7 @@ const CalendarPage = () => {
   };
 
   const handleDateClick = (dateString) => {
+    setBookingError("");
     setSelectedDate(dateString);
     setPopupVisible(true);
     sessionStorage.setItem('showPopup', 'true');
@@ -222,7 +227,7 @@ const CalendarPage = () => {
   ];
 
   return (
-    <article className={`calendar-container ${(popupVisible || confirmationVisible) ? 'blurred' : ''}`}>
+    <article className={`calendar-container ${(popupVisible || confirmationVisible)||bookingSubmittedVisible ? 'blurred' : ''}`}>
       <header className="calendar-header">
         <h1>Facility Booking Calendar</h1>
         <p>Select a date to book your preferred facility</p>
@@ -277,10 +282,13 @@ const CalendarPage = () => {
           )}
           {submitError && (
   <p style={{ color: "red", marginTop: "1rem" }}>{submitError}</p>
-)}
+)}           <section>
+        <section className="popupButton">
           <button onClick={() => setPopupVisible(false)}>Close</button>
-          <button onClick={handleSubmit}
+          <button  onClick={handleSubmit}
           >Submit</button>
+          </section>
+          </section>
         </section>
       )}
 
@@ -295,14 +303,26 @@ const CalendarPage = () => {
           </ul>
           {bookingError && (
               <p style={{ color: "red", marginTop: "-0.5rem" }}>{bookingError}</p>)}
-          <button onClick={() => {
-            setConfirmationVisible(false)
-          }}>Close</button>
-          <button onClick={() =>{ 
-
-          handleConfirm()}}>Confirm</button>
+                 <section className="popupButton">
+                  <button  onClick={() => {
+                    setConfirmationVisible(false)
+                  }}>Close</button>
+                  <button onClick={() =>{ 
+                    handleConfirm()}}>Confirm</button>
+          </section>
         </section>
       )}
+      {bookingSubmittedVisible && (
+        <section className="popup2">
+          <h2>Booking Submitted</h2>
+          <p>Your booking has been submitted successfully.</p>
+          <p>We'll review it and send confirmation via email.</p>
+          <button onClick={() => {
+            setBookingSubmittedVisible(false);
+          }}>Close</button>
+        </section>
+      )}
+
     </article>
   );
 };

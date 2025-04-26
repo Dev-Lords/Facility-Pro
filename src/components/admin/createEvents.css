@@ -1,0 +1,43 @@
+/* Make date and time input icons visible */
+/* Target the calendar icon in date inputs */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5); /* Makes the icon darker */
+    opacity: 0.8;
+    cursor: pointer;
+  }
+  
+  /* Target the clock icon in time inputs */
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5); /* Makes the icon darker */
+    opacity: 0.8;
+    cursor: pointer;
+  }
+  
+  /* Ensure icons have enough contrast */
+  .issue-form input[type="date"],
+  .issue-form input[type="time"] {
+    color: #003366; /* Ensure text is dark */
+    background-color: #f6f9fc; /* Light background */
+    padding-right: 30px; /* Make space for the icon */
+    position: relative;
+  }
+  
+  /* If you're using custom icons via a positioning technique */
+  .date-input-container,
+  .time-input-container {
+    position: relative;
+  }
+  
+  .input-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #003366; /* Dark blue icon color */
+    pointer-events: none; /* Let clicks pass through to the input */
+  }
+  
+  /* If you're using React Icons like FaCalendarAlt and FaClock */
+  .form-fields svg {
+    color: #003366; /* Make React Icons visible */
+  }

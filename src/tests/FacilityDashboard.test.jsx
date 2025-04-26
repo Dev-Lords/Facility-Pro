@@ -84,8 +84,12 @@ describe('FacilityStaffDashboard Component', () => {
     );
     
     expect(screen.getByText('🔧 Maintenance Reports')).toBeInTheDocument();
+<<<<<<< HEAD
     expect(screen.getByText('📋 Facility Status')).toBeInTheDocument();
     expect(screen.getByText('📅 Booking Calendar')).toBeInTheDocument();
+=======
+
+>>>>>>> b53da402f491ea3a58daa2fd9642f58e4adde2d1
   });
 
   test('redirects to home when not authenticated', () => {
@@ -104,4 +108,8 @@ describe('FacilityStaffDashboard Component', () => {
     
     expect(screen.getByText('Redirected to: /')).toBeInTheDocument();
   });
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> b53da402f491ea3a58daa2fd9642f58e4adde2d1

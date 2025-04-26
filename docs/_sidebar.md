@@ -1,3 +1,5 @@
 * [Home](/)
-* [User Stories](UserStories.md)
-* [Sprint One Meetings](Meetings.md)
+* [Sprint One User Stories](SprintOneUserStories.md)
+* [Sprint Two User Stories](SprintTwoUserStories.md)
+* [Sprint One Meetings](SprintOneMeetings.md)
+* [Sprint Two Meetings](SprintTwoMeetings.md)
