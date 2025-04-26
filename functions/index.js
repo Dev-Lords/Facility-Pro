@@ -3,13 +3,17 @@ const admin = require('firebase-admin');
 const express = require('express');
 const cors = require('cors');
 const moment = require('moment'); 
+const nodemailer = require('nodemailer');
+const { onDocumentCreated } = require('firebase-functions/firestore');
+
+
 
 admin.initializeApp();
 
 const app = express();
 app.use(cors({
     origin: [
-      'http://localhost:5174', 
+      'http://localhost:5173', 
       'https://purple-flower-02549321e.6.azurestaticapps.net'
     ]
 }));
@@ -86,5 +90,84 @@ app.delete('/delete-account/:uid',async(req,res)=>{
 
 }
 )
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'facility.pro.online@gmail.com', 
+    pass: 'bqrcwjaxmzljiaqx' 
+  }
+});
+exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (event) => {
+  const snap = event.data;
+  const eventData = snap.data();
+    const eventName = eventData.title;
+    const eventDate = eventData.date;
+    const eventDescription = eventData.description;
+    const eventLocation = eventData.location;
+    const startTime = eventData.startTime;
+    const endTime = eventData.endTime;
+    
+
+    try {
+     
+      const usersSnapshot = await admin.firestore()
+        .collection('users')
+        .where('user_type', '==', 'resident')
+        .get();
+
+      if (usersSnapshot.empty) {
+        console.log('No residents found');
+        return;
+      }
+
+    
+      const emailAddresses = [];
+      usersSnapshot.forEach(doc => {
+        const user = doc.data();
+        if (user.email) {
+          emailAddresses.push(user.email); 
+        }
+      });
+
+      if (emailAddresses.length === 0) {
+        console.log('No emails found');
+        return;
+      }
+
+      
+      const mailOptions = {
+        from: 'facility.pro.online@gmail.com', 
+        subject: `New Event: ${eventName}`,
+        bcc: emailAddresses.join(', '), 
+        html: `
+          <div style="font-family: Arial, sans-serif; color: #333; padding: 20px;">
+            <p style="font-size: 16px;">Dear Resident,</p>
+            
+            <p style="font-size: 16px;">You are invited to an upcoming event at the community facilities:</p>
+            
+            <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h2 style="color: #4CAF50; margin-top: 0;">${eventName}</h2>
+              <p><strong>Date:</strong> ${eventDate}</p>
+              <p><strong>Time:</strong> ${startTime} - ${endTime}</p>
+              <p><strong>Location:</strong> ${eventLocation}</p>
+              <p><strong>Details:</strong> ${eventDescription}</p>
+            </div>
+            
+            <p style="font-size: 14px;">We look forward to seeing you there!</p>
+            
+            <p style="font-size: 14px;">Best regards,<br>Facility Management Team</p>
+          </div>
+`
+
+      };
+
+      
+      await transporter.sendMail(mailOptions);
+      console.log('Email sent successfully to all residents');
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+  });
 
 exports.api = functions.https.onRequest(app); 

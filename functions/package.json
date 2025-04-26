@@ -12,14 +12,14 @@
     "node": "22"
   },
   "type": "commonjs",
-
   "main": "index.js",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "firebase-admin": "^12.7.0",
     "firebase-functions": "^6.3.2",
-    "moment": "^2.29.4"
+    "moment": "^2.29.4",
+    "nodemailer": "^6.10.1"
   },
   "devDependencies": {
     "eslint-config-google": "^0.14.0",
