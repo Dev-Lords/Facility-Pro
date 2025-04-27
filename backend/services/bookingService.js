@@ -1,7 +1,7 @@
 import { getDocs, collection, doc, getDoc, query, where, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase.config.js";
 
-// Function to fetch available numeric slots
+
 export const fetchAvailableNumericSlots = async (facilityId, selectedDate) => {
   try {
     console.log("Function called with facilityId:", facilityId, "and selectedDate:", selectedDate);
@@ -16,19 +16,17 @@ export const fetchAvailableNumericSlots = async (facilityId, selectedDate) => {
       return [];
     }
     
-    // Get the first matching facility document
     const facilityDoc = facilityQuerySnapshot.docs[0];
     const facilityData = facilityDoc.data();
     const allSlots = facilityData.slots || [];
     console.log("All slots from facility:", allSlots);
 
-    // Make sure selectedDate is properly formatted to match "2024-04-18" format
     let formattedDate = selectedDate;
     if (selectedDate instanceof Date) {
       formattedDate = selectedDate.toISOString().split('T')[0]; // format: "YYYY-MM-DD"
     }
     console.log("Formatted date for query:", formattedDate);
-    // Query for bookings on the given date and facility
+    
     const bookingsRef = collection(db, "bookings");
     const q = query(bookingsRef,where("facilityID", "==", facilityId),where("date", "==", formattedDate));
     
@@ -117,7 +115,7 @@ export const createBooking = async (facilityId, selectedDate, slotsToBook, userI
         throw new Error("You cannot book more than 3 slots for one facility in one day.");
       }
 
-      // Combine and remove duplicates
+      
       const updatedSlots = Array.from(new Set([...existingSlots, ...slotsToBook.map(Number)]));
       
       await setDoc(doc(db, "bookings", bookingDoc.id), {
@@ -137,8 +135,10 @@ export const createBooking = async (facilityId, selectedDate, slotsToBook, userI
         facilityID: facilityId,
         date: formattedDate,
         bookedSlots: slotsToBook.map(Number),
-        bookingID: "", // Optional
-        userID: userId
+        bookingID: "", 
+        userID: userId,
+        status: "pending"
+      
       };
 
       const newDocRef = doc(collection(db, "bookings"));
