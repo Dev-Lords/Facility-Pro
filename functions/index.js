@@ -66,6 +66,8 @@ app.post('/create-account', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
 app.delete('/delete-account/:uid',async(req,res)=>{
   const {uid} = req.params;
   if (!uid) {
@@ -98,6 +100,7 @@ const transporter = nodemailer.createTransport({
     pass: 'bqrcwjaxmzljiaqx' 
   }
 });
+
 exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (event) => {
   const snap = event.data;
   const eventData = snap.data();

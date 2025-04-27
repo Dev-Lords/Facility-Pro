@@ -187,3 +187,46 @@ export const validBooking = async (facilityId, selectedDate, slotsToBook, userId
     return "error creating booking";
   }
 }
+
+
+//Admin functions
+export const fetchBookings = async () => {
+  try {
+    const bookingsCollection = collection(db, "bookings");
+    const bookingsSnapshot = await getDocs(bookingsCollection);
+    const bookingsList = bookingsSnapshot.docs.map(doc => {
+      const data = doc.data();
+      console.log("Raw Firebase doc:", doc.id, data); // Log raw data
+      return {
+        bookingID: doc.id,
+        ...data
+      };
+    });
+    console.log("Processed issues list:", bookingsList); // Log processed list
+    return bookingsList;
+  } catch (error) {
+    console.error("Error fetching issues:", error);
+    return [];
+  }
+};
+
+
+export const UpdateBooking = async (bookingID, updatedIssue) => {
+  if (!bookingID) {
+    throw new Error("No booking ID provided");
+  }
+  
+  try {
+    console.log("UpdateIssue called with ID:", bookingID);
+    console.log("UpdateIssue data:", updatedIssue);
+    
+    const bookRef = doc(db, "bookings", bookingID);
+    await setDoc(bookRef, updatedIssue, { merge: true });
+    
+    console.log("Issue updated successfully in Firebase:", bookingID);
+    return true;
+  } catch (error) {
+    console.error("Error updating booking in Firebase:", error);
+    throw error; // Re-throw to handle in the component
+  }
+};
