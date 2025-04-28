@@ -115,30 +115,16 @@
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
-<<<<<<< HEAD
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
 <a name='L55'></a><a href='#L55'>55</a>
 <a name='L56'></a><a href='#L56'>56</a>
 <a name='L57'></a><a href='#L57'>57</a>
 <a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a>
-<a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-=======
-<a name='L53'></a><a href='#L53'>53</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
->>>>>>> b53da402f491ea3a58daa2fd9642f58e4adde2d1
+<a name='L59'></a><a href='#L59'>59</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -176,6 +162,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -190,32 +177,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<<<<<<< HEAD
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-=======
->>>>>>> b53da402f491ea3a58daa2fd9642f58e4adde2d1
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
 import "./FacilityStaffDashboard.css";
 import { useNavigate } from "react-router-dom";
 import { Navigate } from 'react-router-dom';
+import {  FaUserTie } from 'react-icons/fa6';
+import {  FaFileAlt } from 'react-icons/fa';
+&nbsp;
 &nbsp;
 export default function FacilityStaffDashboard() {
   const navigate = useNavigate();
@@ -233,57 +203,38 @@ export default function FacilityStaffDashboard() {
   	}
 &nbsp;
   return (
-    
-    &lt;&gt;
-      &lt;header className="facility-header"&gt;
-        &lt;h1 className="facility-title"&gt;🏢 Welcome, Facility Staff!&lt;/h1&gt;
-        &lt;p className="facility-subtitle"&gt;
-          Manage maintenance and bookings with ease
-        &lt;/p&gt;
+    &lt;main className="container"&gt;
+      &lt;header className="header"&gt;
+        &lt;section className="header-content"&gt;
+          &lt;section className="staff-icon"&gt;&lt; FaUserTie/&gt;&lt;/section&gt;
+          &lt;section&gt;
+            &lt;h1&gt;Welcome, Facility Staff!&lt;/h1&gt;
+            &lt;p&gt;Manage maintenance and bookings with ease&lt;/p&gt;
+          &lt;/section&gt;
+        &lt;/section&gt;
       &lt;/header&gt;
 &nbsp;
       &lt;section className="card-grid"&gt;
-        &lt;article className="facility-card card-maintenance"&gt;
-          &lt;h2 className="card-title"&gt;🔧 Maintenance Reports&lt;/h2&gt;
-          &lt;p className="card-description"&gt;
-            View and manage all facility maintenance requests and reports.
-          &lt;/p&gt;
+        &lt;article className="card card-facilities"&gt;
+           &lt;section className="card-icon"&gt;&lt;FaFileAlt /&gt;&lt;/section&gt;
+          &lt;h2&gt;Maintenance Reports&lt;/h2&gt;
+          &lt;p&gt; Manage all facility maintenance requests and reports.&lt;/p&gt;
           &lt;button
-            className="facility-btn"
+            className="btn btn-facilities"
             onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate("/staff-issues")}</span>
+            role="button"
+            aria-label="View maintenance reports"
           &gt;
             View Reports
           &lt;/button&gt;
         &lt;/article&gt;
 &nbsp;
-<<<<<<< HEAD
-        &lt;article className="facility-card card-availability"&gt;
-          &lt;h2 className="card-title"&gt;📋 Facility Status&lt;/h2&gt;
-          &lt;p className="card-description"&gt;
-            Update the availability and status of various facility areas.
-          &lt;/p&gt;
-          &lt;a href="availability.html" className="facility-btn"&gt;
-            Update Status
-          &lt;/a&gt;
-        &lt;/article&gt;
-&nbsp;
-        &lt;article className="facility-card card-bookings"&gt;
-          &lt;h2 className="card-title"&gt;📅 Booking Calendar&lt;/h2&gt;
-          &lt;p className="card-description"&gt;
-            View and manage all current and upcoming facility bookings.
-          &lt;/p&gt;
-          &lt;a href="bookings.html" className="facility-btn"&gt;
-            View Bookings
-          &lt;/a&gt;
-        &lt;/article&gt;
-=======
->>>>>>> b53da402f491ea3a58daa2fd9642f58e4adde2d1
       &lt;/section&gt;
 &nbsp;
-      &lt;footer className="facility-footer"&gt;
+      &lt;footer className="footer"&gt;
         &lt;p&gt;Facility Management System • Staff Portal • Version 1.0.0&lt;/p&gt;
       &lt;/footer&gt;
-    &lt;/&gt;
+      &lt;/main&gt;
   );
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -293,11 +244,7 @@ export default function FacilityStaffDashboard() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-<<<<<<< HEAD
-                at 2025-04-20T04:59:51.188Z
-=======
-                at 2025-04-21T15:38:04.686Z
->>>>>>> b53da402f491ea3a58daa2fd9642f58e4adde2d1
+                at 2025-04-28T07:15:45.834Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

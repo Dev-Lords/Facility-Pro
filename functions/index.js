@@ -5,6 +5,7 @@ const cors = require('cors');
 const moment = require('moment'); 
 const nodemailer = require('nodemailer');
 const { onDocumentCreated } = require('firebase-functions/firestore');
+const { onDocumentUpdated } = require('firebase-functions/firestore');
 
 
 
@@ -172,5 +173,127 @@ exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (eve
       console.error('Error sending email:', error);
     }
   });
+
+
+  /* Cloud Function that triggers when an issue is updated in Firestore
+  * Sends email notification to the issue owner with updated status and priority
+  */
+ exports.sendIssueUpdateNotification = onDocumentUpdated('issues/{issueId}', async (issue) => {
+   // Get the data before and after the update
+   const beforeData = issue.data.before.data();
+   const afterData = issue.data.after.data();
+   const issueId = issue.params.issueId;
+
+   console.log(`Function triggered for issue: ${issue.params.issueId}`);
+
+   
+   // Skip if this is a new document creation (not an update)
+   if (!beforeData) {
+     console.log('This is a new issue creation, not an update');
+     return;
+   }
+   
+   // Check if status or priority changed
+   const statusChanged = beforeData.issueStatus !== afterData.issueStatus;
+   const priorityChanged = beforeData.priority !== afterData.priority;
+   
+   // Only proceed if status or priority changed
+   if (!statusChanged && !priorityChanged) {
+     console.log('No relevant changes to notify');
+     return;
+   }
+   
+   try {
+     // Get the user ID associated with the issue - use reporter or assignedTo
+     const userId = afterData.reporter || afterData.assignedTo;
+     
+     if (!userId) {
+       console.log('No user ID associated with this issue');
+       return;
+     }
+     
+     // Get the user's email from Firestore
+     const userDoc = await admin.firestore().collection('users').doc(userId).get();
+     
+     if (!userDoc.exists) {
+       console.log(`User document with ID ${userId} not found`);
+       return;
+     }
+     
+     const userEmail = userDoc.data().email;
+     
+     if (!userEmail) {
+       console.log('No email found for the user');
+       return;
+     }
+     
+     // Prepare email content
+     const mailOptions = {
+       from: 'facility.pro.online@gmail.com',
+       to: userEmail,
+       subject: `Issue Update: ${afterData.title || `Issue #${issueId}`}`,
+       html: `
+         <div style="font-family: Arial, sans-serif; color: #333; padding: 20px;">
+           <p style="font-size: 16px;">Dear User,</p>
+           
+           <p style="font-size: 16px;">Your issue has been updated:</p>
+           
+           <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+             <h2 style="color: #4A6FA5; margin-top: 0;">${afterData.issueTitle || `Issue #${issueId}`}</h2>
+             
+             ${statusChanged ? `
+             <p><strong>Status:</strong> 
+               <span style="color: #666;">${beforeData.issueStatus}</span> → 
+               <span style="font-weight: bold; color: #1a73e8;">${afterData.issueStatus}</span>
+             </p>` : ''}
+             
+             ${priorityChanged ? `
+             <p><strong>Priority:</strong> 
+               <span style="color: #666;">${beforeData.priority}</span> → 
+               <span style="font-weight: bold; color: ${getPriorityColor(afterData.priority)};">${afterData.priority}</span>
+             </p>` : ''}
+             
+             <p><strong>Description:</strong> ${afterData.issueDescription || 'No description provided'}</p>
+             
+             ${afterData.location ? `<p><strong>Location:</strong> ${afterData.location}</p>` : ''}
+             ${afterData.feedback ? `<p><strong>Feedback:</strong> ${afterData.feedback}</p>` : ''}
+             ${afterData.category ? `<p><strong>Category:</strong> ${afterData.category}</p>` : ''}
+           </div>
+           
+           <p style="font-size: 14px;">You can review this issue in your Facility Pro dashboard.</p>
+           
+           <p style="font-size: 14px;">Best regards,<br>Facility Management Team</p>
+         </div>
+       `
+     };
+     
+     // Send the email
+     await transporter.sendMail(mailOptions);
+     console.log(`Issue update notification sent to ${userEmail}`);
+     
+   } catch (error) {
+     console.error('Error sending issue update notification:', error);
+   }
+ });
+ 
+ /**
+  * Helper function to get color for priority level in email
+  */
+ function getPriorityColor(priority) {
+   if (!priority) return '#777777';
+   
+   const priorityLower = priority.toLowerCase();
+   
+   if (priorityLower.includes('high') || priorityLower.includes('urgent')) {
+     return '#d93025'; // Red for high/urgent
+   } else if (priorityLower.includes('medium')) {
+     return '#f9ab00'; // Orange/yellow for medium
+   } else if (priorityLower.includes('low')) {
+     return '#1e8e3e'; // Green for low
+   } else {
+     return '#777777'; // Gray default
+   }
+ }
+  
 
 exports.api = functions.https.onRequest(app); 

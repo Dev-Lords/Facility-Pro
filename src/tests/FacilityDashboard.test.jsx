@@ -53,7 +53,7 @@ describe('FacilityStaffDashboard Component', () => {
   beforeEach(() => {
     mockNavigate.mockClear();
   });
-
+  
   test('renders the welcome header when authenticated', () => {
     // Make sure Navigate component from react-router-dom doesn't redirect
     const { Navigate } = require('react-router-dom');
@@ -68,11 +68,12 @@ describe('FacilityStaffDashboard Component', () => {
     // Debug to see what's being rendered
     console.log(screen.debug());
     
-    expect(screen.getByText('🏢 Welcome, Facility Staff!')).toBeInTheDocument();
+    // Check for header text without emojis
+    expect(screen.getByText('Welcome, Facility Staff!')).toBeInTheDocument();
     expect(screen.getByText('Manage maintenance and bookings with ease')).toBeInTheDocument();
   });
-
-  test('renders all three facility cards when authenticated', () => {
+  
+  test('renders all facility cards when authenticated', () => {
     // Make sure Navigate component doesn't redirect
     const { Navigate } = require('react-router-dom');
     Navigate.mockImplementation(({ children }) => children || null);
@@ -83,15 +84,15 @@ describe('FacilityStaffDashboard Component', () => {
       </MemoryRouter>
     );
     
-    expect(screen.getByText('🔧 Maintenance Reports')).toBeInTheDocument();
-<<<<<<< HEAD
-    expect(screen.getByText('📋 Facility Status')).toBeInTheDocument();
-    expect(screen.getByText('📅 Booking Calendar')).toBeInTheDocument();
-=======
-
->>>>>>> b53da402f491ea3a58daa2fd9642f58e4adde2d1
+    // Look for card title without emoji
+    expect(screen.getByText('Maintenance Reports')).toBeInTheDocument();
+    expect(screen.getByText('Manage all facility maintenance requests and reports.')).toBeInTheDocument();
+    
+    // Check for the button using text content
+    const viewReportsButton = screen.getByText('View Reports');
+    expect(viewReportsButton).toBeInTheDocument();
   });
-
+  
   test('redirects to home when not authenticated', () => {
     // First clear localStorage mock
     localStorageMock.getItem.mockImplementation(() => null);
@@ -108,8 +109,6 @@ describe('FacilityStaffDashboard Component', () => {
     
     expect(screen.getByText('Redirected to: /')).toBeInTheDocument();
   });
-<<<<<<< HEAD
+  
+  
 });
-=======
-});
->>>>>>> b53da402f491ea3a58daa2fd9642f58e4adde2d1
