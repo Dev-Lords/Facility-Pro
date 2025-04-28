@@ -211,22 +211,21 @@ export const fetchBookings = async () => {
 };
 
 
-export const UpdateBooking = async (bookingID, updatedIssue) => {
+export const UpdateBooking = async (bookingID, newStatus) => {
+
   if (!bookingID) {
     throw new Error("No booking ID provided");
   }
-  
+
   try {
-    console.log("UpdateIssue called with ID:", bookingID);
-    console.log("UpdateIssue data:", updatedIssue);
-    
-    const bookRef = doc(db, "bookings", bookingID);
-    await setDoc(bookRef, updatedIssue, { merge: true });
-    
-    console.log("Issue updated successfully in Firebase:", bookingID);
-    return true;
+    const bookingRef = doc(db, "bookings", bookingID);
+    await setDoc(bookingRef, {status: newStatus,}, { merge: true });
+
+    console.log("Booking reviewed successfully:", bookingID);
+    return {success: true};
+
   } catch (error) {
-    console.error("Error updating booking in Firebase:", error);
-    throw error; // Re-throw to handle in the component
+    console.error("Error updating booking status:", error);
+    throw error;
   }
 };

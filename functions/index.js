@@ -294,6 +294,78 @@ exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (eve
      return '#777777'; // Gray default
    }
  }
+
+
+
+//sending booking notification
+
+ exports.sendBookingNotification = onDocumentUpdated('bookings/{bookingID}', async (booking) => {
+    const before = booking.data.before.data();
+    const after = booking.data.after.data();
+
+    // Log to confirm if the function is triggered
+    console.log('Function triggered!');
+
+    // Only trigger when status has changed
+    if (before.status === after.status) {
+      console.log('Status did not change. No email sent.');
+      return;
+    }
+    const Booking = after;
+    const userId = after.userID;
+    const checkInCode = after.bookingID.slice(0, 3); 
+    const status=after.status; 
+
+    try {
+
+      const userSnap = await admin.firestore().collection('users').doc(userId).get();
+      if (!userSnap.exists) {
+        console.error('User not found! No email sent.');
+        return;
+      }
+
+      const userEmail = userSnap.data().email;
+
+      let emailBody = `
+        <p style="font-size: 16px;">Dear Resident,</p>
+        <p style="font-size: 16px;">Your booking has been <strong style="text-transform: capitalize;">${Booking.status}</strong>.</p>
+        <section style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <p><strong>Facility:</strong> ${Booking.facilityID}</p>
+          <p><strong>Date:</strong> ${Booking.date}</p>
+        </section>
+      `;
+
+      if (status.toLowerCase() === 'approved') {
+        emailBody += `
+          <section style="background-color: #e0f7e9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #4CAF50; margin-top: 0;">Check-in Code</h3>
+            <p style="font-size: 16px;">${checkInCode}</p>
+          </section>
+          <p style="font-size: 14px;">Please present this code when you arrive at the facility.</p>
+        `;
+      } else if (status.toLowerCase() === 'declined') {
+        emailBody += `<p style="font-size: 14px;">Unfortunately, your booking could not be accommodated at this time.</p>`;
+      }
+
+      emailBody += `
+        <p style="font-size: 14px;">Thank you for using our community facilities!</p>
+        <p style="font-size: 14px;">Best regards,<br>Facility Management Team</p>
+      `;
+
+      const mailOptions = {
+        from: 'facility.pro.online@gmail.com',
+        to: userEmail,
+        subject: `Booking ${status.charAt(0).toUpperCase() + status.slice(1)}!`,
+        html: `<section style="font-family: Arial, sans-serif; color: #333; padding: 20px;">${emailBody}</section>`
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log('Booking status email sent successfully ✅');
+    } 
+    catch (error) {
+      console.error('Error sending booking status email ❌:', error);
+    }
+  });
   
 
 exports.api = functions.https.onRequest(app); 

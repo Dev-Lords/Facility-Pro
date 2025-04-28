@@ -18,6 +18,7 @@ import IssueMenu from "./components/resident/issueMenu.jsx";
 import IssueHistory from "./components/resident/IssueHistory.jsx";
 import ManageUsers from "./components/admin/ManageUsers.jsx";
 import CreateEvents from "./components/admin/CreateEvent.jsx";
+import Bookings from "./components/admin/Bookings.jsx";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path ="/calendar" element={<CalenderPage/>}/>
         <Route path ="/manage-users" element={<ManageUsers/>}/>
         <Route path="/events" element={<CreateEvents />} />
+        <Route path="/bookings" element={<Bookings />} />
       </Routes>
     </Router>
   );
