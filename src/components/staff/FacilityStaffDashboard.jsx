@@ -41,6 +41,8 @@ export default function FacilityStaffDashboard() {
           <button
             className="btn btn-facilities"
             onClick={() => handleNavigate("/staff-issues")}
+            role="button"
+            aria-label="View maintenance reports"
           >
             View Reports
           </button>
