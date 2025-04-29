@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1745824545908" clover="3.2.0">
-  <project timestamp="1745824545908" name="All files">
-    <metrics statements="634" coveredstatements="542" conditionals="304" coveredconditionals="230" methods="169" coveredmethods="138" elements="1107" coveredelements="910" complexity="0" loc="634" ncloc="634" packages="5" files="18" classes="18"/>
+<coverage generated="1745892688612" clover="3.2.0">
+  <project timestamp="1745892688612" name="All files">
+    <metrics statements="695" coveredstatements="599" conditionals="352" coveredconditionals="272" methods="187" coveredmethods="155" elements="1234" coveredelements="1026" complexity="0" loc="695" ncloc="695" packages="5" files="19" classes="19"/>
     <package name="src">
       <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="App.jsx" path="C:\Users\rakhi\Facility-Pro\src\App.jsx">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="23" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
       </file>
       <file name="main.jsx" path="C:\Users\rakhi\Facility-Pro\src\main.jsx">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -152,7 +152,7 @@
       </file>
     </package>
     <package name="src.components.admin">
-      <metrics statements="167" coveredstatements="128" conditionals="76" coveredconditionals="52" methods="42" coveredmethods="31"/>
+      <metrics statements="228" coveredstatements="185" conditionals="124" coveredconditionals="94" methods="60" coveredmethods="48"/>
       <file name="AdminDashboard.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\admin\AdminDashboard.jsx">
         <metrics statements="13" coveredstatements="13" conditionals="4" coveredconditionals="4" methods="6" coveredmethods="6"/>
         <line num="7" count="6" type="stmt"/>
@@ -168,6 +168,70 @@
         <line num="44" count="1" type="stmt"/>
         <line num="51" count="1" type="stmt"/>
         <line num="58" count="1" type="stmt"/>
+      </file>
+      <file name="Bookings.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\admin\Bookings.jsx">
+        <metrics statements="61" coveredstatements="57" conditionals="48" coveredconditionals="42" methods="18" coveredmethods="17"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="9" count="34" type="stmt"/>
+        <line num="10" count="34" type="stmt"/>
+        <line num="11" count="34" type="stmt"/>
+        <line num="12" count="34" type="stmt"/>
+        <line num="13" count="34" type="stmt"/>
+        <line num="14" count="34" type="stmt"/>
+        <line num="15" count="34" type="stmt"/>
+        <line num="18" count="34" type="stmt"/>
+        <line num="19" count="12" type="stmt"/>
+        <line num="20" count="12" type="stmt"/>
+        <line num="21" count="12" type="stmt"/>
+        <line num="24" count="11" type="stmt"/>
+        <line num="25" count="11" type="stmt"/>
+        <line num="27" count="33" type="cond" truecount="1" falsecount="1"/>
+        <line num="28" count="33" type="stmt"/>
+        <line num="29" count="33" type="cond" truecount="1" falsecount="1"/>
+        <line num="30" count="33" type="stmt"/>
+        <line num="36" count="11" type="stmt"/>
+        <line num="37" count="11" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="41" count="12" type="stmt"/>
+        <line num="44" count="12" type="stmt"/>
+        <line num="48" count="34" type="stmt"/>
+        <line num="49" count="63" type="stmt"/>
+        <line num="50" count="63" type="cond" truecount="1" falsecount="1"/>
+        <line num="52" count="63" type="cond" truecount="2" falsecount="0"/>
+        <line num="54" count="63" type="cond" truecount="2" falsecount="0"/>
+        <line num="56" count="63" type="cond" truecount="2" falsecount="0"/>
+        <line num="59" count="63" type="stmt"/>
+        <line num="60" count="34" type="stmt"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="67" count="34" type="stmt"/>
+        <line num="70" count="3" type="cond" truecount="3" falsecount="1"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="75" count="3" type="stmt"/>
+        <line num="76" count="3" type="stmt"/>
+        <line num="77" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="81" count="3" type="stmt"/>
+        <line num="82" count="3" type="stmt"/>
+        <line num="83" count="3" type="stmt"/>
+        <line num="85" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="86" count="2" type="stmt"/>
+        <line num="88" count="1" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="93" count="3" type="stmt"/>
+        <line num="98" count="34" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="113" count="3" type="stmt"/>
+        <line num="131" count="4" type="stmt"/>
+        <line num="135" count="1" type="stmt"/>
+        <line num="136" count="1" type="stmt"/>
+        <line num="167" count="54" type="cond" truecount="1" falsecount="1"/>
+        <line num="173" count="108" type="stmt"/>
+        <line num="174" count="108" type="stmt"/>
+        <line num="175" count="108" type="cond" truecount="2" falsecount="0"/>
+        <line num="176" count="108" type="cond" truecount="2" falsecount="0"/>
+        <line num="177" count="108" type="stmt"/>
+        <line num="187" count="2" type="stmt"/>
+        <line num="198" count="1" type="stmt"/>
       </file>
       <file name="CreateEvent.jsx" path="C:\Users\rakhi\Facility-Pro\src\components\admin\CreateEvent.jsx">
         <metrics statements="58" coveredstatements="48" conditionals="30" coveredconditionals="16" methods="6" coveredmethods="5"/>
