@@ -19,6 +19,8 @@ import IssueHistory from "./components/resident/IssueHistory.jsx";
 import ManageUsers from "./components/admin/ManageUsers.jsx";
 import CreateEvents from "./components/admin/CreateEvent.jsx";
 import Bookings from "./components/admin/Bookings.jsx";
+import ReportsDashboard from "./components/admin/GenerateReports.jsx";
+
 
 function App() {
   return (
@@ -41,6 +43,7 @@ function App() {
         <Route path ="/manage-users" element={<ManageUsers/>}/>
         <Route path="/events" element={<CreateEvents />} />
         <Route path="/bookings" element={<Bookings />} />
+        <Route path="/reports" element={<ReportsDashboard />} />
       </Routes>
     </Router>
   );
