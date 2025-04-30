@@ -18,6 +18,7 @@ import IssueMenu from "./components/resident/issueMenu.jsx";
 import IssueHistory from "./components/resident/IssueHistory.jsx";
 import ManageUsers from "./components/admin/ManageUsers.jsx";
 import CreateEvents from "./components/admin/CreateEvent.jsx";
+import UsageTrends from "./components/admin/UsageTrends.jsx";
 import Bookings from "./components/admin/Bookings.jsx";
 import ReportsDashboard from "./components/admin/GenerateReports.jsx";
 
@@ -42,6 +43,7 @@ function App() {
         <Route path ="/calendar" element={<CalenderPage/>}/>
         <Route path ="/manage-users" element={<ManageUsers/>}/>
         <Route path="/events" element={<CreateEvents />} />
+        <Route path="/usage-trends" element={<UsageTrends />} />
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/reports" element={<ReportsDashboard />} />
       </Routes>

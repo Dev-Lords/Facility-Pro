@@ -1,5 +1,6 @@
 import { getDocs, collection, doc, getDoc, query, where, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase.config.js";
+import { logFacilityEvent } from "./logService.js";
 
 
 export const fetchAvailableNumericSlots = async (facilityId, selectedDate) => {
@@ -146,6 +147,9 @@ export const createBooking = async (facilityId, selectedDate, slotsToBook, userI
 
       await setDoc(newDocRef, bookingData);
       console.log("New booking created successfully with ID:", newDocRef.id);
+      const details = bookingData;
+      logFacilityEvent("booking", facilityId, newDocRef.id, userId, details);
+      
     }
   } catch (error) {
     console.error("Error creating or updating booking:", error);
