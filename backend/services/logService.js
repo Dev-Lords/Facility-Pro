@@ -50,6 +50,8 @@ export const fetchFacilityEvents = async () => {
             };
         });
 
+        console.log("Logs fetched: ", logsList);
+
         return logsList;
     } catch (error){
         console.error("Error fetching logs: ", error);
@@ -186,5 +188,6 @@ export const fetchMonthSummaryStats = async () => {
         totalIssues: totalI, bookingsChange: bookingsChange, issuesChange: issuesChange
     };
     
+    console.log("Stats: ", stats);
     return stats;
 }
