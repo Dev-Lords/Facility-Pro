@@ -41,7 +41,7 @@ export default function AdminDashboard() {
           <section className="card-icon"><FaFileAlt /></section>
           <h2>Generate Reports</h2>
           <p>Create custom reports and export your data for analysis.</p>
-          <button className="btn reports-btn" onClick={() => handleNavigate("/usage-trends")}>Generate Reports</button>
+          <button className="btn reports-btn" onClick={() => handleNavigate("/reports")}>Generate Reports</button>
         </article>
 
         <article className="dashboard-card events-card">

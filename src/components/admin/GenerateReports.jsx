@@ -39,7 +39,7 @@ export default function ReportsDashboard() {
           <section className="card-icon"><FaChartBar /></section>
           <h2>Usage Trends by Facility</h2>
           <p>Track facility utilization patterns and identify peak usage times.</p>
-          <button className="btn reports-btn" onClick={() => handleNavigate("/usage-reports")}>Generate Report</button>
+          <button className="btn reports-btn" onClick={() => handleNavigate("/usage-trends")}>Generate Report</button>
         </article>
         
         <article className="dashboard-card reports-card">

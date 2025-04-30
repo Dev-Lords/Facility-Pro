@@ -102,7 +102,7 @@ describe('ReportsDashboard Component', () => {
     const usageTrendsSection = screen.getByText('Usage Trends by Facility').closest('article');
     const usageTrendsButton = within(usageTrendsSection).getByText('Generate Report');
     fireEvent.click(usageTrendsButton);
-    expect(navigateMock).toHaveBeenCalledWith("/usage-reports");
+    expect(navigateMock).toHaveBeenCalledWith("/usage-trends");
     
     // Test maintenance reports button - find it by its context with the heading
     const maintenanceSection = screen.getByText('Maintenance Reports').closest('article');
