@@ -3,6 +3,7 @@ import { createIssue } from "../../../backend/services/issuesService";
 import { FaTools, FaWrench } from "react-icons/fa";
 import { getAuth } from "firebase/auth";
 import "./logIssue.css";
+import { logFacilityEvent } from "../../../backend/services/logService";
 
 export default function LogIssueForm() {
   const [formData, setFormData] = useState({
@@ -76,7 +77,17 @@ export default function LogIssueForm() {
         fileInput.value = "";
       }
 
+      const details = {
+        issueTitle: formData.issueTitle,
+        issueDescription: formData.issueDescription,
+        location: formData.location,
+        priority: formData.priority,
+        category: formData.category
+      };
+
+      logFacilityEvent("issue", formData.location, issueId, currentUser.uid, details);
       setShowSuccessMessage(true);
+
     } catch (error) {
       console.error("Error submitting issue:", error);
       setError(error.message || "Error submitting issue");
