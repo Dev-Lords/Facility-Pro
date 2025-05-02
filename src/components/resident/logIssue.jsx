@@ -4,6 +4,8 @@ import { FaTools, FaWrench } from "react-icons/fa";
 import { getAuth } from "firebase/auth";
 import "./logIssue.css";
 import { logFacilityEvent } from "../../../backend/services/logService";
+import SearchableLocationDropdown from "./SearchableLocationDropdown";
+
 
 export default function LogIssueForm() {
   const [formData, setFormData] = useState({
@@ -12,6 +14,7 @@ export default function LogIssueForm() {
     location: "",
     priority: "medium",
     category: "",
+    relatedFacility: "",
     images: [],
   });
 
@@ -55,6 +58,7 @@ export default function LogIssueForm() {
         location: formData.location,
         priority: formData.priority,
         category: formData.category,
+        relatedFacility: formData.relatedFacility,
         images: formData.images,
         reporter: currentUser.uid,
         reportedAt: new Date().toISOString()
@@ -69,6 +73,7 @@ export default function LogIssueForm() {
         location: "",
         priority: "medium",
         category: "",
+        relatedFacility: "",
         images: [],
       });
 
@@ -82,7 +87,8 @@ export default function LogIssueForm() {
         issueDescription: formData.issueDescription,
         location: formData.location,
         priority: formData.priority,
-        category: formData.category
+        category: formData.category,
+        relatedFacility: formData.relatedFacility,
       };
 
       logFacilityEvent("issue", formData.location, issueId, currentUser.uid, details);
@@ -144,15 +150,16 @@ export default function LogIssueForm() {
             required
           />
 
-          <label htmlFor="location">Location</label>
-          <input
-            id="location"
-            name="location"
-            placeholder="e.g. Second Floor Restroom"
-            onChange={handleChange}
-            value={formData.location}
-            required
-          />
+         <SearchableLocationDropdown
+             value={formData.location}
+             onChange={(selectedLocation) =>
+            setFormData((prev) => ({ ...prev, location: selectedLocation }))
+          }
+        />
+
+
+
+        
 
           <label htmlFor="category">Category</label>
           <select
@@ -172,6 +179,24 @@ export default function LogIssueForm() {
             <option value="Garden & outdoor areas">Garden & outdoor areas</option>
             <option value="General">General</option>
           </select>
+          
+
+          <label htmlFor="relatedFacility">Related Facility</label>
+          <select
+            id="relatedFacility"
+            name="relatedFacility"
+            value={formData.relatedFacility}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Related Facility</option>
+            <option value="Soccer Field">Soccer Field</option>
+            <option value="Gym">Gym</option>
+            <option value="Pool">Pool</option>
+            <option value="Basketball Court">Basketball Court</option>
+            <option value="Not Applicable">Not Applicable</option>
+            </select>
+
 
           <label htmlFor="priority">Priority</label>
           <select
