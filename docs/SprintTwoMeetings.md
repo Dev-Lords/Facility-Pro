@@ -1,4 +1,4 @@
-# Sprint Two Meetings
+# Sprint Two (2) Meetings
 
 ## 14 April 2025
 
