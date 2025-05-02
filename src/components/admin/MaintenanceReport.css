@@ -1,25 +1,30 @@
+/* General Page Styles */
 .issues-page {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 1rem;
   background-color: #f7f9fc;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
+/* Section Layout */
 .main-section {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   gap: 1rem;
+  justify-content: space-between;
 }
 
 .left, .right {
-  flex: 1;
-  min-width: 300px;
+  flex: 1 1 48%;
+  min-width: 350px;
   padding: 1rem;
   border-radius: 12px;
   background: white;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.06);
 }
 
+/* Header */
 .usageTrends-header {
   background: linear-gradient(135deg, #0b2e5b 0%, #1e4e8c 50%, #3d6ea8 100%);
   color: white;
@@ -29,12 +34,14 @@
   text-align: center;
 }
 
+/* Filter Title */
 .Stats-Heading h2 {
   color: #0b2e5b;
   border-bottom: 2px solid #0b2e5b;
   margin-bottom: 1rem;
 }
 
+/* Filters */
 .filter-section {
   display: flex;
   flex-wrap: wrap;
@@ -55,6 +62,7 @@
   border: 1px solid #ccc;
 }
 
+/* Table */
 .table-section {
   overflow-x: auto;
   margin-bottom: 1rem;
@@ -82,6 +90,7 @@
   background-color: #f1f9ff;
 }
 
+/* Status/Priority Badges */
 .status-badge, .priority-badge {
   padding: 4px 8px;
   border-radius: 4px;
@@ -110,6 +119,7 @@
   background-color: #43a047;
 }
 
+/* Export Buttons */
 .Buttons {
   display: flex;
   gap: 1rem;
@@ -143,26 +153,44 @@
   background-color: #5e35b1;
 }
 
+/* Summary Cards */
 .summary-stats {
   display: flex;
-  flex-direction: column;
   gap: 1rem;
-  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
 }
 
-.stat-card {
-  background-color: #e3f2fd;
-  padding: 1.2rem;
+.summary-card {
+  flex: 1 1 30%;
+  background: linear-gradient(135deg, #1e4e8c, #3d6ea8);
+  color: white;
+  padding: 1.5rem;
   border-radius: 10px;
-  text-align: center;
+  font-size: 1.2rem;
   font-weight: bold;
-  color: #0b2e5b;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Pie Charts */
+.PieCharts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 1rem;
 }
 
 .chart-wrapper {
-  height: 250px;
-  margin-bottom: 1rem;
+  flex: 1 1 250px;
+  min-width: 250px;
+  max-width: 300px;
+  height: 350px;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
 }
+
 
   

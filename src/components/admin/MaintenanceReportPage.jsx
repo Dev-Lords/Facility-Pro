@@ -11,7 +11,6 @@ const MaintenanceReportPage = () => {
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [facilityFilter, setFacilityFilter] = useState("all");
   const statusChartRef = useRef(null);
-  const priorityChartRef = useRef(null);
   const availabilityChartRef = useRef(null);
   const chartInstances = useRef({});
 
@@ -32,53 +31,43 @@ const MaintenanceReportPage = () => {
     };
     cleanupCharts();
 
-    const createBarChart = (ref, labels, data, colors, label) => {
+    const createPieChart = (ref, title, labels, data, colors) => {
       const ctx = ref.current.getContext("2d");
-      const chart = new Chart(ctx, {
-        type: "bar",
+      return new Chart(ctx, {
+        type: "pie",
         data: {
           labels,
           datasets: [{
-            label,
             data,
             backgroundColor: colors,
-            barThickness: 25
+            borderWidth: 1,
           }]
         },
         options: {
-          plugins: { legend: { display: false } },
           responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 100,
-              ticks: {
-                stepSize: 20
+          plugins: {
+            legend: {
+              position: "bottom"
+            },
+            title: {
+              display: true,
+              text: title,
+              font: {
+                size: 16,
+                weight: "bold"
               }
             }
           }
         }
       });
-      return chart;
     };
 
-    chartInstances.current.status = createBarChart(
+    chartInstances.current.status = createPieChart(
       statusChartRef,
+      "Open vs Closed Issues",
       ["Open", "Closed"],
       [open, closed],
-      ["#1e4e8c", "#3d6ea8"],
-      "Issue Status"
-    );
-
-    const priorities = ["High", "Medium", "Low"];
-    const priorityData = priorities.map(p => issues.filter(i => i.priority === p).length);
-    chartInstances.current.priority = createBarChart(
-      priorityChartRef,
-      priorities,
-      priorityData,
-      ["#e53935", "#fb8c00", "#43a047"],
-      "Priority Distribution"
+      ["#1e4e8c", "#3d6ea8"]
     );
 
     const facilities = ["Gym", "Pool", "Soccer Field", "Basketball Court"];
@@ -88,24 +77,33 @@ const MaintenanceReportPage = () => {
       const openCount = related.filter(i => resolveStatus(i.issueStatus) === "Open").length;
       return Math.max(0, 100 - (openCount / related.length) * 100);
     });
-
-    chartInstances.current.availability = createBarChart(
+    chartInstances.current.availability = createPieChart(
       availabilityChartRef,
+      "Availability of Facilities Based on Maintenance Issues",
       facilities,
       availabilityData,
-      ["#4caf50", "#43a047", "#388e3c", "#2e7d32"],
-      "Facility Availability (%)"
+      ["#4caf50", "#43a047", "#388e3c", "#2e7d32"]
     );
   }, [issues]);
 
-  const handleExportCSV = () => exportToCsv(issues, "maintenance_report.csv");
+  const handleExportCSV = () => {
+    try {
+      exportToCsv(issues, "maintenance_report.csv");
+    } catch (err) {
+      console.error("CSV Export failed", err);
+    }
+  };
 
   const handleExportPDF = async () => {
-    const canvas = await html2canvas(document.getElementById("report-section"));
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF();
-    pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
-    pdf.save("maintenance_report.pdf");
+    try {
+      const canvas = await html2canvas(document.getElementById("report-section"));
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
+      pdf.save("maintenance_report.pdf");
+    } catch (err) {
+      console.error("PDF Export failed", err);
+    }
   };
 
   const { open, closed, total } = getStats(issues);
@@ -190,14 +188,15 @@ const MaintenanceReportPage = () => {
             <h2>Monthly Statistics</h2>
           </section>
           <section className="summary-stats">
-            <article className="stat-card">Open: {open}</article>
-            <article className="stat-card">Closed: {closed}</article>
-            <article className="stat-card">Total: {total}</article>
+            <article className="summary-card">Open: {open}</article>
+            <article className="summary-card">Closed: {closed}</article>
+            <article className="summary-card">Total: {total}</article>
           </section>
 
-          <figure className="chart-wrapper"><canvas ref={statusChartRef}></canvas></figure>
-          <figure className="chart-wrapper"><canvas ref={priorityChartRef}></canvas></figure>
-          <figure className="chart-wrapper"><canvas ref={availabilityChartRef}></canvas></figure>
+          <section className="PieCharts">
+            <figure className="chart-wrapper"><canvas ref={statusChartRef}></canvas></figure>
+            <figure className="chart-wrapper"><canvas ref={availabilityChartRef}></canvas></figure>
+          </section>
         </section>
       </section>
     </main>
@@ -205,3 +204,4 @@ const MaintenanceReportPage = () => {
 };
 
 export default MaintenanceReportPage;
+
