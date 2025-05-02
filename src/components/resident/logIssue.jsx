@@ -103,31 +103,31 @@ export default function LogIssueForm() {
   };
 
   return (
-    <div className="issue-form-container">
-      <div className="issue-form">
-        <div className="form-image">
-          <div className="form-message-bounce">
+    <main className="issue-form-container">
+      <section className="issue-form">
+        <figure className="form-image">
+          <blockquote className="form-message-bounce">
             <p>Your comfort is our priority — we're working swiftly to resolve all issues.</p>
-          </div>
-          <div className="form-icon-stack">
+          </blockquote>
+          <figure className="form-icon-stack">
             <FaTools className="form-icon" />
             <FaWrench className="form-icon" />
-          </div>
-        </div>
+          </figure>
+        </figure>
 
         <form className="form-fields" onSubmit={handleSubmit}>
           <h2>Log an Issue</h2>
           
           {currentUser && (
-            <div className="user-info">
+            <aside className="user-info">
               <p>Submitting as: {currentUser.displayName || currentUser.email || currentUser.uid}</p>
-            </div>
+            </aside>
           )}
           
           {error && (
-            <div className="error-message">
+            <article className="error-message">
               <p>{error}</p>
-            </div>
+            </article>
           )}
 
           <label htmlFor="issueTitle">Issue Title</label>
@@ -157,10 +157,6 @@ export default function LogIssueForm() {
           }
         />
 
-
-
-        
-
           <label htmlFor="category">Category</label>
           <select
             id="category"
@@ -180,7 +176,6 @@ export default function LogIssueForm() {
             <option value="General">General</option>
           </select>
           
-
           <label htmlFor="relatedFacility">Related Facility</label>
           <select
             id="relatedFacility"
@@ -196,7 +191,6 @@ export default function LogIssueForm() {
             <option value="Basketball Court">Basketball Court</option>
             <option value="Not Applicable">Not Applicable</option>
             </select>
-
 
           <label htmlFor="priority">Priority</label>
           <select
@@ -226,21 +220,21 @@ export default function LogIssueForm() {
           </button>
           
           {!currentUser && (
-            <p className="login-warning">You must be logged in to submit an issue</p>
+            <footer className="login-warning">You must be logged in to submit an issue</footer>
           )}
         </form>
-      </div>
+      </section>
 
       {showSuccessMessage && (
-        <div className="success-popup">
-          <div className="popup-content">
+        <dialog open className="success-popup">
+          <article className="popup-content">
             <h3>Your issue was submitted successfully!</h3>
             <p>Thank you for your feedback. We'll address your issue as soon as possible.</p>
             {submittedIssueId && <p>Issue ID: {submittedIssueId}</p>}
             <button onClick={() => setShowSuccessMessage(false)}>Close</button>
-          </div>
-        </div>
+          </article>
+        </dialog>
       )}
-    </div>
+    </main>
   );
 }
