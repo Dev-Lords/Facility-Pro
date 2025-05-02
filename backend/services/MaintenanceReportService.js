@@ -1,17 +1,20 @@
 import { fetchIssues as getFromDB } from "../services/issuesService";
 
 export const resolveStatus = (status) => {
-  return ["closed"].includes(status.toLowerCase()) ? "Closed" : "Open";
+  if (!status) return "Open";
+  const closedSet = ["closed"];
+  return closedSet.includes(status.toLowerCase()) ? "Closed" : "Open";
 };
 
-export const fetchFilteredIssues = async (statusFilter, facilityFilter) => {
+export const fetchFilteredIssues = async (statusFilter, facilityFilter, priorityFilter) => {
   const issues = await getFromDB();
 
-  return issues.filter((issue) => {
+  return issues.filter(issue => {
     const status = resolveStatus(issue.issueStatus);
     const statusMatch = statusFilter === "all" || status.toLowerCase() === statusFilter;
-    const facilityMatch = facilityFilter === "all" || issue.facility === facilityFilter;
-    return statusMatch && facilityMatch;
+    const facilityMatch = facilityFilter === "all" || issue.relatedFacility === facilityFilter;
+    const priorityMatch = priorityFilter === "all" || issue.priority === priorityFilter;
+    return statusMatch && facilityMatch && priorityMatch;
   });
 };
 
@@ -23,15 +26,27 @@ export const getStats = (filteredIssues) => {
 
 export function exportToCsv(data, filename) {
   if (!data.length) return;
-  const headers = Object.keys(data[0]);
-  const rows = data.map(row =>
-    headers.map(field => `"${(row[field] || "").toString().replace(/"/g, '""')}"`).join(",")
-  );
-  const csv = [headers.join(","), ...rows].join("\n");
 
-  const blob = new Blob([csv], { type: "text/csv" });
+  const headers = ["Title", "Status", "Priority", "Facility", "Location", "Reported"];
+  const rows = data.map(row => [
+    row.issueTitle,
+    resolveStatus(row.issueStatus),
+    row.priority,
+    row.relatedFacility,
+    row.location,
+    new Date(row.reportedAt).toLocaleDateString()
+  ]);
+
+  const csvContent = [headers, ...rows]
+    .map(row => row.map(field => `"${(field || "").toString().replace(/"/g, '""')}"`).join(","))
+    .join("\n");
+
+  const blob = new Blob([csvContent], { type: "text/csv" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = filename;
   a.click();
+  URL.revokeObjectURL(a.href);
 }
+
+
