@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@mui/x-data-grid": "^7.28.3",
-    "firebase": "^11.6.0",
+    "chart.js": "^4.4.9",
+    "firebase": "^11.6.1",
     "firebase-admin": "^13.2.0",
+    "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.501.0",

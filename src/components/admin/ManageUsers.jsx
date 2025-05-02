@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../../../backend/firebase/firebase.config";
-import {
-  updateUserType,
-  createAccountRequest,
-  deleteAccount,
-} from "../../../backend/services/userServices";
+//import { db } from "../../../backend/firebase/firebase.config";
+//import {
+  //updateUserType,
+  //createAccountRequest,
+  //deleteAccount,
+//} from "../../../backend/services/userServices";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import {
   Pencil,
