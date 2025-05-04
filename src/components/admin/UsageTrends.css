@@ -71,7 +71,7 @@
   width: 100%;
   height: auto;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(12, 36, 97, 0.05);
   padding: 35px 25px;
@@ -86,10 +86,10 @@
   box-shadow: 0 15px 35px rgba(12, 36, 97, 0.12);
 }
 
-.PieChart-Bookings, .PieChart-Issues {
+.PieChart-Bookings{
   display: flex;
   flex-direction: column;
-  width: 48%;
+  width: 100%;
   height: 100%;
   align-items: center;
   justify-content: flex-start;
@@ -103,7 +103,7 @@
   width: 100%;
   height: 350px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   margin-top: 10px;

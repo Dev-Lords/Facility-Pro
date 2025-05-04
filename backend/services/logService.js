@@ -172,8 +172,11 @@ export const fetchMonthSummaryStats = async () => {
 
     });
 
-    let bookingsChange = Math.round(((totalB - totalPrevB)/totalPrevB)*100) + "%";
-    let issuesChange = Math.round(((totalI - totalPrevI)/totalPrevI)*100) + "%";
+    let bookingsChange = Math.round(((totalB - totalPrevB)/totalPrevB))*100 + "%";
+    let issuesChange = Math.round(((totalI - totalPrevI)/totalPrevI))*100 + "%";
+
+    const bookingsChangeNum = totalB - totalPrevB;
+    const issuesChangeNum = totalI - totalPrevI;
 
     if(totalPrevB === 0){
         bookingsChange = "+" + totalB + " bookings";
@@ -185,7 +188,7 @@ export const fetchMonthSummaryStats = async () => {
 
     const stats = {
         bookingsPieChart: dataBookings, issuesPieChart: dataIssues, totalBookings: totalB, 
-        totalIssues: totalI, bookingsChange: bookingsChange, issuesChange: issuesChange
+        totalIssues: totalI, bookingsChange: bookingsChangeNum, issuesChange: issuesChangeNum
     };
     
     console.log("Stats: ", stats);

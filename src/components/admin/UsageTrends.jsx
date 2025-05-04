@@ -496,7 +496,7 @@ export default function UsageTrends() {
                     <section className="PieCharts">
                         <section className="PieChart-Bookings"> 
                             <section><h3>Proportion of Bookings by Facility</h3></section>
-                            <div id="bookings-chart" className="chart-container">
+                            <section id="bookings-chart" className="chart-container">
                                 <ResponsiveContainer width="100%" height={250}>
                                     <PieChart>
                                         <Pie
@@ -532,49 +532,7 @@ export default function UsageTrends() {
                                         />
                                     </PieChart>
                                 </ResponsiveContainer>
-                            
-                            </div>
-                        </section>
-                        <section className="PieChart-Issues">
-                            <section><h3>Proportion of Issue Reports by Facility</h3></section> 
-                            <div id="issues-chart" className="chart-container">
-                                <ResponsiveContainer width="100%" height={250}>
-                                    <PieChart>
-                                        <Pie
-                                            data={getChartData(issuesChart)}
-                                            dataKey="value"
-                                            cx="50%"
-                                            cy="50%"
-                                            outerRadius={80}
-                                            innerRadius={0}
-                                            labelLine={false}
-                                            label={renderCustomizedLabel}
-                                            isAnimationActive={true}
-                                            paddingAngle={2}
-                                        >
-                                            {getChartData(issuesChart).map((entry, index) => (
-                                                <Cell 
-                                                    key={`cell-${index}`} 
-                                                    fill={ISSUES_COLORS[index % ISSUES_COLORS.length]} 
-                                                    stroke="#fff"
-                                                    strokeWidth={1}
-                                                />
-                                            ))}
-                                        </Pie>
-                                        <Tooltip 
-                                            formatter={(value, name) => [`${value}%`, name]}
-                                            contentStyle={{ borderRadius: '5px' }}
-                                        />
-                                        <Legend 
-                                            layout="horizontal" 
-                                            verticalAlign="bottom" 
-                                            align="center"
-                                            iconType="circle"
-                                        />
-                                    </PieChart>
-                                </ResponsiveContainer>
-                             
-                            </div>
+                            </section>
                         </section>
                     </section>
                 </section>
