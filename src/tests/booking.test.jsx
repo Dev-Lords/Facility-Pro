@@ -98,7 +98,8 @@ describe('BookingsPage Component', () => {
     });
     
     // Open filter dropdown
-    fireEvent.click(screen.getByText(/Booking status/i));
+    fireEvent.click(screen.getByRole('button', { name: /Booking status/i }));
+
     
     // Select 'approved' filter - be more specific by using the dropdown's class
     const filterOptions = screen.getAllByText('approved');
