@@ -690,7 +690,7 @@ export default function UsageTrends() {
               onClick={() => exportPDF(filteredLogs)}
               className="export-btn pdf-btn"
             >
-              Export Complete Report
+              Export As PDF
             </button>
           </section>
           <section className="table-section">
