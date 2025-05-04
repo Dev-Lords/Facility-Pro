@@ -217,10 +217,10 @@ global.XMLSerializer = class {
   
     // Click the export button
     await waitFor(() => {
-      expect(screen.getByText('Export Complete Report')).toBeInTheDocument();
+      expect(screen.getByText('Export As PDF')).toBeInTheDocument();
     });
   
-    fireEvent.click(screen.getByText('Export Complete Report'));
+    fireEvent.click(screen.getByText('Export As PDF'));
   
     await waitFor(() => {
       expect(mockInstance.save).toHaveBeenCalled();
