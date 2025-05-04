@@ -206,3 +206,98 @@ Next meeting: 1 May 2025.
     Agreed to finalize work and verify functionality for the upcoming presentation.
 
 Next Meeting: 2 May 2025
+
+## 2 May 2025
+Date: 2 May 2025.
+Time: 19:30.
+Platform: Microsoft Teams.
+Attendees: All Team Members.
+
+### Agenda:
+
+- Clarify content for Maintenance and Custom View Report pages
+
+- Review PDF export and formatting
+
+- Discuss UML diagram updates
+
+- Review appearance of UI features and email functionality
+
+### Key Discussion Points:
+
+1. Maintenance and Custom View Report Pages:
+
+    Discussed content requirements for the Custom View page to help clarify what should be included.
+
+    Wendy received clarification and feedback to resolve uncertainty in her implementation.
+
+
+2. UML Diagrams:
+
+    Team discussed the need to update UML class diagrams.
+
+    Commitment was made to send updated diagrams over the weekend.
+
+3. UI and Email Functionality:
+
+    General satisfaction expressed with the current appearance of UI components.
+
+    Email notifications for booking approval were reviewed.
+
+    Bug suspected due to role switching during test, teammates agreed to retest properly.
+
+Next Meeting: 4 May 2025
+
+### 4 May 2025
+Date: 4 May 2025.
+Time: 18:30.
+Platform: Microsoft Teams.
+Attendees: All Team Members.
+
+### Agenda:
+
+- Confirm progress on individual parts
+
+- Finalize PDF and usage trends features
+
+- Review pending user stories and merge status
+
+- Update notification functionality and documentation
+
+- Conduct UI and responsiveness checks
+
+### Key Discussion Points:
+
+1. Status of Team Members' Parts:
+
+    Some parts not yet live due to merge conflicts and ongoing fixes.
+
+    Members clarified their progress and pending tasks like PDF generatio and errors in code.
+
+2. Pending User Stories:
+
+    6–7 total stories, with some still requiring final merges.
+
+    User stories include approve or decline bookings, usage trends, and notification updates.
+
+3. Notifications Functionality:
+
+    Reviewed logic for when users receive notifications.
+
+    Discussed what triggers notifications and which team members implemented which parts.
+
+4. PDF Generation and Bug Fixes:
+
+    Confirmed that PDF export is functioning, but formatting and browser compatibility issues experienced.
+
+5. UI Review and Responsiveness:
+
+    Minor navigation and routing bugs identified.
+
+    Responsiveness issues were flagged — to be addressed in next sprint.
+
+6. Documentation Updates:
+
+    Some documentation still incomplete.
+
+    Plan made to finalize within an hour after the meeting.
