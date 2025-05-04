@@ -251,7 +251,7 @@ font-size: 0.95rem;
 }
 
 /* Styles for the buttons in the actions cell */
-.actions-cell {
+.action-cell {
   display: flex;
   gap: 12px; /* Adds space between buttons */
   justify-content: center;
@@ -293,11 +293,11 @@ button {
 
 /* Approve Button */
 .approve-button {
-  background-color: #e8f5e9; /* Light green background */
-  color: #388e3c; /* Green text */
-  border: 2px solid transparent; /* No border initially */
-  border-left: 4px solid #388e3c; /* Thinner flag-like left side with a darker green */
-  padding: 6px 16px 6px 18px; /* Slightly adjusted padding to make it more refined */
+  background-color: #e8f5e9; 
+  color: #388e3c; 
+  border: 2px solid transparent; 
+  border-left: 4px solid #388e3c; 
+  padding: 6px 16px 6px 18px; 
   border-radius: 4px;
   display: inline-flex;
   align-items: center;
@@ -307,8 +307,8 @@ button {
 }
 
 .approve-button:hover {
-  background-color: #c8e6c9; /* Slightly darker green on hover */
-  border-left-color: #2c6b2f; /* Darker green for hover effect */
+  background-color: #c8e6c9; 
+  border-left-color: #2c6b2f; 
 }
 
 
@@ -324,3 +324,47 @@ button[disabled]:hover {
   background-color: #f1f1f1;
   color: #bdbdbd;
 }
+
+.pagination-list {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+  gap: 0.5rem;
+}
+
+.pagination-list button {
+  padding: 4px 8px;           
+  font-size: 0.8rem;          
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+
+.pagination-list button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.pagination-list .active-page {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.timeslot-list {
+  padding-left: 1rem;
+  margin: 0;
+  list-style-type: disc;
+}
+
+.timeslot-cell {
+  white-space: nowrap;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
+

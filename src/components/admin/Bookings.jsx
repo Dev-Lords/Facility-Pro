@@ -13,6 +13,8 @@ const BookingsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState({});
   const [isProcessing, setIsProcessing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const bookingsPerPage = 10;
 
   // Fetch bookings and users
   useEffect(() => {
@@ -60,7 +62,12 @@ const BookingsPage = () => {
   const toggleFilterDropdown = () => {
     setIsFilterOpen(!isFilterOpen);
   };
-
+  
+  //Pagination implementation for better user interface:
+  const indexOfLastBooking = currentPage * bookingsPerPage;
+  const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
+  const currentBookings = filteredBookings.slice(indexOfFirstBooking, indexOfLastBooking);
+  const totalPages = Math.ceil(filteredBookings.length / bookingsPerPage);
 
 
   // Handle status change for a single booking
@@ -92,8 +99,7 @@ const BookingsPage = () => {
       } finally {
         setIsProcessing(false);
       }
-};
-
+    };
 
   return (
     <main className="bookings-page">
@@ -152,34 +158,32 @@ const BookingsPage = () => {
               <th>Date</th>
               <th>Location</th>
               <th>Timeslots</th>
-              <th>Pending Approval</th>
+              <th>Booking Status:</th>
             </tr>
           </thead>
           <tbody>
-            {isLoading ? null : filteredBookings.length === 0 ? (
+            {isLoading ? null : currentBookings.length === 0 ? (
               <tr>
                 <td colSpan="6" className="loading-cell">
                   <p>No bookings to review</p>
                 </td>
               </tr>
             ) : (
-              filteredBookings.map((booking, index) => (
+              currentBookings.map((booking, index) => (
                 <tr key={booking.bookingID || `booking-${index}`}>
                   <td>{users[booking.userID]?.displayName || booking.userID}</td>
                   <td>{booking.date}</td>
-                  <td>{booking.facilityID}</td>
+                  <td>{booking.facilityID.charAt(0).toUpperCase() + booking.facilityID.slice(1)}</td>
                   <td className="timeslot-cell">
                     {booking.bookedSlots.map((slot, i) => {
                     const startHour = slot;
                     const endHour = slot + 1;
-                    const startTime = startHour > 12 ? ` ${startHour - 12}pm ` : ` ${startHour}am `;
-                    const endTime = endHour > 12 ? ` ${endHour - 12}pm ` : ` ${endHour}am `;
-                    return (
-                    `${startTime}-${endTime}` + (i < booking.bookedSlots.length - 1 ? ',    ' : '')
-                    );
-                    })}
-                </td>
-                  <td className="actions-cell">
+                    const startTime = startHour > 12 ? `${startHour - 12}pm` : `${startHour}am`;
+                    const endTime = endHour > 12 ? `${endHour - 12}pm` : `${endHour}am`;
+                    return `• ${startTime}-${endTime}${i < booking.bookedSlots.length - 1 ? '  ' : ''}`;
+                    }).join('')}
+                  </td>
+                  <td className="action-cell">
                     {/* Approve Button */}
                     {booking.status === "pending" && (
                       <button
@@ -226,6 +230,40 @@ const BookingsPage = () => {
           </tbody>
         </table>
       </section>
+
+      <nav aria-label="Users pagination">
+        <ul className="pagination-list">
+          <li>
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            >Previous
+          </button>
+          </li>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <li key={i}>
+            <button
+              onClick={() => setCurrentPage(i + 1)}
+              className={currentPage === i + 1 ? "active-page" : ""}
+              >{i + 1}
+            </button>
+            </li>
+            ))}
+          <li>
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >Next
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+
+      <footer className="facility-footer">
+        <p>Facility Management System • Admin services • Version 1.0.3</p>
+      </footer>
+
     </main>
   );
 };

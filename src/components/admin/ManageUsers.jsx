@@ -6,14 +6,8 @@ import {
   deleteAccount,
 } from "../../../backend/services/userServices";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
-import {
-  Pencil,
-  Trash2,
-  Filter,
-  Search,
-  UserPlus,
-  ChevronDown,
-} from "lucide-react";
+import { Pencil, Trash2, Filter, Search, UserPlus, ChevronDown} from "lucide-react";
+import { toast } from "react-toastify";
 import "./ManageUsers.css";
 
 const ManageUsers = () => {
@@ -33,6 +27,10 @@ const ManageUsers = () => {
   });
   const [registrationError, setRegistrationError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  //pagination:
+  const [currentPage, setCurrentPage] = useState(1);
+  const UsersPerPage = 10;
+  
 
   //filter and search properties
   const [users, setUsers] = useState([]);
@@ -83,6 +81,12 @@ const ManageUsers = () => {
     setIsFilterOpen(!isFilterOpen);
   };
 
+   //Pagination implementation for better user interface:
+   const indexOfLastUser = currentPage * UsersPerPage;
+   const indexOfFirstUser = indexOfLastUser - UsersPerPage;
+   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+   const totalPages = Math.ceil(filteredUsers.length / UsersPerPage);
+
   //deleting users from system
   const confirmDelete = (userId) => {
     setSelectedUserId(userId);
@@ -99,8 +103,10 @@ const ManageUsers = () => {
       setShowPopup(false);
       setSelectedUserId(null);
       setDeleteError(null);
+      toast.success(`User deleted successfully!`);
     } catch (error) {
       console.error("Error deleting user:", error);
+      toast.error(`Error deleting user!`);
       alert("Error deleting user"); // THIS MUST EXIST
       setShowPopup(false);
     }
@@ -124,8 +130,10 @@ const ManageUsers = () => {
         )
       );
       setEditUser(null);
+      toast.success(`User updated successfully!`);
     } catch (error) {
       console.error("Error updating user:", error);
+      toast.error(`User not updated!`);
       alert("You don't have permission to edit this user.");
     }
   };
@@ -158,8 +166,10 @@ const ManageUsers = () => {
       await fetchUsers();
       setShowRegistration(false);
       setRegistrationError("");
+      toast.success(`User added successfully!`);
     } catch (error) {
       setRegistrationError(error.message);
+      toast.error(`User not onboarded!`);
     }
   };
 
@@ -266,15 +276,15 @@ const ManageUsers = () => {
                 </td>
               </tr>
             ) : (
-              filteredUsers.map((user, index) => (
+              currentUsers.map((user, index) => (
                 <tr key={user.id || `user-${index}`}>
                   <td>{user.displayName}</td>
                   <td>{user.email}</td>
                   <td className="user-type-cell">
-                    <mark className="user-type-badge">{user.user_type}</mark>
+                    <mark className="user-type-badge">{user.user_type.charAt(0).toUpperCase() + user.user_type.slice(1)}</mark>
                   </td>
                   <td>{formatDate(user.updatedAt)}</td>
-                  <td className="actions-cell">
+                  <td>
                     <button
                       className="edit-button"
                       onClick={() => openEditModal(user)}
@@ -282,7 +292,7 @@ const ManageUsers = () => {
                       <Pencil size={18} className="icon" />
                     </button>
                   </td>
-                  <td className="actions-cell">
+                  <td>
                     <button
                       className="delete-button"
                       onClick={() => confirmDelete(user.id)}
@@ -335,9 +345,9 @@ const ManageUsers = () => {
               onChange={(e) => setNewUserType(e.target.value)}
             >
               <option value="">Select type</option>
-              <option value="admin">admin</option>
-              <option value="staff">staff</option>
-              <option value="resident">resident</option>
+              <option value="admin">Admin</option>
+              <option value="staff">Staff</option>
+              <option value="resident">Resident</option>
             </select>
 
             <section className="modal-buttons">
@@ -396,9 +406,9 @@ const ManageUsers = () => {
                 className="form-input"
               >
                 <option value="">Select type</option>
-                <option value="resident">resident</option>
-                <option value="staff">staff</option>
-                <option value="admin">admin</option>
+                <option value="resident">Resident</option>
+                <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
               </select>
 
               <section className="modal-buttons">
@@ -422,8 +432,36 @@ const ManageUsers = () => {
         </section>
       )}
 
+      <nav aria-label="Booking pagination">
+        <ul className="pagination-list">
+          <li>
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            >Previous
+          </button>
+          </li>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <li key={i}>
+            <button
+              onClick={() => setCurrentPage(i + 1)}
+              className={currentPage === i + 1 ? "active-page" : ""}
+              >{i + 1}
+            </button>
+            </li>
+            ))}
+          <li>
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >Next
+            </button>
+          </li>
+        </ul>
+      </nav>
+
       <footer className="facility-footer">
-        <p>Facility Management System • Admin services • Version 1.0.0</p>
+        <p>Facility Management System • Admin services • Version 1.0.3</p>
       </footer>
     </main>
   );
