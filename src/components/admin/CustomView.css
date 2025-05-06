@@ -50,21 +50,78 @@
   margin: 0 auto;
 }
 
-.dashboard-header {
-  margin-bottom: 2rem;
-}
+/* Add these style modifications to fix the dark heading and date visibility issues */
 
+/* Update the dashboard header heading color */
 .dashboard-header h1 {
   font-size: 1.875rem;
   font-weight: 700;
-  color: var(--color-gray-900);
+  color: white; /* Changed from var(--color-gray-900) to white for better contrast on blue background */
   margin-bottom: 0.5rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Adding subtle text shadow for better readability */
 }
 
+/* Update the dashboard header paragraph color */
 .dashboard-header p {
   font-size: 1rem;
-  color: var(--color-gray-600);
+  color: rgba(255, 255, 255, 0.9); /* Changed from var(--color-gray-600) to semi-transparent white */
   max-width: 42rem;
+}
+
+/* Fix date visibility in the header and other places */
+.dashboard-header .date-display,
+.date-range-display,
+.summary-card-badge {
+  color: rgba(255, 255, 255, 0.9); /* Make date text light on dark backgrounds */
+  font-weight: 500; /* Slightly bolder for better readability */
+}
+
+/* Add specific styles for the Custom Reports page */
+.custom-reports-header {
+  color: white;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.custom-reports-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Improve contrast for the dashboard container when on blue background */
+.dashboard.blue-theme,
+.dashboard-header,
+.dashboard-controls-wrapper {
+  background-color: #1a4980; /* Slightly lighter blue background */
+  color: white;
+}
+
+/* Fix for the date filter badge visibility */
+.active-filters-indicators .filter-indicator {
+  background-color: rgba(255, 255, 255, 0.2); /* Light background for better visibility */
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Style the date range display in filters */
+.date-range {
+  color: white;
+  font-weight: 500;
+}
+
+/* Fix for the date display in the summary cards */
+.summary-card-footer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.summary-card-badge {
+  font-size: 0.75rem;
+  color: white; /* Changed from var(--color-gray-600) */
+  font-weight: 500;
 }
 
 /* Summary Card Styles */
@@ -132,16 +189,6 @@
   background-color: var(--color-danger);
 }
 
-.summary-card-footer {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--color-gray-200);
-}
-
-.summary-card-badge {
-  font-size: 0.75rem;
-  color: var(--color-gray-600);
-}
 
 /* Tab Navigation */
 .dashboard-controls {
@@ -847,7 +894,7 @@
     grid-template-columns: 1fr;
   }
   
-  .event-card-header,
+ 
   .issue-card-header {
     flex-direction: column;
   }
@@ -855,5 +902,281 @@
   .status-badge,
   .priority-badge {
     margin-top: 0.5rem;
+  }
+}
+/* Add these styles to your CustomView.css file */
+
+/* Filter menu container improvements */
+.filter-dropdown .dropdown-menu {
+  min-width: 280px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e2e8f0;
+}
+
+.filter-content {
+  padding: 16px;
+}
+
+/* Filter section title styling */
+.filter-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4b5563;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.filter-section-title:first-child {
+  margin-top: 0;
+}
+
+/* Filter options styling */
+.filter-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+  list-style: none;
+  padding: 0;
+}
+
+/* Individual filter option styling */
+.filter-option {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.filter-option:hover {
+  background-color: #f3f4f6;
+}
+
+.filter-option input[type="checkbox"] {
+  display: none;
+}
+
+.filter-option label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+  width: 100%;
+}
+
+/* Custom checkbox styling */
+.filter-option label::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  background-color: white;
+  transition: all 0.2s;
+}
+
+.filter-option input[type="checkbox"]:checked + label::before {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.filter-option input[type="checkbox"]:checked + label::after {
+  content: "";
+  position: absolute;
+  left: 17px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-top: -2px;
+}
+
+/* Filter actions styling */
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+  list-style: none;
+  padding-left: 0;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clear-btn {
+  background-color: white;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+}
+
+.clear-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.apply-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+}
+
+.apply-btn:hover {
+  background-color: #2563eb;
+}
+/* Event Cards Styling */
+.upcoming-events {
+  margin-bottom: 2rem;
+}
+
+.upcoming-events h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.event-card {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--color-gray-200);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 100%;
+}
+
+.event-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.event-title {
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: var(--color-gray-800);
+  margin: 0;
+}
+
+.event-status {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background-color: #e6f0fd;
+  color: var(--color-primary);
+}
+
+.event-status.active {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.event-content {
+  padding: 1rem;
+  flex-grow: 1;
+}
+
+.event-date, .event-location, .event-description {
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.event-date {
+  color: var(--color-gray-700);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.event-date::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 0.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'%3E%3C/path%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.event-location {
+  color: var(--color-gray-600);
+  display: flex;
+  align-items: center;
+}
+
+.event-location::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 0.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'%3E%3C/path%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 11a3 3 0 11-6 0 3 3 0 016 0z'%3E%3C/path%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.event-description {
+  color: var(--color-gray-600);
+  line-height: 1.5;
+}
+
+/* Add event type indicator with different colors */
+.event-card {
+  border-left: 4px solid transparent;
+}
+
+.event-card[data-type="soccer"] {
+  border-left-color: #3b82f6; /* blue */
+}
+
+.event-card[data-type="basketball"] {
+  border-left-color: #f59e0b; /* amber */
+}
+
+.event-card[data-type="swimming"] {
+  border-left-color: #10b981; /* emerald */
+}
+
+.event-card[data-type="party"] {
+  border-left-color: #8b5cf6; /* purple */
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .events-grid {
+    grid-template-columns: 1fr;
   }
 }

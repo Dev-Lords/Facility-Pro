@@ -1,328 +1,251 @@
-// ReportExportService.js
+// This is a modification of the ReportExportService.js file to ensure exports match UI display
+
 import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
-/**
- * Converts an array of objects to CSV format
- * @param {Array} array - Array of objects to convert
- * @returns {string} CSV formatted string
- */
-const arrayToCSV = (array) => {
-  if (!array || array.length === 0) {
-    return '';
-  }
-  
-  // Get headers from first object
-  const headers = Object.keys(array[0]);
-  
-  // Create CSV header row
-  const csvRows = [headers.join(',')];
-  
-  // Add data rows
-  for (const item of array) {
-    const values = headers.map(header => {
-      const cell = item[header];
-      
-      // Handle arrays in cells
-      if (Array.isArray(cell)) {
-        return `"${cell.join(', ')}"`;
-      }
-      
-      // Handle null or undefined
-      if (cell === null || cell === undefined) {
-        return '';
-      }
-      
-      // Handle strings with commas by wrapping in quotes
-      if (typeof cell === 'string' && cell.includes(',')) {
-        return `"${cell}"`;
-      }
-      
-      return cell;
-    });
-    
-    csvRows.push(values.join(','));
-  }
-  
-  return csvRows.join('\n');
-};
-
-/**
- * Generates complete CSV content from all data types
- * @param {Object} data - Data object containing bookings, events, and issues
- * @returns {string} Complete CSV content
- */
-const generateCSVContent = (data) => {
-  const { bookings, events, issues } = data;
-  let content = '';
-  
-  // Add bookings section
-  if (bookings && bookings.length > 0) {
-    content += '# BOOKINGS\n';
-    content += arrayToCSV(bookings);
-    content += '\n\n';
-  }
-  
-  // Add events section
-  if (events && events.length > 0) {
-    content += '# EVENTS\n';
-    content += arrayToCSV(events);
-    content += '\n\n';
-  }
-  
-  // Add issues section
-  if (issues && issues.length > 0) {
-    content += '# ISSUES\n';
-    content += arrayToCSV(issues);
-  }
-  
-  return content;
-};
-
-/**
- * Formats a date string
- * @param {string} dateString - Date string to format
- * @returns {string} Formatted date or placeholder
- */
+// Helper function to format date
 const formatDate = (dateString) => {
-  if (!dateString) return '-';
+  if (!dateString) return "-";
+  return new Date(dateString).toLocaleDateString();
+};
+
+// Helper function to format status with proper casing
+const formatStatus = (status) => {
+  return status || "Unknown";
+};
+
+// Helper function to format slots array into readable string
+const formatSlots = (slots) => {
+  if (!slots || !Array.isArray(slots)) return "-";
+  return slots.join(", ");
+};
+
+// Helper function to format facility name (removing any ID suffix if present)
+const formatFacility = (facility) => {
+  return facility || "-";
+};
+
+// Helper function to prepare data for export (format it like the UI displays)
+const prepareDataForExport = (rawData) => {
+  const result = {};
+  
+  // Format bookings data if present
+  if (rawData.bookings) {
+    result.bookings = rawData.bookings.map(booking => ({
+      Date: formatDate(booking.date),
+      Facility: formatFacility(booking.facilityID),
+      Status: formatStatus(booking.status),
+      Slots: formatSlots(booking.bookedSlots),
+    }));
+  }
+  
+  // Format events data if present
+  if (rawData.events) {
+    result.events = rawData.events.map(event => ({
+      Title: event.title || "Untitled Event",
+      Date: formatDate(event.date),
+      Location: event.location || "No location specified",
+      Status: formatStatus(event.status),
+      Attendees: event.attendees ? event.attendees.length : 0,
+      Description: event.description || ""
+    }));
+  }
+  
+  // Format issues data if present
+  if (rawData.issues) {
+    result.issues = rawData.issues.map(issue => ({
+      Title: issue.title || `Issue #${issue.id || "Unknown"}`,
+      Description: issue.issueDescription || "No description provided",
+      Priority: issue.priority || "Normal",
+      Status: issue.issueStatus || "Open",
+      Location: issue.location || "-",
+      Reported: formatDate(issue.reportedAt)
+    }));
+  }
+  
+  return result;
+};
+
+/**
+ * Export data to CSV format
+ * @param {string} filename - Base name for the file (without extension)
+ * @param {object} data - Raw data object containing bookings, events, and/or issues
+ */
+export const exportToCSV = async (filename, data) => {
   try {
-    return new Date(dateString).toLocaleDateString();
-  } catch (e) {
-    return dateString || '-'; // Return original string if parsing fails
-  }
-};
-
-/**
- * Generates PDF-friendly table data from an array of objects
- * @param {Array} array - Array of objects to convert
- * @returns {Object} Object with headers and data for jsPDF-AutoTable
- */
-const arrayToPDFTable = (array) => {
-  if (!array || array.length === 0) {
-    return { headers: [], data: [] };
-  }
-  
-  // Get headers from first object and format them for display
-  const headers = Object.keys(array[0]).map(header => {
-    // Convert camelCase or snake_case to Title Case
-    return header
-      .replace(/_/g, ' ')
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/^./, str => str.toUpperCase())
-      .trim();
-  });
-  
-  // Format data rows
-  const data = array.map(item => {
-    return Object.keys(item).map(header => {
-      let cellValue = item[header];
-      
-      // Format date fields
-      if (header.toLowerCase().includes('date')) {
-        cellValue = formatDate(cellValue);
-      }
-      
-      // Handle arrays
-      if (Array.isArray(cellValue)) {
-        cellValue = cellValue.join(', ');
-      }
-      
-      // Handle null or undefined
-      if (cellValue === null || cellValue === undefined) {
-        cellValue = '-';
-      }
-      
-      // Convert objects to string representation
-      if (typeof cellValue === 'object') {
-        try {
-          cellValue = JSON.stringify(cellValue);
-        } catch (e) {
-          cellValue = '[Object]';
-        }
-      }
-      
-      return String(cellValue); // Ensure all values are strings
-    });
-  });
-  
-  return { headers, data };
-};
-
-/**
- * Exports data to CSV file and triggers download
- * @param {string} filename - Name of the file to download
- * @param {Object} data - Data object containing bookings, events, and issues
- * @returns {Promise} Promise that resolves when the file is downloaded
- */
-export const exportToCSV = (filename, data) => {
-  return new Promise((resolve, reject) => {
-    try {
-      // Generate CSV content
-      const csvContent = generateCSVContent(data);
-      
-      // Create a Blob with the CSV data
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      
-      // Create a download link
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      
-      // Set up the download
-      link.setAttribute('href', url);
-      link.setAttribute('download', `${filename}.csv`);
-      link.style.visibility = 'hidden';
-      
-      // Add to document, trigger click, then remove
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      // Clean up the URL object
-      setTimeout(() => {
-        URL.revokeObjectURL(url);
-        resolve();
-      }, 100);
-    } catch (error) {
-      reject(error);
+    // Format the data to match UI display
+    const formattedData = prepareDataForExport(data);
+    
+    // Prepare CSV content for each data type
+    let csvContent = "";
+    
+    // Add bookings if present
+    if (formattedData.bookings && formattedData.bookings.length > 0) {
+      csvContent += "BOOKINGS\n";
+      // Add headers
+      csvContent += Object.keys(formattedData.bookings[0]).join(",") + "\n";
+      // Add data rows
+      formattedData.bookings.forEach(booking => {
+        csvContent += Object.values(booking).map(value => 
+          // Escape commas and quotes in the data
+          `"${String(value).replace(/"/g, '""')}"`
+        ).join(",") + "\n";
+      });
+      csvContent += "\n"; // Add separator between sections
     }
-  });
+    
+    // Add events if present
+    if (formattedData.events && formattedData.events.length > 0) {
+      csvContent += "EVENTS\n";
+      // Add headers
+      csvContent += Object.keys(formattedData.events[0]).join(",") + "\n";
+      // Add data rows
+      formattedData.events.forEach(event => {
+        csvContent += Object.values(event).map(value => 
+          `"${String(value).replace(/"/g, '""')}"`
+        ).join(",") + "\n";
+      });
+      csvContent += "\n"; // Add separator between sections
+    }
+    
+    // Add issues if present
+    if (formattedData.issues && formattedData.issues.length > 0) {
+      csvContent += "MAINTENANCE ISSUES\n";
+      // Add headers
+      csvContent += Object.keys(formattedData.issues[0]).join(",") + "\n";
+      // Add data rows
+      formattedData.issues.forEach(issue => {
+        csvContent += Object.values(issue).map(value => 
+          `"${String(value).replace(/"/g, '""')}"`
+        ).join(",") + "\n";
+      });
+    }
+    
+    // Create a blob with the CSV content
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+    // Create a download link and trigger the download
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${filename}-report.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    return true;
+  } catch (error) {
+    console.error("Error exporting to CSV:", error);
+    throw error;
+  }
 };
 
 /**
- * Exports data to PDF file and triggers download
- * @param {string} filename - Name of the file to download
- * @param {Object} data - Data object containing bookings, events, and issues
- * @returns {Promise} Promise that resolves when the file is downloaded
+ * Export data to PDF format
+ * @param {string} filename - Base name for the file (without extension)
+ * @param {object} data - Raw data object containing bookings, events, and/or issues
  */
-export const exportToPDF = (filename, data) => {
-  return new Promise((resolve, reject) => {
-    try {
-      const { bookings, events, issues } = data;
-      const dateStr = new Date().toLocaleDateString();
+export const exportToPDF = async (filename, data) => {
+  try {
+    // Format the data to match UI display
+    const formattedData = prepareDataForExport(data);
+    
+    // Create new PDF document
+    const doc = new jsPDF();
+    
+    // Add title to the PDF
+    doc.setFontSize(18);
+    doc.text('Facility Management Report', 14, 22);
+    doc.setFontSize(12);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+    
+    let yPosition = 40;
+    
+    // Add bookings table if present
+    if (formattedData.bookings && formattedData.bookings.length > 0) {
+      doc.setFontSize(14);
+      doc.text('Facility Bookings', 14, yPosition);
+      yPosition += 10;
       
-      // Create new PDF document (landscape orientation for wider tables)
-      const doc = new jsPDF({
-        orientation: 'landscape',
-        unit: 'mm',
-        format: 'a4'
+      // Extract column headers and rows for jspdf-autotable
+      const headers = Object.keys(formattedData.bookings[0]);
+      const rows = formattedData.bookings.map(booking => Object.values(booking));
+      
+      // Add table to PDF
+      autoTable(doc, {
+        head: [headers],
+        body: rows,
+        startY: yPosition,
+        styles: { fontSize: 10 },
+        headStyles: { fillColor: [66, 139, 202] }
       });
       
-      // Add title
-      doc.setFontSize(18);
-      doc.text('Dashboard Report', doc.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
-      
-      // Add generation date
-      doc.setFontSize(10);
-      doc.text(`Generated on ${dateStr}`, doc.internal.pageSize.getWidth() / 2, 22, { align: 'center' });
-      
-      let yPos = 30;
-      
-      // Add bookings section if available
-      if (bookings && bookings.length > 0) {
-        doc.setFontSize(14);
-        doc.text('Facility Bookings', 14, yPos);
-        yPos += 8;
-        
-        const bookingsTable = arrayToPDFTable(bookings);
-        
-        // Configure and draw the table
-        doc.autoTable({
-          startY: yPos,
-          head: [bookingsTable.headers],
-          body: bookingsTable.data,
-          theme: 'grid',
-          headStyles: { 
-            fillColor: [59, 130, 246],
-            textColor: [255, 255, 255],
-            fontStyle: 'bold'
-          },
-          styles: {
-            overflow: 'linebreak',
-            cellWidth: 'auto',
-            fontSize: 8
-          },
-          columnStyles: {
-            // You can customize specific columns here if needed
-          },
-          margin: { top: 30 }
-        });
-        
-        yPos = doc.lastAutoTable.finalY + 15;
-      }
-      
-      // Add events section if available
-      if (events && events.length > 0) {
-        // Check if we need a new page
-        if (yPos > doc.internal.pageSize.getHeight() - 40) {
-          doc.addPage();
-          yPos = 20;
-        }
-        
-        doc.setFontSize(14);
-        doc.text('Upcoming Events', 14, yPos);
-        yPos += 8;
-        
-        const eventsTable = arrayToPDFTable(events);
-        doc.autoTable({
-          startY: yPos,
-          head: [eventsTable.headers],
-          body: eventsTable.data,
-          theme: 'grid',
-          headStyles: { 
-            fillColor: [59, 130, 246],
-            textColor: [255, 255, 255],
-            fontStyle: 'bold'
-          },
-          styles: {
-            overflow: 'linebreak',
-            cellWidth: 'auto',
-            fontSize: 8
-          },
-          margin: { top: 30 }
-        });
-        
-        yPos = doc.lastAutoTable.finalY + 15;
-      }
-      
-      // Add issues section if available
-      if (issues && issues.length > 0) {
-        // Check if we need a new page
-        if (yPos > doc.internal.pageSize.getHeight() - 40) {
-          doc.addPage();
-          yPos = 20;
-        }
-        
-        doc.setFontSize(14);
-        doc.text('Maintenance Issues', 14, yPos);
-        yPos += 8;
-        
-        const issuesTable = arrayToPDFTable(issues);
-        doc.autoTable({
-          startY: yPos,
-          head: [issuesTable.headers],
-          body: issuesTable.data,
-          theme: 'grid',
-          headStyles: { 
-            fillColor: [59, 130, 246],
-            textColor: [255, 255, 255],
-            fontStyle: 'bold'
-          },
-          styles: {
-            overflow: 'linebreak',
-            cellWidth: 'auto',
-            fontSize: 8
-          },
-          margin: { top: 30 }
-        });
-      }
-      
-      // Save the PDF and trigger download
-      doc.save(`${filename}.pdf`);
-      resolve();
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      reject(error);
+      // Update position for next section
+      yPosition = doc.lastAutoTable.finalY + 15;
     }
-  });
+    
+    // Add events table if present
+    if (formattedData.events && formattedData.events.length > 0) {
+      // Check if we need a new page
+      if (yPosition > 230) {
+        doc.addPage();
+        yPosition = 20;
+      }
+      
+      doc.setFontSize(14);
+      doc.text('Events', 14, yPosition);
+      yPosition += 10;
+      
+      // Extract column headers and rows for jspdf-autotable
+      const headers = Object.keys(formattedData.events[0]);
+      const rows = formattedData.events.map(event => Object.values(event));
+      
+      // Add table to PDF
+      autoTable(doc, {
+        head: [headers],
+        body: rows,
+        startY: yPosition,
+        styles: { fontSize: 10 },
+        headStyles: { fillColor: [66, 139, 202] }
+      });
+      
+      // Update position for next section
+      yPosition = doc.lastAutoTable.finalY + 15;
+    }
+    
+    // Add issues table if present
+    if (formattedData.issues && formattedData.issues.length > 0) {
+      // Check if we need a new page
+      if (yPosition > 230) {
+        doc.addPage();
+        yPosition = 20;
+      }
+      
+      doc.setFontSize(14);
+      doc.text('Maintenance Issues', 14, yPosition);
+      yPosition += 10;
+      
+      // Extract column headers and rows for jspdf-autotable
+      const headers = Object.keys(formattedData.issues[0]);
+      const rows = formattedData.issues.map(issue => Object.values(issue));
+      
+      // Add table to PDF
+      autoTable(doc, {
+        head: [headers],
+        body: rows,
+        startY: yPosition,
+        styles: { fontSize: 10 },
+        headStyles: { fillColor: [66, 139, 202] }
+      });
+    }
+    
+    // Save the PDF file
+    doc.save(`${filename}-report.pdf`);
+    
+    return true;
+  } catch (error) {
+    console.error("Error exporting to PDF:", error);
+    throw error;
+  }
 };
