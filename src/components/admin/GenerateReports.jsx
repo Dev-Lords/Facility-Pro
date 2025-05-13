@@ -58,7 +58,7 @@ export default function ReportsDashboard() {
       </section>
 
       <section className="back-button-container">
-        <button className="btn back-btn" onClick={() => handleNavigate('/AdminDashboard')}>
+        <button className="btn back-btn" onClick={() => handleNavigate('/admin-home')}>
           <FaArrowLeft /> Back to Dashboard
         </button>
       </section>
