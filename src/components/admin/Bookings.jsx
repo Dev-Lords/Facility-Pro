@@ -51,6 +51,17 @@ const BookingsPage = () => {
   }, []);
 
 
+//Pagination improvements for smoother UI experience
+useEffect(() => {
+  const tableTop = document.querySelector(".bookings-table-container");
+  tableTop?.scrollIntoView({ behavior: "smooth", block: "start" });
+}, [currentPage]);
+
+useEffect(() => {
+  setCurrentPage(1);
+}, [searchTerm, filterType]);
+
+
 //FILTERING AND SEARCHING THROUGH BOOKINGS
   const filteredBookings = bookings.filter((booking) => {
     const user = users[booking.userID];

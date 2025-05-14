@@ -64,6 +64,16 @@ const ManageUsers = () => {
     getUsers();
   }, []);
 
+  //Pagination improvements for smoother UI experience
+  useEffect(() => {
+    const tableTop = document.querySelector(".users-table-container");
+    tableTop?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [currentPage]);
+  
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterType]);
+
   //filtering through users
   const filteredUsers = users.filter((user) => {
     const matchesSearch =
