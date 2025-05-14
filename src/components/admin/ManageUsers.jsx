@@ -66,9 +66,11 @@ const ManageUsers = () => {
 
   //Pagination improvements for smoother UI experience
   useEffect(() => {
-    const tableTop = document.querySelector(".users-table-container");
-    tableTop?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, [currentPage]);
+  const tableTop = document.querySelector(".users-table-container");
+  if (tableTop && typeof tableTop.scrollIntoView === "function") {
+    tableTop.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}, [currentPage]);
   
   useEffect(() => {
     setCurrentPage(1);

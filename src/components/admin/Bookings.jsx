@@ -54,7 +54,9 @@ const BookingsPage = () => {
 //Pagination improvements for smoother UI experience
 useEffect(() => {
   const tableTop = document.querySelector(".bookings-table-container");
-  tableTop?.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (tableTop && typeof tableTop.scrollIntoView === "function") {
+    tableTop.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }, [currentPage]);
 
 useEffect(() => {
