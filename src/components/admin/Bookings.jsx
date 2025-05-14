@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchBookings, UpdateBooking } from "../../../backend/services/bookingService.js";
 import { toast } from "react-toastify";
 import { getUserByUid } from "../../../backend/services/userServices.js";
-import { Filter, Search, ChevronDown } from "lucide-react";
+import { Filter, Search, ChevronDown,X } from "lucide-react";
 import "./Bookings.css";
 
 const BookingsPage = () => {
@@ -239,6 +239,12 @@ const BookingsPage = () => {
       {editBooking && (
         <section className="modal-overlay">
           <section className="modal-box edit-modal-box">
+            <button
+              className="close-popup-btn"
+              onClick={() => setEditBooking(null)}
+              ><X size={18} />
+            </button>
+
             <h4> Review Booking!</h4>
             <p>Name: {users[editBooking.userID]?.displayName || editBooking.userID} </p>
             <p>Date: {editBooking.date}</p>

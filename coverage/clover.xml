@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1747232766299" clover="3.2.0">
-  <project timestamp="1747232766299" name="All files">
-    <metrics statements="1224" coveredstatements="768" conditionals="724" coveredconditionals="350" methods="329" coveredmethods="190" elements="2277" coveredelements="1308" complexity="0" loc="1224" ncloc="1224" packages="5" files="22" classes="22"/>
+<coverage generated="1747242119581" clover="3.2.0">
+  <project timestamp="1747242119582" name="All files">
+    <metrics statements="1225" coveredstatements="768" conditionals="724" coveredconditionals="350" methods="330" coveredmethods="190" elements="2279" coveredelements="1308" complexity="0" loc="1225" ncloc="1225" packages="5" files="22" classes="22"/>
     <package name="src">
       <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="App.jsx" path="C:\Users\Phumla Lila\SD project\Facility-Pro\src\App.jsx">
@@ -152,7 +152,7 @@
       </file>
     </package>
     <package name="src.components.admin">
-      <metrics statements="755" coveredstatements="352" conditionals="496" coveredconditionals="172" methods="202" coveredmethods="83"/>
+      <metrics statements="756" coveredstatements="352" conditionals="496" coveredconditionals="172" methods="203" coveredmethods="83"/>
       <file name="AdminDashboard.jsx" path="C:\Users\Phumla Lila\SD project\Facility-Pro\src\components\admin\AdminDashboard.jsx">
         <metrics statements="13" coveredstatements="13" conditionals="4" coveredconditionals="4" methods="6" coveredmethods="6"/>
         <line num="7" count="6" type="stmt"/>
@@ -170,7 +170,7 @@
         <line num="58" count="1" type="stmt"/>
       </file>
       <file name="Bookings.jsx" path="C:\Users\Phumla Lila\SD project\Facility-Pro\src\components\admin\Bookings.jsx">
-        <metrics statements="80" coveredstatements="73" conditionals="55" coveredconditionals="46" methods="28" coveredmethods="22"/>
+        <metrics statements="81" coveredstatements="73" conditionals="55" coveredconditionals="46" methods="29" coveredmethods="22"/>
         <line num="8" count="2" type="stmt"/>
         <line num="9" count="40" type="stmt"/>
         <line num="10" count="40" type="stmt"/>
@@ -245,12 +245,13 @@
         <line num="168" count="1" type="stmt"/>
         <line num="199" count="67" type="cond" truecount="1" falsecount="1"/>
         <line num="209" count="3" type="stmt"/>
-        <line num="251" count="2" type="stmt"/>
-        <line num="259" count="1" type="stmt"/>
-        <line num="274" count="0" type="stmt"/>
-        <line num="280" count="25" type="stmt"/>
-        <line num="282" count="0" type="stmt"/>
-        <line num="290" count="0" type="stmt"/>
+        <line num="244" count="0" type="stmt"/>
+        <line num="257" count="2" type="stmt"/>
+        <line num="265" count="1" type="stmt"/>
+        <line num="280" count="0" type="stmt"/>
+        <line num="286" count="25" type="stmt"/>
+        <line num="288" count="0" type="stmt"/>
+        <line num="296" count="0" type="stmt"/>
       </file>
       <file name="CreateEvent.jsx" path="C:\Users\Phumla Lila\SD project\Facility-Pro\src\components\admin\CreateEvent.jsx">
         <metrics statements="58" coveredstatements="48" conditionals="30" coveredconditionals="16" methods="6" coveredmethods="5"/>
