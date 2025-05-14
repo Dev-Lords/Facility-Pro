@@ -311,6 +311,26 @@ button {
   border-left-color: #2c6b2f; 
 }
 
+/* Pending Button */
+.pending-button {
+  background-color: #e8f5e9; 
+  color: rgb(206, 160, 74); 
+  border: 2px solid transparent; 
+  border-left: 4px solid rgb(206, 160, 74); 
+  padding: 6px 16px 6px 18px; 
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.pending-button:hover {
+  background-color: #c8e6c9; 
+  border-left-color: rgb(216, 143, 8); 
+}
+
 
 
 /* After review (Disabled/Status Text) */

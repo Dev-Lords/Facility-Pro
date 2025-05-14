@@ -417,12 +417,12 @@ it('displays correct data in the logs table', async () => {
     // Test first log entry (row index 1 because index 0 is header)
     expect(within(rows[1]).getByText('booking')).toBeInTheDocument();
     expect(within(rows[1]).getByText('gym')).toBeInTheDocument();
-    expect(within(rows[1]).getByText('5/10/2025')).toBeInTheDocument();
+    expect(within(rows[1]).getByText('10/05/2025')).toBeInTheDocument();
 
     // Test second log entry
     expect(within(rows[2]).getByText('issue')).toBeInTheDocument();
     expect(within(rows[2]).getByText('pool')).toBeInTheDocument();
-    expect(within(rows[2]).getByText('5/15/2025')).toBeInTheDocument();
+    expect(within(rows[2]).getByText('15/05/2025')).toBeInTheDocument();
   });
 
 

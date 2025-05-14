@@ -116,7 +116,7 @@ describe('ReportsDashboard Component', () => {
     
     // Test back button
     fireEvent.click(screen.getByText('Back to Dashboard'));
-    expect(navigateMock).toHaveBeenCalledWith("/AdminDashboard");
+    expect(navigateMock).toHaveBeenCalledWith("/admin-home");
   });
 
   test('displays correct descriptions for each report type', () => {

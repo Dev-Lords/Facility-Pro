@@ -150,53 +150,96 @@ describe('BookingsPage Component', () => {
     expect(screen.getByText('Basketball Court')).toBeInTheDocument();
   });
 
-  test('approves a pending booking', async () => {
-    const { UpdateBooking } = require('../../backend/services/bookingService.js');
-    const { toast } = require('react-toastify');
-    
-    UpdateBooking.mockResolvedValue({ success: true });
-    
+  test('searches bookings by date', async () => {
     render(<BookingsPage />);
     
     // Wait for bookings to load
     await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
+      expect(screen.getByText('2025-05-02')).toBeInTheDocument();
     });
     
+    // Search for '2025-05-01' as a day of a booking
+    const searchInput = screen.getByPlaceholderText('Search users...');
+    fireEvent.change(searchInput, { target: { value: '2025-05-01' } });
+    
+    // Check if only bookings on specified date is shown
+    expect(screen.queryByText('2025-05-02')).not.toBeInTheDocument();
+    expect(screen.queryByText('2025-05-03')).not.toBeInTheDocument();
+    expect(screen.getByText('2025-05-01')).toBeInTheDocument();
+  });
+
+  test('opens modal and approves a pending booking', async () => {
+    const { UpdateBooking } = require('../../backend/services/bookingService.js');
+    const { toast } = require('react-toastify');
+    
+    UpdateBooking.mockResolvedValue({ success: true });
+
+    render(<BookingsPage />);
+  
+    // Wait for bookings to load
+    await waitFor(() => {
+      expect(screen.getByText('Bookings Review')).toBeInTheDocument();
+    });
+  
+    // Look for the "Pending" button in the list
+    const pendingButton = await screen.findByText('Pending');
+    fireEvent.click(pendingButton); // opens modal
+  
+    // Ensure modal is visible
+    expect(screen.getByText('Review Booking!')).toBeInTheDocument();
+
+    //Ensure we updating correct booking
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+
+  
     // Find and click the approve button for the pending booking
     const approveButtons = screen.getAllByText('Approve');
     fireEvent.click(approveButtons[0]);
     
-    // Check if UpdateBooking was called with correct parameters
-    await waitFor(() => {
-      expect(UpdateBooking).toHaveBeenCalledWith('booking1', 'approved');
-      expect(toast.success).toHaveBeenCalledWith('approved booking successfully!');
-    });
-  });
 
-  test('declines a pending booking', async () => {
+  // Check if UpdateBooking was called with correct parameters
+  await waitFor(() => {
+    expect(UpdateBooking).toHaveBeenCalledWith('booking1', 'approved');
+    expect(toast.success).toHaveBeenCalledWith('approved booking successfully!');
+  });
+    
+  });
+  
+
+  test('opens modal and declines a pending booking', async () => {
     const { UpdateBooking } = require('../../backend/services/bookingService.js');
     const { toast } = require('react-toastify');
     
     UpdateBooking.mockResolvedValue({ success: true });
-    
+
     render(<BookingsPage />);
-    
+  
     // Wait for bookings to load
     await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
+      expect(screen.getByText('Bookings Review')).toBeInTheDocument();
     });
-    
+  
+    // Look for the "Pending" button in the list
+    const pendingButton = await screen.findByText('Pending');
+    fireEvent.click(pendingButton); // opens modal
+  
+    // Ensure modal is visible
+    expect(screen.getByText('Review Booking!')).toBeInTheDocument();
+
+    //Ensure we updating correct booking
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+  
     // Find and click the decline button for the pending booking
     const declineButtons = screen.getAllByText('Decline');
     fireEvent.click(declineButtons[0]);
-    
-    // Check if UpdateBooking was called with correct parameters
-    await waitFor(() => {
-      expect(UpdateBooking).toHaveBeenCalledWith('booking1', 'declined');
-      expect(toast.success).toHaveBeenCalledWith('declined booking successfully!');
-    });
+
+  // Check if UpdateBooking was called with correct parameters
+  await waitFor(() => {
+    expect(UpdateBooking).toHaveBeenCalledWith('booking1', 'declined');
+    expect(toast.success).toHaveBeenCalledWith('declined booking successfully!');
+  }); 
   });
+
 
   test('handles booking update failure', async () => {
     const { UpdateBooking } = require('../../backend/services/bookingService.js');
@@ -208,8 +251,18 @@ describe('BookingsPage Component', () => {
     
     // Wait for bookings to load
     await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
+      expect(screen.getByText('Bookings Review')).toBeInTheDocument();
     });
+  
+    // Look for the "Pending" button in the list
+    const pendingButton = await screen.findByText('Pending');
+    fireEvent.click(pendingButton); // opens modal
+  
+    // Ensure modal is visible
+    expect(screen.getByText('Review Booking!')).toBeInTheDocument();
+
+    //Ensure we updating correct booking
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
     
     // Find and click the approve button for the pending booking
     const approveButtons = screen.getAllByText('Approve');
