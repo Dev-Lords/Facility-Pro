@@ -422,7 +422,7 @@ it('displays correct data in the logs table', async () => {
     // Test second log entry
     expect(within(rows[2]).getByText('issue')).toBeInTheDocument();
     expect(within(rows[2]).getByText('pool')).toBeInTheDocument();
-    expect(within(rows[2]).getByText('15/05/2025')).toBeInTheDocument();
+    expect(within(rows[2]).getByText('5/15/2025')).toBeInTheDocument();
   });
 
 
