@@ -12,9 +12,8 @@ const MaintenanceReportPage = () => {
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [facilityFilter, setFacilityFilter] = useState("all");
   const [showGraphs, setShowGraphs] = useState(false);
-  
+
   const statusChartRef = useRef(null);
-  const availabilityChartRef = useRef(null);
   const priorityChartRef = useRef(null);
   const chartInstances = useRef({});
 
@@ -35,12 +34,12 @@ const MaintenanceReportPage = () => {
     setShowGraphs(false);
   };
 
-  // Calculate priority counts
+  // ✅ FIXED: Calculate priority counts (case-insensitive)
   const getPriorityCounts = (issues) => {
     return {
-      High: issues.filter(issue => issue.priority === "High").length,
-      Medium: issues.filter(issue => issue.priority === "Medium").length,
-      Low: issues.filter(issue => issue.priority === "Low").length
+      High: issues.filter(issue => issue.priority?.toLowerCase() === "high").length,
+      Medium: issues.filter(issue => issue.priority?.toLowerCase() === "medium").length,
+      Low: issues.filter(issue => issue.priority?.toLowerCase() === "low").length
     };
   };
 
@@ -48,18 +47,14 @@ const MaintenanceReportPage = () => {
   const calculateFacilityAvailability = (issues) => {
     const facilities = ["Gym", "Pool", "Soccer Field", "Basketball Court"];
     return facilities.map(facility => {
-      const facilityIssues = issues.filter(issue => issue.relatedFacility === facility);
-      const totalIssues = facilityIssues.length;
-      const openIssues = facilityIssues.filter(issue => resolveStatus(issue.issueStatus) === "Open").length;
-      
-      // Calculate availability percentage (100% if no issues, otherwise percentage of closed issues)
-      const availability = totalIssues === 0 ? 100 : Math.round(((totalIssues - openIssues) / totalIssues) * 100);
-      
+      const hasOpenIssues = issues.some(issue =>
+        issue.relatedFacility === facility &&
+        resolveStatus(issue.issueStatus) === "Open"
+      );
       return {
         facility,
-        availability,
-        totalIssues,
-        openIssues
+        availability: hasOpenIssues ? 0 : 100,
+        status: hasOpenIssues ? "Unavailable" : "Available"
       };
     });
   };
@@ -105,7 +100,7 @@ const MaintenanceReportPage = () => {
             tooltip: {
               callbacks: {
                 label: function(context) {
-                  return `${context.raw}${title.includes('Availability') ? '%' : ''}`;
+                  return `${context.raw}`;
                 }
               }
             }
@@ -113,14 +108,8 @@ const MaintenanceReportPage = () => {
           scales: {
             y: {
               beginAtZero: true,
-              max: title.includes('Availability') ? 100 : undefined,
               grid: {
                 color: "rgba(0,0,0,0.05)"
-              },
-              ticks: {
-                callback: function(value) {
-                  return title.includes('Availability') ? `${value}%` : value;
-                }
               }
             },
             x: {
@@ -133,8 +122,9 @@ const MaintenanceReportPage = () => {
       });
     };
 
-    // Status Chart (Open/Closed)
     const { open, closed } = getStats(filteredIssues);
+    const priorityCounts = getPriorityCounts(filteredIssues);
+
     chartInstances.current.status = createBarChart(
       statusChartRef,
       "Issue Status",
@@ -143,18 +133,6 @@ const MaintenanceReportPage = () => {
       ["#63b3ed", "#3182ce"]
     );
 
-    // Availability Chart
-    const availabilityData = calculateFacilityAvailability(filteredIssues);
-    chartInstances.current.availability = createBarChart(
-      availabilityChartRef,
-      "Facility Availability",
-      availabilityData.map(item => item.facility),
-      availabilityData.map(item => item.availability),
-      ["#90cdf4", "#63b3ed", "#4299e1", "#3182ce"]
-    );
-
-    // Priority Chart
-    const priorityCounts = getPriorityCounts(filteredIssues);
     chartInstances.current.priority = createBarChart(
       priorityChartRef,
       "Issues by Priority",
@@ -180,6 +158,7 @@ const MaintenanceReportPage = () => {
 
   const { open, closed } = getStats(filteredIssues);
   const priorityCounts = getPriorityCounts(filteredIssues);
+  const facilityAvailability = calculateFacilityAvailability(filteredIssues);
 
   return (
     <main className="issues-page" id="report-section">
@@ -187,32 +166,31 @@ const MaintenanceReportPage = () => {
         <h2>Maintenance Report Dashboard</h2>
       </header>
 
-      {/* Summary Cards - Horizontal Layout */}
+      {/* Summary Cards - Horizontal */}
       <section className="summary-stats-horizontal">
-        <article className="summary-card-sm">
-          <h3>Total Issues</h3>
-          <p>{filteredIssues.length}</p>
-        </article>
-        <article className="summary-card-sm">
-          <h3>Open</h3>
-          <p>{open}</p>
-        </article>
-        <article className="summary-card-sm">
-          <h3>Closed</h3>
-          <p>{closed}</p>
-        </article>
-        <article className="summary-card-sm">
-          <h3>High Priority</h3>
-          <p>{priorityCounts.High}</p>
-        </article>
-        <article className="summary-card-sm">
-          <h3>Medium Priority</h3>
-          <p>{priorityCounts.Medium}</p>
-        </article>
-        <article className="summary-card-sm">
-          <h3>Low Priority</h3>
-          <p>{priorityCounts.Low}</p>
-        </article>
+        <article className="summary-card-sm"><h3>Total Issues</h3><p>{filteredIssues.length}</p></article>
+        <article className="summary-card-sm"><h3>Open</h3><p>{open}</p></article>
+        <article className="summary-card-sm"><h3>Closed</h3><p>{closed}</p></article>
+        <article className="summary-card-sm"><h3>High Priority</h3><p>{priorityCounts.High}</p></article>
+        <article className="summary-card-sm"><h3>Medium Priority</h3><p>{priorityCounts.Medium}</p></article>
+        <article className="summary-card-sm"><h3>Low Priority</h3><p>{priorityCounts.Low}</p></article>
+      </section>
+
+      {/* Facility Availability Cards */}
+      <section className="facility-availability">
+        <h3>Facility Availability</h3>
+        <div className="facility-cards">
+          {facilityAvailability.map((facility) => (
+            <div 
+              key={facility.facility} 
+              className={`facility-card ${facility.status.toLowerCase()}`}
+            >
+              <h4>{facility.facility}</h4>
+              <p className="percentage">{facility.availability}%</p>
+              <p className="status">{facility.status}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Filters Section */}
@@ -254,7 +232,7 @@ const MaintenanceReportPage = () => {
         </button>
       </section>
 
-      {/* Issues Table - Always Visible */}
+      {/* Issues Table */}
       <section className="table-section">
         <div className="results-count">
           Showing {filteredIssues.length} issue{filteredIssues.length !== 1 ? "s" : ""}
@@ -291,16 +269,13 @@ const MaintenanceReportPage = () => {
         <button className="export-btn pdf-btn" onClick={handleExportPDF}>Download as PDF</button>
       </section>
 
-      {/* Graphs Section - Only shown when requested */}
+      {/* Graphs */}
       {showGraphs && (
         <section className="graphs-section">
           <h2>Maintenance Analytics</h2>
           <div className="bar-charts">
             <figure className="chart-wrapper">
               <canvas ref={statusChartRef}></canvas>
-            </figure>
-            <figure className="chart-wrapper">
-              <canvas ref={availabilityChartRef}></canvas>
             </figure>
             <figure className="chart-wrapper">
               <canvas ref={priorityChartRef}></canvas>

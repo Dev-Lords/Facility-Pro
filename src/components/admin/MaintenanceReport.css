@@ -204,6 +204,63 @@
     max-width: 100%;
   }
 }
+/* Facility Availability Cards */
+.facility-availability {
+  margin: 2rem 0;
+}
+
+.facility-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: start;
+  overflow-x: auto;
+}
+
+.facility-card {
+  flex: 0 0 200px;
+  padding: 1rem;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.facility-card.available {
+  background-color: #94edbe; /* green */
+}
+
+.facility-card.unavailable {
+  background-color: #feb075; /* red */
+}
+
+.facility-card h4 {
+  margin-bottom: 0.5rem;
+}
+
+.facility-card .percentage {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.facility-card .status {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.facility-cards {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: space-between;
+  flex-wrap: nowrap; /* ❗ Important: prevents wrapping */
+  overflow-x: auto;
+}
+
+.facility-card {
+  flex: 1 0 22%; /* 4 cards in one row with space */
+  min-width: 200px;
+}
+
 
 
   
