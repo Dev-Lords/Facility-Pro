@@ -6,48 +6,93 @@ import { Chart } from "chart.js/auto";
 import "./MaintenanceReport.css";
 
 const MaintenanceReportPage = () => {
-  const [issues, setIssues] = useState([]);
+  const [allIssues, setAllIssues] = useState([]);
+  const [filteredIssues, setFilteredIssues] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [facilityFilter, setFacilityFilter] = useState("all");
+  const [showGraphs, setShowGraphs] = useState(false);
+  
   const statusChartRef = useRef(null);
   const availabilityChartRef = useRef(null);
+  const priorityChartRef = useRef(null);
   const chartInstances = useRef({});
 
-  const loadData = async () => {
+  // Load all data initially
+  useEffect(() => {
+    const loadData = async () => {
+      const data = await fetchFilteredIssues("all", "all", "all");
+      setAllIssues(data);
+      setFilteredIssues(data);
+    };
+    loadData();
+  }, []);
+
+  // Apply filters
+  const applyFilters = async () => {
     const data = await fetchFilteredIssues(statusFilter, facilityFilter, priorityFilter);
-    setIssues(data);
+    setFilteredIssues(data);
+    setShowGraphs(false);
   };
 
-  useEffect(() => {
-    loadData();
-  }, [statusFilter, facilityFilter, priorityFilter]);
+  // Calculate priority counts
+  const getPriorityCounts = (issues) => {
+    return {
+      High: issues.filter(issue => issue.priority === "High").length,
+      Medium: issues.filter(issue => issue.priority === "Medium").length,
+      Low: issues.filter(issue => issue.priority === "Low").length
+    };
+  };
 
+  // Calculate facility availability
+  const calculateFacilityAvailability = (issues) => {
+    const facilities = ["Gym", "Pool", "Soccer Field", "Basketball Court"];
+    return facilities.map(facility => {
+      const facilityIssues = issues.filter(issue => issue.relatedFacility === facility);
+      const totalIssues = facilityIssues.length;
+      const openIssues = facilityIssues.filter(issue => resolveStatus(issue.issueStatus) === "Open").length;
+      
+      // Calculate availability percentage (100% if no issues, otherwise percentage of closed issues)
+      const availability = totalIssues === 0 ? 100 : Math.round(((totalIssues - openIssues) / totalIssues) * 100);
+      
+      return {
+        facility,
+        availability,
+        totalIssues,
+        openIssues
+      };
+    });
+  };
+
+  // Initialize/update charts when showGraphs is true
   useEffect(() => {
-    const { open, closed } = getStats(issues);
+    if (!showGraphs || filteredIssues.length === 0) return;
 
     const cleanupCharts = () => {
       Object.values(chartInstances.current).forEach(chart => chart?.destroy());
     };
     cleanupCharts();
 
-    const createPieChart = (ref, title, labels, data, colors) => {
+    const createBarChart = (ref, title, labels, data, colors) => {
       const ctx = ref.current.getContext("2d");
       return new Chart(ctx, {
-        type: "pie",
+        type: "bar",
         data: {
           labels,
           datasets: [{
+            label: title,
             data,
             backgroundColor: colors,
+            borderColor: colors.map(c => c.replace('0.6', '1')),
             borderWidth: 1,
+            borderRadius: 4,
           }]
         },
         options: {
           responsive: true,
           plugins: {
             legend: {
-              position: "bottom"
+              display: false
             },
             title: {
               display: true,
@@ -56,152 +101,215 @@ const MaintenanceReportPage = () => {
                 size: 16,
                 weight: "bold"
               }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.raw}${title.includes('Availability') ? '%' : ''}`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: title.includes('Availability') ? 100 : undefined,
+              grid: {
+                color: "rgba(0,0,0,0.05)"
+              },
+              ticks: {
+                callback: function(value) {
+                  return title.includes('Availability') ? `${value}%` : value;
+                }
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
             }
           }
         }
       });
     };
 
-    chartInstances.current.status = createPieChart(
+    // Status Chart (Open/Closed)
+    const { open, closed } = getStats(filteredIssues);
+    chartInstances.current.status = createBarChart(
       statusChartRef,
-      "Open vs Closed Issues",
+      "Issue Status",
       ["Open", "Closed"],
       [open, closed],
-      ["#1e4e8c", "#3d6ea8"]
+      ["#63b3ed", "#3182ce"]
     );
 
-    const facilities = ["Gym", "Pool", "Soccer Field", "Basketball Court"];
-    const availabilityData = facilities.map(facility => {
-      const related = issues.filter(i => i.relatedFacility === facility);
-      if (related.length === 0) return 100;
-      const openCount = related.filter(i => resolveStatus(i.issueStatus) === "Open").length;
-      return Math.max(0, 100 - (openCount / related.length) * 100);
-    });
-    chartInstances.current.availability = createPieChart(
+    // Availability Chart
+    const availabilityData = calculateFacilityAvailability(filteredIssues);
+    chartInstances.current.availability = createBarChart(
       availabilityChartRef,
-      "Availability of Facilities Based on Maintenance Issues",
-      facilities,
-      availabilityData,
-      ["#4caf50", "#43a047", "#388e3c", "#2e7d32"]
+      "Facility Availability",
+      availabilityData.map(item => item.facility),
+      availabilityData.map(item => item.availability),
+      ["#90cdf4", "#63b3ed", "#4299e1", "#3182ce"]
     );
-  }, [issues]);
+
+    // Priority Chart
+    const priorityCounts = getPriorityCounts(filteredIssues);
+    chartInstances.current.priority = createBarChart(
+      priorityChartRef,
+      "Issues by Priority",
+      ["High", "Medium", "Low"],
+      [priorityCounts.High, priorityCounts.Medium, priorityCounts.Low],
+      ["#3182ce", "#63b3ed", "#90cdf4"]
+    );
+
+    return cleanupCharts;
+  }, [filteredIssues, showGraphs]);
 
   const handleExportCSV = () => {
-    try {
-      exportToCsv(issues, "maintenance_report.csv");
-    } catch (err) {
-      console.error("CSV Export failed", err);
-    }
+    exportToCsv(filteredIssues, "maintenance_report.csv");
   };
 
   const handleExportPDF = async () => {
-    try {
-      const canvas = await html2canvas(document.getElementById("report-section"));
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
-      pdf.save("maintenance_report.pdf");
-    } catch (err) {
-      console.error("PDF Export failed", err);
-    }
+    const canvas = await html2canvas(document.getElementById("report-section"));
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("landscape");
+    pdf.addImage(imgData, "PNG", 10, 10, 280, 0);
+    pdf.save("maintenance_report.pdf");
   };
 
-  const { open, closed, total } = getStats(issues);
+  const { open, closed } = getStats(filteredIssues);
+  const priorityCounts = getPriorityCounts(filteredIssues);
 
   return (
     <main className="issues-page" id="report-section">
       <header className="usageTrends-header">
-        <h2>Maintenance Report: Filtered and Downloadable Maintenance</h2>
+        <h2>Maintenance Report Dashboard</h2>
       </header>
 
-      <section className="main-section">
-        <section className="left">
-          <section className="Stats-Heading">
-            <h2>Filter Logs</h2>
-          </section>
-
-          <section className="filter-section">
-            <label>
-              Status:
-              <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-                <option value="all">All</option>
-                <option value="open">Open</option>
-                <option value="closed">Closed</option>
-              </select>
-            </label>
-            <label>
-              Priority:
-              <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)}>
-                <option value="all">All</option>
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
-              </select>
-            </label>
-            <label>
-              Facility:
-              <select value={facilityFilter} onChange={(e) => setFacilityFilter(e.target.value)}>
-                <option value="all">All</option>
-                <option value="Soccer Field">Soccer Field</option>
-                <option value="Gym">Gym</option>
-                <option value="Pool">Pool</option>
-                <option value="Basketball Court">Basketball Court</option>
-              </select>
-            </label>
-          </section>
-
-          <section className="table-section">
-            <table className="log-table">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Status</th>
-                  <th>Priority</th>
-                  <th>Facility</th>
-                  <th>Location</th>
-                  <th>Reported</th>
-                </tr>
-              </thead>
-              <tbody>
-                {issues.map((issue) => (
-                  <tr key={issue.issueID} className="log-table-row">
-                    <td>{issue.issueTitle}</td>
-                    <td><mark className={`status-badge status-${issue.issueStatus}`}>{resolveStatus(issue.issueStatus)}</mark></td>
-                    <td><mark className={`priority-badge priority-${issue.priority}`}>{issue.priority}</mark></td>
-                    <td>{issue.relatedFacility}</td>
-                    <td>{issue.location}</td>
-                    <td>{new Date(issue.reportedAt).toLocaleDateString()}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </section>
-
-          <section className="Buttons">
-            <button className="export-btn csv-btn" onClick={handleExportCSV}>Download as CSV</button>
-            <button className="export-btn pdf-btn" onClick={handleExportPDF}>Download as PDF</button>
-          </section>
-        </section>
-
-        <section className="right">
-          <section className="Stats-Heading">
-            <h2>Monthly Statistics</h2>
-          </section>
-          <section className="summary-stats">
-            <article className="summary-card">Open: {open}</article>
-            <article className="summary-card">Closed: {closed}</article>
-            <article className="summary-card">Total: {total}</article>
-          </section>
-
-          <section className="PieCharts">
-            <figure className="chart-wrapper"><canvas ref={statusChartRef}></canvas></figure>
-            <figure className="chart-wrapper"><canvas ref={availabilityChartRef}></canvas></figure>
-          </section>
-        </section>
+      {/* Summary Cards - Horizontal Layout */}
+      <section className="summary-stats-horizontal">
+        <article className="summary-card-sm">
+          <h3>Total Issues</h3>
+          <p>{filteredIssues.length}</p>
+        </article>
+        <article className="summary-card-sm">
+          <h3>Open</h3>
+          <p>{open}</p>
+        </article>
+        <article className="summary-card-sm">
+          <h3>Closed</h3>
+          <p>{closed}</p>
+        </article>
+        <article className="summary-card-sm">
+          <h3>High Priority</h3>
+          <p>{priorityCounts.High}</p>
+        </article>
+        <article className="summary-card-sm">
+          <h3>Medium Priority</h3>
+          <p>{priorityCounts.Medium}</p>
+        </article>
+        <article className="summary-card-sm">
+          <h3>Low Priority</h3>
+          <p>{priorityCounts.Low}</p>
+        </article>
       </section>
+
+      {/* Filters Section */}
+      <section className="filter-section">
+        <label>
+          Status:
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+            <option value="all">All</option>
+            <option value="open">Open</option>
+            <option value="closed">Closed</option>
+          </select>
+        </label>
+        <label>
+          Priority:
+          <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)}>
+            <option value="all">All</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </label>
+        <label>
+          Facility:
+          <select value={facilityFilter} onChange={(e) => setFacilityFilter(e.target.value)}>
+            <option value="all">All</option>
+            <option value="Soccer Field">Soccer Field</option>
+            <option value="Gym">Gym</option>
+            <option value="Pool">Pool</option>
+            <option value="Basketball Court">Basketball Court</option>
+          </select>
+        </label>
+        <button className="apply-btn" onClick={applyFilters}>Apply Filters</button>
+        <button 
+          className="graph-btn" 
+          onClick={() => setShowGraphs(!showGraphs)}
+          disabled={filteredIssues.length === 0}
+        >
+          {showGraphs ? "Hide Graphs" : "Show Graphs"}
+        </button>
+      </section>
+
+      {/* Issues Table - Always Visible */}
+      <section className="table-section">
+        <div className="results-count">
+          Showing {filteredIssues.length} issue{filteredIssues.length !== 1 ? "s" : ""}
+        </div>
+        <table className="log-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Facility</th>
+              <th>Location</th>
+              <th>Reported</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredIssues.map((issue) => (
+              <tr key={issue.issueID} className="log-table-row">
+                <td>{issue.issueTitle}</td>
+                <td><mark className={`status-badge status-${issue.issueStatus}`}>{resolveStatus(issue.issueStatus)}</mark></td>
+                <td><mark className={`priority-badge priority-${issue.priority}`}>{issue.priority}</mark></td>
+                <td>{issue.relatedFacility}</td>
+                <td>{issue.location}</td>
+                <td>{new Date(issue.reportedAt).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      {/* Export Buttons */}
+      <section className="Buttons">
+        <button className="export-btn csv-btn" onClick={handleExportCSV}>Download as CSV</button>
+        <button className="export-btn pdf-btn" onClick={handleExportPDF}>Download as PDF</button>
+      </section>
+
+      {/* Graphs Section - Only shown when requested */}
+      {showGraphs && (
+        <section className="graphs-section">
+          <h2>Maintenance Analytics</h2>
+          <div className="bar-charts">
+            <figure className="chart-wrapper">
+              <canvas ref={statusChartRef}></canvas>
+            </figure>
+            <figure className="chart-wrapper">
+              <canvas ref={availabilityChartRef}></canvas>
+            </figure>
+            <figure className="chart-wrapper">
+              <canvas ref={priorityChartRef}></canvas>
+            </figure>
+          </div>
+        </section>
+      )}
     </main>
   );
 };
 
 export default MaintenanceReportPage;
-
