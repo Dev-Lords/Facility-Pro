@@ -4,6 +4,8 @@ import { FaTools, FaWrench } from "react-icons/fa";
 import { getAuth } from "firebase/auth";
 import "./logIssue.css";
 import { logFacilityEvent } from "../../../backend/services/logService";
+import SearchableLocationDropdown from "./SearchableLocationDropdown";
+
 
 export default function LogIssueForm() {
   const [formData, setFormData] = useState({
@@ -12,6 +14,7 @@ export default function LogIssueForm() {
     location: "",
     priority: "medium",
     category: "",
+    relatedFacility: "",
     images: [],
   });
 
@@ -55,6 +58,7 @@ export default function LogIssueForm() {
         location: formData.location,
         priority: formData.priority,
         category: formData.category,
+        relatedFacility: formData.relatedFacility,
         images: formData.images,
         reporter: currentUser.uid,
         reportedAt: new Date().toISOString()
@@ -69,6 +73,7 @@ export default function LogIssueForm() {
         location: "",
         priority: "medium",
         category: "",
+        relatedFacility: "",
         images: [],
       });
 
@@ -82,7 +87,8 @@ export default function LogIssueForm() {
         issueDescription: formData.issueDescription,
         location: formData.location,
         priority: formData.priority,
-        category: formData.category
+        category: formData.category,
+        relatedFacility: formData.relatedFacility,
       };
 
       logFacilityEvent("issue", formData.location, issueId, currentUser.uid, details);
@@ -97,31 +103,31 @@ export default function LogIssueForm() {
   };
 
   return (
-    <div className="issue-form-container">
-      <div className="issue-form">
-        <div className="form-image">
-          <div className="form-message-bounce">
+    <main className="issue-form-container">
+      <section className="issue-form">
+        <figure className="form-image">
+          <blockquote className="form-message-bounce">
             <p>Your comfort is our priority — we're working swiftly to resolve all issues.</p>
-          </div>
-          <div className="form-icon-stack">
+          </blockquote>
+          <figure className="form-icon-stack">
             <FaTools className="form-icon" />
             <FaWrench className="form-icon" />
-          </div>
-        </div>
+          </figure>
+        </figure>
 
         <form className="form-fields" onSubmit={handleSubmit}>
           <h2>Log an Issue</h2>
           
           {currentUser && (
-            <div className="user-info">
+            <aside className="user-info">
               <p>Submitting as: {currentUser.displayName || currentUser.email || currentUser.uid}</p>
-            </div>
+            </aside>
           )}
           
           {error && (
-            <div className="error-message">
+            <article className="error-message">
               <p>{error}</p>
-            </div>
+            </article>
           )}
 
           <label htmlFor="issueTitle">Issue Title</label>
@@ -144,15 +150,12 @@ export default function LogIssueForm() {
             required
           />
 
-          <label htmlFor="location">Location</label>
-          <input
-            id="location"
-            name="location"
-            placeholder="e.g. Second Floor Restroom"
-            onChange={handleChange}
-            value={formData.location}
-            required
-          />
+         <SearchableLocationDropdown
+             value={formData.location}
+             onChange={(selectedLocation) =>
+            setFormData((prev) => ({ ...prev, location: selectedLocation }))
+          }
+        />
 
           <label htmlFor="category">Category</label>
           <select
@@ -172,6 +175,22 @@ export default function LogIssueForm() {
             <option value="Garden & outdoor areas">Garden & outdoor areas</option>
             <option value="General">General</option>
           </select>
+          
+          <label htmlFor="relatedFacility">Related Facility</label>
+          <select
+            id="relatedFacility"
+            name="relatedFacility"
+            value={formData.relatedFacility}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Related Facility</option>
+            <option value="Soccer Field">Soccer Field</option>
+            <option value="Gym">Gym</option>
+            <option value="Pool">Pool</option>
+            <option value="Basketball Court">Basketball Court</option>
+            <option value="Not Applicable">Not Applicable</option>
+            </select>
 
           <label htmlFor="priority">Priority</label>
           <select
@@ -201,21 +220,21 @@ export default function LogIssueForm() {
           </button>
           
           {!currentUser && (
-            <p className="login-warning">You must be logged in to submit an issue</p>
+            <footer className="login-warning">You must be logged in to submit an issue</footer>
           )}
         </form>
-      </div>
+      </section>
 
       {showSuccessMessage && (
-        <div className="success-popup">
-          <div className="popup-content">
+        <dialog open className="success-popup">
+          <article className="popup-content">
             <h3>Your issue was submitted successfully!</h3>
             <p>Thank you for your feedback. We'll address your issue as soon as possible.</p>
             {submittedIssueId && <p>Issue ID: {submittedIssueId}</p>}
             <button onClick={() => setShowSuccessMessage(false)}>Close</button>
-          </div>
-        </div>
+          </article>
+        </dialog>
       )}
-    </div>
+    </main>
   );
 }

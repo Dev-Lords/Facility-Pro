@@ -42,7 +42,7 @@ export default function ReportsDashboard() {
           <button className="btn reports-btn" onClick={() => handleNavigate("/usage-trends")}>Generate Report</button>
         </article>
         
-        <article className="dashboard-card reports-card">
+        <article className="dashboard-card reports-card">   
           <section className="card-icon"><FaFileAlt /></section>
           <h2>Maintenance Reports</h2>
           <p>View open vs. closed maintenance tickets and track resolution status.</p>

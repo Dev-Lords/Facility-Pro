@@ -302,9 +302,35 @@
   .form-message-bounce p {
     font-size: 0.95rem;
   }
-
   
 }
+
+/* Facility Dropdown Enhancements */
+.issue-form select[name="relatedFacility"] {
+  background-color: #ffffff;
+  border: 1px solid #003366;
+  border-radius: 10px;
+  color: #003366;
+  font-size: 1rem;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.issue-form select[name="relatedFacility"] option {
+  background-color: #ffffff;
+  color: #003366;
+  font-weight: 500;
+}
+
+/* Label enhancements for clarity */
+.issue-form label[for="relatedFacility"] {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  display: block;
+  color: #003366;
+}
+
 
 
 
