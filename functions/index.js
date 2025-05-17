@@ -297,7 +297,7 @@ exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (eve
 
 
 
-//sending booking notification
+//sending booking notification after review
 
  exports.sendBookingNotification = onDocumentUpdated('bookings/{bookingID}', async (booking) => {
     const before = booking.data.before.data();
@@ -306,7 +306,6 @@ exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (eve
     // Log to confirm if the function is triggered
     console.log('Function triggered!');
 
-    // Only trigger when status has changed
     if (before.status === after.status) {
       console.log('Status did not change. No email sent.');
       return;
@@ -317,7 +316,7 @@ exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (eve
     const status=after.status; 
 
     try {
-
+      //getting user email from the user id
       const userSnap = await admin.firestore().collection('users').doc(userId).get();
       if (!userSnap.exists) {
         console.error('User not found! No email sent.');
@@ -326,25 +325,47 @@ exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (eve
 
       const userEmail = userSnap.data().email;
 
+      //getting the timeslots for the email info:
+      const timeslots = Booking.bookedSlots.map((slot) => {
+        const startHour = slot;
+        const endHour = slot + 1;
+        const startTime = startHour > 12 ? `${startHour - 12}pm` : `${startHour}am`;
+        const endTime = endHour > 12 ? `${endHour - 12}pm` : `${endHour}am`;
+        return `<li>${startTime}-${endTime}</li>`;;
+      }).join('');  
+
       let emailBody = `
-        <p style="font-size: 16px;">Dear Resident,</p>
-        <p style="font-size: 16px;">Your booking has been <strong style="text-transform: capitalize;">${Booking.status}</strong>.</p>
-        <section style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <p><strong>Facility:</strong> ${Booking.facilityID}</p>
-          <p><strong>Date:</strong> ${Booking.date}</p>
-        </section>
       `;
 
       if (status.toLowerCase() === 'approved') {
         emailBody += `
-          <section style="background-color: #e0f7e9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #4CAF50; margin-top: 0;">Check-in Code</h3>
-            <p style="font-size: 16px;">${checkInCode}</p>
-          </section>
-          <p style="font-size: 14px;">Please present this code when you arrive at the facility.</p>
+        <p style="font-size: 16px;">Dear Resident,</p>
+        <p style="font-size: 16px;">Your booking has been <strong style="text-transform: capitalize;">${Booking.status}</strong>.</p>
+        <section style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <p><strong>Facility:</strong> ${Booking.facilityID.charAt(0).toUpperCase() + Booking.facilityID.slice(1)}</p>
+          <p><strong>Date:</strong> ${Booking.date}</p>
+          <p><strong>Timeslots:</strong></p>
+          <ul style="font-size: 16px; list-style-type: disc; padding-left: 20px;">${timeslots}</ul>
+        </section>
+        <section style="background-color: #e0f7e9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #4CAF50; margin-top: 0;">Check-in Code: ${checkInCode}</h3>
+            <p style="font-size: 10px;">Please present this code when you arrive at the facility.</p>
+        </section>
         `;
+        
       } else if (status.toLowerCase() === 'declined') {
-        emailBody += `<p style="font-size: 14px;">Unfortunately, your booking could not be accommodated at this time.</p>`;
+        emailBody += `
+        <p style="font-size: 16px;">Dear Resident,</p>
+        <p style="font-size: 16px;">Your booking has been <strong style="text-transform: capitalize;">${Booking.status}</strong>.</p>
+        <p style="font-size: 14px;">Unfortunately, your booking could not be accommodated at this time.</p> 
+        <section style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <p><strong>Facility:</strong> ${Booking.facilityID.charAt(0).toUpperCase() + Booking.facilityID.slice(1)}</p>
+          <p><strong>Date:</strong> ${Booking.date}</p>
+          <p><strong>Timeslots:</strong></p>
+          <ul style="font-size: 16px; list-style-type: disc; padding-left: 20px;">${timeslots}</ul>
+        </section>
+        `;
+        
       }
 
       emailBody += `

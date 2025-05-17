@@ -21,10 +21,10 @@ import CreateEvents from "./components/admin/CreateEvent.jsx";
 import UsageTrends from "./components/admin/UsageTrends.jsx";
 import Bookings from "./components/admin/Bookings.jsx";
 import ReportsDashboard from "./components/admin/GenerateReports.jsx";
+
 import MaintenanceReportPage from "./components/admin/MaintenanceReportPage.jsx";
 
-
-
+import CustomView from "./components/admin/CustomView.jsx";
 
 function App() {
   return (
@@ -49,7 +49,10 @@ function App() {
         <Route path="/usage-trends" element={<UsageTrends />} />
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/reports" element={<ReportsDashboard />} />
+
         <Route path="/maintenance-reports" element={<MaintenanceReportPage />} />
+
+        <Route path="/custom-reports" element={<CustomView />} />
 
       </Routes>
     </Router>
