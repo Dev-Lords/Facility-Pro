@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { fetchFilteredIssues, getStats, resolveStatus, exportToCsv } from "../../../backend/services/MaintenanceReportService";
-import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { Chart } from "chart.js/auto";
 import "./MaintenanceReport.css";
 
@@ -17,7 +17,6 @@ const MaintenanceReportPage = () => {
   const priorityChartRef = useRef(null);
   const chartInstances = useRef({});
 
-  // Load all data initially
   useEffect(() => {
     const loadData = async () => {
       const data = await fetchFilteredIssues("all", "all", "all");
@@ -27,14 +26,12 @@ const MaintenanceReportPage = () => {
     loadData();
   }, []);
 
-  // Apply filters
   const applyFilters = async () => {
     const data = await fetchFilteredIssues(statusFilter, facilityFilter, priorityFilter);
     setFilteredIssues(data);
     setShowGraphs(false);
   };
 
-  // ✅ FIXED: Calculate priority counts (case-insensitive)
   const getPriorityCounts = (issues) => {
     return {
       High: issues.filter(issue => issue.priority?.toLowerCase() === "high").length,
@@ -43,7 +40,6 @@ const MaintenanceReportPage = () => {
     };
   };
 
-  // Calculate facility availability
   const calculateFacilityAvailability = (issues) => {
     const facilities = ["Gym", "Pool", "Soccer Field", "Basketball Court"];
     return facilities.map(facility => {
@@ -59,7 +55,6 @@ const MaintenanceReportPage = () => {
     });
   };
 
-  // Initialize/update charts when showGraphs is true
   useEffect(() => {
     if (!showGraphs || filteredIssues.length === 0) return;
 
@@ -86,37 +81,23 @@ const MaintenanceReportPage = () => {
         options: {
           responsive: true,
           plugins: {
-            legend: {
-              display: false
-            },
+            legend: { display: false },
             title: {
               display: true,
               text: title,
-              font: {
-                size: 16,
-                weight: "bold"
-              }
+              font: { size: 16, weight: "bold" }
             },
             tooltip: {
               callbacks: {
-                label: function(context) {
+                label: function (context) {
                   return `${context.raw}`;
                 }
               }
             }
           },
           scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: "rgba(0,0,0,0.05)"
-              }
-            },
-            x: {
-              grid: {
-                display: false
-              }
-            }
+            y: { beginAtZero: true, grid: { color: "rgba(0,0,0,0.05)" } },
+            x: { grid: { display: false } }
           }
         }
       });
@@ -148,12 +129,50 @@ const MaintenanceReportPage = () => {
     exportToCsv(filteredIssues, "maintenance_report.csv");
   };
 
-  const handleExportPDF = async () => {
-    const canvas = await html2canvas(document.getElementById("report-section"));
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("landscape");
-    pdf.addImage(imgData, "PNG", 10, 10, 280, 0);
-    pdf.save("maintenance_report.pdf");
+  const handleExportPDF = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text("Maintenance Report", 14, 20);
+
+    const { open, closed, priorityCounts } = getStats(filteredIssues);
+
+    const summaryLines = [
+      `Total Issues: ${filteredIssues.length}`,
+      `Open: ${open}   Closed: ${closed}`,
+      `High: ${priorityCounts.High}   Medium: ${priorityCounts.Medium}   Low: ${priorityCounts.Low}`
+    ];
+
+    summaryLines.forEach((line, index) => {
+      doc.setFontSize(12);
+      doc.text(line, 14, 30 + index * 8);
+    });
+
+    const headers = [["Title", "Status", "Priority", "Facility", "Location", "Reported"]];
+    const rows = filteredIssues.map(issue => [
+      issue.issueTitle,
+      resolveStatus(issue.issueStatus),
+      issue.priority || "Unspecified",
+      issue.relatedFacility || "N/A",
+      issue.location || "N/A",
+      issue.reportedAt ? new Date(issue.reportedAt).toLocaleDateString() : "N/A"
+    ]);
+
+    autoTable(doc, {
+      startY: 60,
+      head: headers,
+      body: rows,
+      styles: {
+        fontSize: 10,
+        cellPadding: 3,
+      },
+      headStyles: {
+        fillColor: [49, 130, 206],
+        textColor: 255,
+        fontStyle: 'bold',
+      },
+    });
+
+    doc.save("maintenance_report.pdf");
   };
 
   const { open, closed } = getStats(filteredIssues);
@@ -166,7 +185,6 @@ const MaintenanceReportPage = () => {
         <h2>Maintenance Report Dashboard</h2>
       </header>
 
-      {/* Summary Cards - Horizontal */}
       <section className="summary-stats-horizontal">
         <article className="summary-card-sm"><h3>Total Issues</h3><p>{filteredIssues.length}</p></article>
         <article className="summary-card-sm"><h3>Open</h3><p>{open}</p></article>
@@ -176,24 +194,22 @@ const MaintenanceReportPage = () => {
         <article className="summary-card-sm"><h3>Low Priority</h3><p>{priorityCounts.Low}</p></article>
       </section>
 
-      {/* Facility Availability Cards */}
       <section className="facility-availability">
         <h3>Facility Availability</h3>
-        <div className="facility-cards">
+        <section className="facility-cards">
           {facilityAvailability.map((facility) => (
-            <div 
+            <article 
               key={facility.facility} 
               className={`facility-card ${facility.status.toLowerCase()}`}
             >
               <h4>{facility.facility}</h4>
               <p className="percentage">{facility.availability}%</p>
               <p className="status">{facility.status}</p>
-            </div>
+            </article>
           ))}
-        </div>
+        </section>
       </section>
 
-      {/* Filters Section */}
       <section className="filter-section">
         <label>
           Status:
@@ -232,11 +248,10 @@ const MaintenanceReportPage = () => {
         </button>
       </section>
 
-      {/* Issues Table */}
       <section className="table-section">
-        <div className="results-count">
+        <p className="results-count">
           Showing {filteredIssues.length} issue{filteredIssues.length !== 1 ? "s" : ""}
-        </div>
+        </p>
         <table className="log-table">
           <thead>
             <tr>
@@ -263,24 +278,22 @@ const MaintenanceReportPage = () => {
         </table>
       </section>
 
-      {/* Export Buttons */}
       <section className="Buttons">
         <button className="export-btn csv-btn" onClick={handleExportCSV}>Download as CSV</button>
         <button className="export-btn pdf-btn" onClick={handleExportPDF}>Download as PDF</button>
       </section>
 
-      {/* Graphs */}
       {showGraphs && (
         <section className="graphs-section">
           <h2>Maintenance Analytics</h2>
-          <div className="bar-charts">
+          <section className="bar-charts">
             <figure className="chart-wrapper">
               <canvas ref={statusChartRef}></canvas>
             </figure>
             <figure className="chart-wrapper">
               <canvas ref={priorityChartRef}></canvas>
             </figure>
-          </div>
+          </section>
         </section>
       )}
     </main>
