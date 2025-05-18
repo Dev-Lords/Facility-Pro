@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './CalendarPage.css';
 import { fetchAvailableNumericSlots ,createBooking,validBooking} from "./../../../backend/services/bookingService";
+import { getFunctions, httpsCallable } from "firebase/functions";
+import { app } from "../../../backend/firebase/firebase.config.js";
+const functions = getFunctions(app);
+const callFetchAvailableNumericSlots = httpsCallable(functions, "fetchAvailableNumericSlots");
 
 const convertToTimeSlots = (hours) => {
   const convertToTimeSlot = (hour) => {

@@ -9,8 +9,9 @@ const { onDocumentUpdated } = require('firebase-functions/firestore');
 
 
 
-admin.initializeApp();
 
+admin.initializeApp();
+const db = admin.firestore();
 const app = express();
 app.use(cors({
     origin: [
@@ -388,5 +389,103 @@ exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (eve
     }
   });
   
+
+
+exports.fetchAvailableNumericSlots = functions.https.onCall(async (data, context) => {
+
+  const { facilityId, selectedDate } = data;
+  
+  // Validate required parameters
+  if (!facilityId || !selectedDate) {
+    throw new functions.https.HttpsError(
+      'invalid-argument',
+      'The function must be called with facilityId and selectedDate arguments.'
+    );
+  }
+
+  try {
+    console.log("Function called with facilityId:", facilityId, "and selectedDate:", selectedDate);
+    
+    // First, query for the facility document where facilityID matches the passed parameter
+    const facilitiesRef = db.collection("facilities");
+    const facilityQuery = facilitiesRef.where("facilityID", "==", facilityId);
+    const facilityQuerySnapshot = await facilityQuery.get();
+    
+    if (facilityQuerySnapshot.empty) {
+      console.log("Facility not found with facilityID:", facilityId);
+      return [];
+    }
+    
+    const facilityDoc = facilityQuerySnapshot.docs[0];
+    const facilityData = facilityDoc.data();
+    const allSlots = facilityData.slots || [];
+    console.log("All slots from facility:", allSlots);
+
+    // Format the date consistently
+    let formattedDate = selectedDate;
+    if (selectedDate instanceof Date) {
+      formattedDate = selectedDate.toISOString().split('T')[0]; // format: "YYYY-MM-DD"
+    }
+    console.log("Formatted date for query:", formattedDate);
+    
+    // Query for bookings with matching facilityID and date
+    const bookingsRef = db.collection("bookings");
+    const q = bookingsRef
+      .where("facilityID", "==", facilityId)
+      .where("date", "==", formattedDate);
+    
+    const bookingSnap = await q.get();
+    console.log("Booking snapshot size:", bookingSnap.size);
+    console.log("Number of booking documents found:", bookingSnap.size);
+    
+    // If no bookings exist for the selected date, return all available slots
+    if (bookingSnap.empty) {
+      console.log("No bookings found for this date and facility. All slots are available.");
+      return allSlots;
+    }
+    
+    let takenSlots = [];
+    bookingSnap.forEach(doc => {
+      const data = doc.data();
+      console.log("Booking document ID:", doc.id);
+      console.log("Booking facilityID:", data.facilityID);
+      console.log("Booking date:", data.date);
+      
+      if (Array.isArray(data.bookedSlots)) {
+        console.log("Booked slots in this document:", data.bookedSlots);
+        takenSlots = [...takenSlots, ...data.bookedSlots];
+      } else {
+        console.warn("WARNING: Document", doc.id, "has no bookedSlots array");
+      }
+    });
+    
+    console.log("Combined taken slots:", takenSlots);
+    
+    const uniqueTakenSlots = [...new Set(takenSlots)];
+    console.log("Unique taken slots:", uniqueTakenSlots);
+    
+    const takenSlotsAsNumbers = uniqueTakenSlots.map(slot => Number(slot));
+    const allSlotsAsNumbers = allSlots.map(slot => Number(slot));
+    
+    console.log("Taken slots as numbers:", takenSlotsAsNumbers);
+    console.log("All slots as numbers:", allSlotsAsNumbers);
+    
+    const availableSlots = allSlotsAsNumbers.filter(slot => !takenSlotsAsNumbers.includes(slot));
+    console.log("Final available slots:", availableSlots);
+    
+    return availableSlots;
+  } catch (error) {
+    console.error("Error fetching available numeric slots:", error);
+    console.error("Error stack:", error.stack);
+    
+    // Properly throw an HTTPS error for Firebase Callable functions
+    throw new functions.https.HttpsError(
+      'internal',
+      'Error fetching available slots',
+      error.message
+    );
+  }
+});
+ 
 
 exports.api = functions.https.onRequest(app); 
