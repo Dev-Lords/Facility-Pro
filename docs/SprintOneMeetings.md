@@ -8,8 +8,9 @@
 
 > Platform: In person.  
 
-> Attendees: Austin, Amahle, Thembu, Lindiwe, Phumla, Tawana, Chloe.  
+> Attendees: All Team Members.  
 
+### Key Discussion Points
 
 1. Met and discussed basic project admin with Tutor
 
@@ -25,6 +26,7 @@
 4. Decided group members will collaborate to set up GitHub repository
 
 5. Discussed how different types of user roles will be created and managed
+
 6. Decided Facility Staff wil and Admin profiles will be created internally, and new users may only sign up as residents.
 
 7. Decided that anyone who wants to book register as a resident.
