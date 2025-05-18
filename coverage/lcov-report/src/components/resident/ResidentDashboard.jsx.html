@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.66% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/12</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.66% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/12</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -135,20 +135,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -168,21 +168,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -199,21 +199,21 @@ import { useNavigate } from "react-router-dom";
 import { Navigate } from 'react-router-dom';
 import { FaHome, FaCalendar, FaExclamationTriangle, FaCalendarCheck } from 'react-icons/fa';
 &nbsp;
-export default function ResidentPortal() {
-    const token = localStorage.getItem('authToken');
-    const userType = localStorage.getItem('userType');
-    const isAuthenticated = token &amp;&amp; userType === 'resident';
-    const navigate = useNavigate();
+export default function <span class="fstat-no" title="function not covered" >ResidentPortal(</span>) {
+    const token = <span class="cstat-no" title="statement not covered" >localStorage.getItem('authToken');</span>
+    const userType = <span class="cstat-no" title="statement not covered" >localStorage.getItem('userType');</span>
+    const isAuthenticated = <span class="cstat-no" title="statement not covered" >token &amp;&amp; userType === 'resident';</span>
+    const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
     
-    const handleNavigate = (path) =&gt; {
-      navigate(path);
+    const handleNavigate = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>ath) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      navigate(path);</span>
     };
 &nbsp;
-  	<span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated) {
+<span class="cstat-no" title="statement not covered" >  	if (!isAuthenticated) {</span>
 <span class="cstat-no" title="statement not covered" >    	return &lt;Navigate to="/" replace /&gt;;</span>
   	}
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;main className="container"&gt;
       &lt;header className="header"&gt;
         &lt;section className="header-content"&gt;
@@ -233,21 +233,21 @@ export default function ResidentPortal() {
           &lt;section className="card-icon"&gt;&lt;FaCalendarCheck /&gt;&lt;/section&gt;
           &lt;h2&gt;Book Facilities&lt;/h2&gt;
           &lt;p&gt;Reserve community spaces like the gym, pool, or meeting rooms.&lt;/p&gt;
-          &lt;button className="btn btn-facilities" onClick={() =&gt; handleNavigate("/Facility-selection")}&gt;Book Now&lt;/button&gt;
+          &lt;button className="btn btn-facilities" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate("/Facility-selection")}</span>&gt;Book Now&lt;/button&gt;
         &lt;/article&gt;
 &nbsp;
         &lt;article className="card card-events"&gt;
           &lt;section className="card-icon"&gt;&lt;FaCalendar /&gt;&lt;/section&gt;
           &lt;h2&gt;View Events&lt;/h2&gt;
           &lt;p&gt;Stay updated on community gatherings, meetings, and activities.&lt;/p&gt;
-          &lt;button className="btn btn-events" onClick={() =&gt; handleNavigate("/calendar")}&gt;See Calendar&lt;/button&gt;
+          &lt;button className="btn btn-events" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate("/calendar")}</span>&gt;See Calendar&lt;/button&gt;
         &lt;/article&gt;
 &nbsp;
         &lt;article className="card card-issues"&gt;
           &lt;section className="card-icon"&gt;&lt;FaExclamationTriangle/&gt;&lt;/section&gt;
           &lt;h2&gt;Report Issues&lt;/h2&gt;
           &lt;p&gt;Submit maintenance requests or report problems in common areas.&lt;/p&gt;
-          &lt;button onClick={() =&gt; navigate("/issue-menu")} className="btn btn-issues"&gt;Report Problem&lt;/button&gt;
+          &lt;button onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >navigate("/issue-menu")}</span> className="btn btn-issues"&gt;Report Problem&lt;/button&gt;
 &nbsp;
         &lt;/article&gt;
       &lt;/section&gt;
@@ -265,7 +265,7 @@ export default function ResidentPortal() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-18T14:18:11.433Z
+                at 2025-05-18T13:14:40.052Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

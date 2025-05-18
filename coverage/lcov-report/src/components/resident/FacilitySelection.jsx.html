@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.11% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/17</span>
+                <span class='fraction'>0/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.3% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/13</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -141,20 +141,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -173,7 +173,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -181,7 +181,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -189,14 +189,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -212,21 +212,21 @@ import './FacilitySelection.css';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { FaUser, FaSwimmer, FaDumbbell, FaFutbol, FaBasketballBall } from 'react-icons/fa';
 &nbsp;
-export default function FacilitiesPage() {
-  const token = localStorage.getItem('authToken');
-  const userType = localStorage.getItem('userType');
-  const isAuthenticated = token &amp;&amp; userType === 'resident';
-  const navigate = useNavigate();
+export default function <span class="fstat-no" title="function not covered" >FacilitiesPage(</span>) {
+  const token = <span class="cstat-no" title="statement not covered" >localStorage.getItem('authToken');</span>
+  const userType = <span class="cstat-no" title="statement not covered" >localStorage.getItem('userType');</span>
+  const isAuthenticated = <span class="cstat-no" title="statement not covered" >token &amp;&amp; userType === 'resident';</span>
+  const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
 &nbsp;
-  const handleNavigate = (path) =&gt; {
-    navigate(path);
+  const handleNavigate = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>ath) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    navigate(path);</span>
   };
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated) {
+<span class="cstat-no" title="statement not covered" >  if (!isAuthenticated) {</span>
 <span class="cstat-no" title="statement not covered" >    return &lt;Navigate to="/" replace /&gt;;</span>
   }
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;main className="container"&gt;
       
       &lt;header className="header"&gt;
@@ -245,7 +245,7 @@ export default function FacilitiesPage() {
           &lt;section className="card-icon"&gt;&lt;FaSwimmer /&gt;&lt;/section&gt;
           &lt;h2&gt;Swimming Pool&lt;/h2&gt;
           &lt;p&gt;Cool off and relax in our clean, well-maintained swimming pool.&lt;/p&gt;
-          &lt;button className="btn btn-issues" onClick={() =&gt; {sessionStorage.setItem("facility", "pool");handleNavigate("/calendar")}
+          &lt;button className="btn btn-issues" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; {<span class="cstat-no" title="statement not covered" >sessionStorage.setItem("facility", "pool");<span class="cstat-no" title="statement not covered" >h</span>andleNavigate("/calendar")}</span>
           }&gt;Book Now&lt;/button&gt;
         &lt;/article&gt;
 &nbsp;
@@ -253,7 +253,7 @@ export default function FacilitiesPage() {
           &lt;section className="card-icon"&gt;&lt;FaDumbbell /&gt;&lt;/section&gt;
           &lt;h2&gt;Gym&lt;/h2&gt;
           &lt;p&gt;Stay fit and healthy with our state-of-the-art gym equipment.&lt;/p&gt;
-          &lt;button className="btn btn-issues" onClick={() =&gt; {sessionStorage.setItem("facility", "gym");handleNavigate("/calendar")}
+          &lt;button className="btn btn-issues" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; {<span class="cstat-no" title="statement not covered" >sessionStorage.setItem("facility", "gym");<span class="cstat-no" title="statement not covered" >h</span>andleNavigate("/calendar")}</span>
           }&gt;Book Now&lt;/button&gt;
         &lt;/article&gt;
 &nbsp;
@@ -261,14 +261,14 @@ export default function FacilitiesPage() {
           &lt;section className="card-icon"&gt;&lt;FaFutbol /&gt;&lt;/section&gt;
           &lt;h2&gt;Soccer Field&lt;/h2&gt;
           &lt;p&gt;Enjoy a friendly game or practice your skills on the soccer field.&lt;/p&gt;
-          &lt;button className="btn btn-issues" onClick={() =&gt;{sessionStorage.setItem("facility", "soccer"); handleNavigate("/calendar")}}&gt;Book Now&lt;/button&gt;
+          &lt;button className="btn btn-issues" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt;{<span class="cstat-no" title="statement not covered" >sessionStorage.setItem("facility", "soccer"); <span class="cstat-no" title="statement not covered" ></span>handleNavigate("/calendar")}</span>}&gt;Book Now&lt;/button&gt;
         &lt;/article&gt;
 &nbsp;
         &lt;article className="card card-basketball"&gt;
           &lt;section className="card-icon"&gt;&lt;FaBasketballBall /&gt;&lt;/section&gt;
           &lt;h2&gt;Basketball Court&lt;/h2&gt;
           &lt;p&gt;Shoot some hoops or challenge friends to a game of basketball.&lt;/p&gt;
-          &lt;button className="btn btn-issues" onClick={() =&gt; {sessionStorage.setItem("facility", "basketball");handleNavigate("/calendar")}}&gt;Book Now&lt;/button&gt;
+          &lt;button className="btn btn-issues" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; {<span class="cstat-no" title="statement not covered" >sessionStorage.setItem("facility", "basketball");<span class="cstat-no" title="statement not covered" >h</span>andleNavigate("/calendar")}</span>}&gt;Book Now&lt;/button&gt;
         &lt;/article&gt;
 &nbsp;
       &lt;/section&gt;
@@ -286,7 +286,7 @@ export default function FacilitiesPage() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-18T14:18:11.433Z
+                at 2025-05-18T13:14:40.052Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

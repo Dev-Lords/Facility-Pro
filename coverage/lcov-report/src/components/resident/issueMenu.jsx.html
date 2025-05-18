@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.3% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/13</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.3% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/13</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -144,20 +144,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,7 +187,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -196,7 +196,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -217,21 +217,21 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import { FaWrench, FaExclamationTriangle, FaHistory, FaFutbol, FaBasketballBall } from 'react-icons/fa';
 &nbsp;
 &nbsp;
-export default function IssueMenu(){
-  const token = localStorage.getItem('authToken');
-  const userType = localStorage.getItem('userType');
-  const isAuthenticated = token &amp;&amp; userType === 'resident';
-  const navigate = useNavigate();   
+export default function <span class="fstat-no" title="function not covered" >IssueMenu(</span>){
+  const token = <span class="cstat-no" title="statement not covered" >localStorage.getItem('authToken');</span>
+  const userType = <span class="cstat-no" title="statement not covered" >localStorage.getItem('userType');</span>
+  const isAuthenticated = <span class="cstat-no" title="statement not covered" >token &amp;&amp; userType === 'resident';</span>
+  const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();   </span>
 &nbsp;
-  const handleNavigate = (path) =&gt; {
-    console.log(`Navigating to ${path}`);
-    navigate(path);
+  const handleNavigate = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>ath) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    console.log(`Navigating to ${path}`);</span>
+<span class="cstat-no" title="statement not covered" >    navigate(path);</span>
   };
-  if (!isAuthenticated) {
-    return &lt;Navigate to="/" replace /&gt;;
+<span class="cstat-no" title="statement not covered" >  if (!isAuthenticated) {</span>
+<span class="cstat-no" title="statement not covered" >    return &lt;Navigate to="/" replace /&gt;;</span>
   }
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;main className="container"&gt;
       &lt;header className="header"&gt;
         &lt;section className="header-content"&gt;
@@ -261,7 +261,7 @@ export default function IssueMenu(){
           &lt;section className="card-icon"&gt;&lt;FaExclamationTriangle/&gt;&lt;/section&gt;
           &lt;h2&gt;Log New Issue&lt;/h2&gt;
           &lt;p&gt; Report a maintenance problem or facility issue that needs attention.&lt;/p&gt;
-          &lt;button className="btn btn-issues" onClick={() =&gt; handleNavigate('/log-issue')}&gt;
+          &lt;button className="btn btn-issues" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/log-issue')}</span>&gt;
             Log Issue
           &lt;/button&gt;
         &lt;/article&gt;
@@ -270,7 +270,7 @@ export default function IssueMenu(){
           &lt;section className="card-icon"&gt;&lt;FaHistory/&gt;&lt;/section&gt;
           &lt;h2 className="card-title"&gt;Track Issue History&lt;/h2&gt;
           &lt;p className="card-description"&gt;View status and history of your previously reported issues.&lt;/p&gt;
-          &lt;button className="btn btn-issues" onClick={() =&gt; handleNavigate('/issue-history')}&gt;
+          &lt;button className="btn btn-issues" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/issue-history')}</span>&gt;
             View History
           &lt;/button&gt;
         &lt;/article&gt;
@@ -292,7 +292,7 @@ export default function IssueMenu(){
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-18T14:18:11.433Z
+                at 2025-05-18T13:14:40.052Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

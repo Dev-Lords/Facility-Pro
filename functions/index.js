@@ -20,6 +20,24 @@ app.use(cors({
 }));
 app.use(express.json());
 
+
+//Fetching all users (Get- getting a file)
+app.get('/get-all-users', async (req, res) => {
+  try {
+    const usersSnapshot = await admin.firestore().collection('users').orderBy('displayName').get();
+    const users = usersSnapshot.docs.map(doc => ({
+      uid: doc.id,
+      ...doc.data()
+    }));
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error getting users:', error);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
+
+
+//Creating a user account (Post-sending information)
 app.post('/create-account', async (req, res) => {
   const { email, password, displayName, user_type } = req.body;
   
@@ -69,6 +87,7 @@ app.post('/create-account', async (req, res) => {
 });
 
 
+//Deleting a user (Delete-deleting a database file)
 app.delete('/delete-account/:uid',async(req,res)=>{
   const {uid} = req.params;
   if (!uid) {
@@ -94,6 +113,37 @@ app.delete('/delete-account/:uid',async(req,res)=>{
 }
 )
 
+
+//Updating a user (Patch-changing only an attribute)
+app.patch('/update-user-type', async (req, res) => {
+  const { uid, newType } = req.body;
+
+  if (!uid || !newType) {
+    return res.status(400).json({ error: 'Missing uid or newType' });
+  }
+  try {
+    const userRef = admin.firestore().collection('users').doc(uid);
+    await userRef.set(
+      {
+        user_type: newType,
+        updatedAt: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+
+    res.status(200).json({ message: 'User type updated successfully' });
+  } catch (error) {
+    console.error('Error updating user type:', error);
+    res.status(500).json({ error: 'Failed to update user type' });
+  }
+});
+
+
+
+
+
+
+//EMAIL NOTIFICATIONS
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -102,6 +152,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+//Sending event notifications
 exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (event) => {
   const snap = event.data;
   const eventData = snap.data();
@@ -175,9 +226,7 @@ exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (eve
   });
 
 
-  /* Cloud Function that triggers when an issue is updated in Firestore
-  * Sends email notification to the issue owner with updated status and priority
-  */
+  //Sending maintenance update notifications
  exports.sendIssueUpdateNotification = onDocumentUpdated('issues/{issueId}', async (issue) => {
    // Get the data before and after the update
    const beforeData = issue.data.before.data();
@@ -297,7 +346,7 @@ exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (eve
 
 
 
-//sending booking notification after review
+//Sending booking updates notifications
 
  exports.sendBookingNotification = onDocumentUpdated('bookings/{bookingID}', async (booking) => {
     const before = booking.data.before.data();
