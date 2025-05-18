@@ -30,6 +30,9 @@ export default function ResidentPortal() {
         </section>
       </header>
 
+
+      
+
       <section className="card-grid">
         <article className="card card-facilities">
           <section className="card-icon"><FaCalendarCheck /></section>

@@ -208,10 +208,14 @@ Next meeting: 1 May 2025.
 Next Meeting: 2 May 2025
 
 ## 2 May 2025
-Date: 2 May 2025.
-Time: 19:30.
-Platform: Microsoft Teams.
-Attendees: All Team Members.
+
+> Date: 2 May 2025.
+
+> Time: 19:30.
+
+> Platform: Microsoft Teams.
+
+> Attendees: All Team Members.
 
 ### Agenda:
 
@@ -249,10 +253,14 @@ Attendees: All Team Members.
 Next Meeting: 4 May 2025
 
 ### 4 May 2025
-Date: 4 May 2025.
-Time: 18:30.
-Platform: Microsoft Teams.
-Attendees: All Team Members.
+
+> Date: 4 May 2025.
+
+> Time: 18:30.
+
+> Platform: Microsoft Teams.
+
+> Attendees: All Team Members.
 
 ### Agenda:
 

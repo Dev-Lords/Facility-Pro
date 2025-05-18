@@ -4,6 +4,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CalendarPage from '../components/resident/CalendarPage.jsx';
 import * as bookingService from './../../backend/services/bookingService';
 import '@testing-library/jest-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 jest.mock('./../../backend/services/bookingService');
 
@@ -17,7 +18,7 @@ describe('CalendarPage', () => {
   });
 
   test('renders calendar with correct headers', () => {
-    render(<CalendarPage />);
+    render(<Router><CalendarPage/></Router>);
     expect(screen.getByText(/Facility Booking Calendar/i)).toBeInTheDocument();
     expect(screen.getByText(/Select a date to book/i)).toBeInTheDocument();
     expect(screen.getByText(/Sun/i)).toBeInTheDocument();
@@ -27,7 +28,7 @@ describe('CalendarPage', () => {
   test('shows popup on valid date click and displays slots', async () => {
     bookingService.fetchAvailableNumericSlots.mockResolvedValue([9, 10, 11]);
 
-    render(<CalendarPage />);
+    render(<Router><CalendarPage/></Router>);
     const availableButtons = await screen.findAllByRole('button');
     const dayButton = availableButtons.find(btn => btn.textContent.match(/^\d+$/));
 
@@ -42,7 +43,7 @@ describe('CalendarPage', () => {
  
 
   test('shows error on submit with no slot selected', async () => {
-    render(<CalendarPage />);
+    render(<Router><CalendarPage/></Router>);
     const dayButton = screen.getAllByRole('button').find(btn => btn.textContent.match(/^\d+$/));
     fireEvent.click(dayButton);
 
@@ -57,7 +58,7 @@ describe('CalendarPage', () => {
     bookingService.validBooking.mockResolvedValue('success');
     bookingService.createBooking.mockResolvedValue({});
 
-    render(<CalendarPage />);
+    render(<Router><CalendarPage /></Router>);
     const dayButton = screen.getAllByRole('button').find(btn => btn.textContent.match(/^\d+$/));
     fireEvent.click(dayButton);
 

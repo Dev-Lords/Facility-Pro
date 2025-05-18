@@ -18,7 +18,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import UsageTrends from '../components/admin/UsageTrends.jsx';
 import '@testing-library/jest-dom';
-
+import { BrowserRouter as Router } from 'react-router-dom';
 // Enhanced mocks
 jest.mock('../../backend/services/logService.js', () => ({
   fetchFacilityEvents: jest.fn(),
@@ -94,14 +94,14 @@ global.XMLSerializer = class {
   });
 
   it('renders without errors', async () => {
-    render(<UsageTrends />);
+    render(<Router><UsageTrends/></Router>);
     await waitFor(() => {
       expect(screen.getByText('Facility Trends Overview')).toBeInTheDocument();
     });
   });
 
   it('displays initial empty state correctly', async () => {
-    render(<UsageTrends />);
+    render(<Router><UsageTrends/></Router>);
     
     // Get all h4 elements and check their content
     const h4Elements = screen.getAllByRole('heading', { level: 4 });
@@ -114,7 +114,7 @@ global.XMLSerializer = class {
   });
   
   it('displays statistics after loading', async () => {
-    render(<UsageTrends />);
+    render(<Router><UsageTrends/></Router>);
     await waitFor(() => {
       expect(screen.getByText('Total Bookings This Month:')).toBeInTheDocument();
       expect(screen.getByText('150')).toBeInTheDocument();
@@ -124,7 +124,7 @@ global.XMLSerializer = class {
 
   it('displays error message when API fails', async () => {
     require('../../backend/services/logService.js').fetchMonthSummaryStats.mockRejectedValue(new Error('API Error'));
-    render(<UsageTrends />);
+    render(<Router><UsageTrends/></Router>);
     
     await waitFor(() => {
       expect(screen.getByText('Error loading data')).toBeInTheDocument();
@@ -153,7 +153,7 @@ global.XMLSerializer = class {
     });
   
     it('filters logs by facility', async () => {
-      render(<UsageTrends />);
+      render(<Router><UsageTrends/></Router>);
       
       // Wait for table to render
       await screen.findByRole('table');
@@ -181,7 +181,7 @@ global.XMLSerializer = class {
   
     // Alternative approach if combobox role isn't working
     it('filters logs by facility using test ID', async () => {
-      render(<UsageTrends />);
+      render(<Router><UsageTrends/></Router>);
       
       await screen.findByRole('table');
       
@@ -201,7 +201,7 @@ global.XMLSerializer = class {
 
 
   it('exports CSV when button is clicked', async () => {
-    render(<UsageTrends />);
+    render(<Router><UsageTrends/></Router>);
     await waitFor(() => {
       fireEvent.click(screen.getByText('Export as CSV'));
       expect(global.Blob).toHaveBeenCalled();
@@ -213,7 +213,7 @@ global.XMLSerializer = class {
   it('triggers PDF export', async () => {
     const jsPDF = require('jspdf').default;
     const mockInstance = new jsPDF();
-    render(<UsageTrends />);
+    render(<Router><UsageTrends/></Router>);
   
     // Click the export button
     await waitFor(() => {
@@ -230,7 +230,7 @@ global.XMLSerializer = class {
 
   it('shows "No Logs found" when filtered results are empty', async () => {
     require('../../backend/services/logService.js').fetchFacilityEvents.mockResolvedValue([]);
-    render(<UsageTrends />);
+    render(<Router><UsageTrends/></Router>);
     await waitFor(() => {
       expect(screen.getByText('No Logs found')).toBeInTheDocument();
     });
@@ -246,7 +246,7 @@ global.XMLSerializer = class {
       issuesChange: '+0'
     });
   
-    render(<UsageTrends />);
+    render(<Router><UsageTrends/></Router>);
     
     // Check that summary values show 0
     await waitFor(() => {
@@ -263,21 +263,21 @@ global.XMLSerializer = class {
 
   describe('Basic Rendering', () => {
     it('renders the main component without crashing', async () => {
-      render(<UsageTrends />);
+      render(<Router><UsageTrends/></Router>);
       await waitFor(() => {
         expect(screen.getByText('Facility Trends Overview')).toBeInTheDocument();
       });
     });
   
     it('displays  pie chart sections', async () => {
-      render(<UsageTrends />);
+      render(<Router><UsageTrends/></Router>);
       await waitFor(() => {
         expect(screen.getByText('Proportion of Bookings by Facility')).toBeInTheDocument();
       });
     });
   
     it('shows both summary cards', async () => {
-      render(<UsageTrends />);
+      render(<Router><UsageTrends/></Router>);
       await waitFor(() => {
         expect(screen.getByText('Total Bookings This Month:')).toBeInTheDocument();
         expect(screen.getByText('Total Issues Reported This Month:')).toBeInTheDocument();
@@ -294,7 +294,7 @@ global.XMLSerializer = class {
         issuesChange: "+5" // Make sure both changes are positive
       });
       
-      render(<UsageTrends />);
+      render(<Router><UsageTrends/></Router>);
       
       await waitFor(() => {
         // Get all trend indicators and verify they show upward trend
@@ -313,7 +313,7 @@ global.XMLSerializer = class {
         issuesChange: "-2" // Make sure both changes are negative
       });
       
-      render(<UsageTrends />);
+      render(<Router><UsageTrends/></Router>);
       
       await waitFor(() => {
         const trendIndicators = screen.getAllByText('↓');
@@ -327,7 +327,7 @@ global.XMLSerializer = class {
 
   describe('Pie Chart Rendering', () => {
     it('renders booking pie chart with data', async () => {
-      render(<UsageTrends />);
+      render(<Router><UsageTrends/></Router>);
       await waitFor(() => {
         expect(screen.getByTestId('bookings-chart')).toBeInTheDocument();
         expect(screen.getAllByTestId('cell')).toHaveLength(2); // 2 data points + fallback
@@ -350,7 +350,7 @@ it('renders pie charts with empty data', async () => {
     issuesChange: "+0"
   });
 
-  render(<UsageTrends />);
+  render(<Router><UsageTrends/></Router>);
 
   await waitFor(() => {
     // Verify both charts are rendered
@@ -393,7 +393,7 @@ it('displays correct data in the logs table', async () => {
     // Mock the service to return our test data
     require('../../backend/services/logService').fetchFacilityEvents.mockResolvedValue(mockLogs);
 
-    render(<UsageTrends />);
+    render(<Router><UsageTrends/></Router>);
 
     // Wait for the component to finish loading data
     await waitFor(() => {

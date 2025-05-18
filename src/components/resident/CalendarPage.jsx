@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './CalendarPage.css';
 import { fetchAvailableNumericSlots ,createBooking,validBooking} from "./../../../backend/services/bookingService";
+import { useNavigate } from 'react-router-dom';
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { app } from "../../../backend/firebase/firebase.config.js";
 const functions = getFunctions(app);
@@ -65,6 +66,11 @@ const CalendarPage = () => {
   const [submitError, setSubmitError] = useState("");
 
 
+  const navigate = useNavigate();
+  
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
   const unbookableDates = [];
 
@@ -236,6 +242,19 @@ const CalendarPage = () => {
         <h1>Facility Booking Calendar</h1>
         <p>Select a date to book your preferred facility</p>
       </header>
+
+         {/* Breadcrumb */}
+      <nav className="breadcrumb-nav">
+        <button 
+          onClick={() => handleNavigate('/resident-home')} 
+          className="breadcrumb-link"
+        >
+          <span className="home-icon">🏠</span> Dashboard
+        </button>
+        <span className="separator">/</span>
+        
+        <span className="current-page"></span> Book Events
+      </nav>
 
       <nav className="month-nav">
         <button onClick={handlePrevMonth}>← Prev</button>

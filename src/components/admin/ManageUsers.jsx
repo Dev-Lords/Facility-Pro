@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../../../backend/firebase/firebase.config";
-import {
-  updateUserType,
-  createAccountRequest,
-  deleteAccount,
-} from "../../../backend/services/userServices";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import {updateUserType,createAccountRequest,deleteAccount,fetchAllUsers} from "../../../backend/services/userServices";
 import { Pencil, Trash2, Filter, Search, UserPlus, ChevronDown} from "lucide-react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "./ManageUsers.css";
 
 const ManageUsers = () => {
-  //pop up to confirm delete
-  const [showPopup, setShowPopup] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);   //pop up to delete user
   const [selectedUserId, setSelectedUserId] = useState(null);
-  //pop up to edit user
-  const [editUser, setEditUser] = useState(null);
+  const [editUser, setEditUser] = useState(null);      //pop up to edit user
   const [newUserType, setNewUserType] = useState("");
-  //pop up to onboard member
-  const [showRegistration, setShowRegistration] = useState(false);
+  const [showRegistration, setShowRegistration] = useState(false);   //pop up to onboard member
   const [registrationFormData, setRegistrationFormData] = useState({
     name: "",
     email: "",
@@ -27,10 +19,14 @@ const ManageUsers = () => {
   });
   const [registrationError, setRegistrationError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  //pagination:
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);   //pagination:
   const UsersPerPage = 10;
   
+  const navigate = useNavigate();
+
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
   //filter and search properties
   const [users, setUsers] = useState([]);
@@ -38,51 +34,35 @@ const ManageUsers = () => {
   const [filterType, setFilterType] = useState("all");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [deleteError, setDeleteError] = useState(null);
+  
 
-  //fetching users
-  const fetchUsers = async () => {
+//Fetching users
+useEffect(() => {
+  const loadUsers = async () => {
     try {
-      setIsLoading(true);
-      const usersCol = query(collection(db, "users"), orderBy("displayName"));
-      const usersSnapshot = await getDocs(usersCol);
-      const usersList = usersSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      setIsLoading(true);  
+      const usersList = await fetchAllUsers();
       setUsers(usersList);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error('Error loading users:', error);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); 
     }
   };
 
-  useEffect(() => {
-    const getUsers = async () => {
-      await fetchUsers();
-    };
-    getUsers();
-  }, []);
+  loadUsers();
+}, []);
 
-  //Pagination improvements for smoother UI experience
-  useEffect(() => {
-  const tableTop = document.querySelector(".users-table-container");
-  if (tableTop && typeof tableTop.scrollIntoView === "function") {
-    tableTop.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-}, [currentPage]);
-  
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, filterType]);
 
-  //filtering through users
+//UI improvements (in order of appearance):
+
+//Filter and Search
   const filteredUsers = users.filter((user) => {
     const matchesSearch =
-      user.displayName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.displayName?.toLowerCase().includes(searchTerm.toLowerCase()) ||  //search by name or email
       user.email?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesFilter = filterType === "all" || user.user_type === filterType;
+    const matchesFilter = filterType === "all" || user.user_type === filterType;  //filter by user type
 
     return matchesSearch && matchesFilter;
   });
@@ -93,65 +73,49 @@ const ManageUsers = () => {
     setIsFilterOpen(!isFilterOpen);
   };
 
-   //Pagination implementation for better user interface:
+
+//Displaying last modification date and time in a better way 
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleString("en-ZA", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+
+//Pagination
    const indexOfLastUser = currentPage * UsersPerPage;
    const indexOfFirstUser = indexOfLastUser - UsersPerPage;
    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
    const totalPages = Math.ceil(filteredUsers.length / UsersPerPage);
 
-  //deleting users from system
-  const confirmDelete = (userId) => {
-    setSelectedUserId(userId);
-    setShowPopup(true);
-  };
-
-  const handleDelete = async () => {
-    if (!selectedUserId) return;
-
-    try {
-      await deleteAccount(selectedUserId);
-      console.log("User deleted");
-      await fetchUsers(); // Refresh the UI
-      setShowPopup(false);
-      setSelectedUserId(null);
-      setDeleteError(null);
-      toast.success(`User deleted successfully!`);
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      toast.error(`Error deleting user!`);
-      alert("Error deleting user"); // THIS MUST EXIST
-      setShowPopup(false);
+   useEffect(() => {    //scrolling to the top every new page to avoid glitching page when page reloads
+    const tableTop = document.querySelector(".users-table-container");
+    if (tableTop && typeof tableTop.scrollIntoView === "function") {
+      tableTop.scrollIntoView({ behavior: "smooth", block: "start" }); 
     }
-  };
+   }, [currentPage]);
+  
+   useEffect(() => {    //reload pagination to 1 everytime when searching or filtering
+    setCurrentPage(1);
+   }, [searchTerm, filterType]);
 
-  //edit user type pop-up and function
-  const openEditModal = (user) => {
-    setEditUser(user);
-    setNewUserType(user.user_type || "");
-  };
-
-  const handleUpdateUserType = async () => {
-    if (!editUser) return;
-
-    try {
-      await updateUserType(editUser.id, newUserType);
-
-      setUsers((prev) =>
-        prev.map((user) =>
-          user.id === editUser.id ? { ...user, user_type: newUserType } : user
-        )
-      );
-      setEditUser(null);
-      toast.success(`User updated successfully!`);
-    } catch (error) {
-      console.error("Error updating user:", error);
-      toast.error(`User not updated!`);
-      alert("You don't have permission to edit this user.");
+   useEffect(() => {    //pagination implementation
+    const tableTop = document.querySelector(".users-table-container");
+    if (tableTop && typeof tableTop.scrollIntoView === "function") {
+     tableTop.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  };
+   }, [currentPage]);
 
-  //add user pop-up and function
-  const handleRegistrationChange = (e) => {
+
+//MANAGING USERS:
+
+  //Onboarding a user
+  const handleRegistrationChange = (e) => {    //popup
     setRegistrationFormData({
       ...registrationFormData,
       [e.target.name]: e.target.value,
@@ -175,7 +139,7 @@ const ManageUsers = () => {
     try {
       await createAccountRequest(registrationFormData);
       console.log("Account created");
-      await fetchUsers();
+      await fetchAllUsers();
       setShowRegistration(false);
       setRegistrationError("");
       toast.success(`User added successfully!`);
@@ -184,18 +148,52 @@ const ManageUsers = () => {
       toast.error(`User not onboarded!`);
     }
   };
-
-  //UI improvements: Last Modified date
-  const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleString("en-ZA", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  
+  //Deleting a user
+  const confirmDelete = (userId) => {   //popup
+    setSelectedUserId(userId);
+    setShowPopup(true);
   };
+
+  const handleDelete = async () => { 
+    if (!selectedUserId)
+       return;
+
+    try {
+      await deleteAccount(selectedUserId);
+      console.log("User deleted");
+      await fetchAllUsers(); 
+      setShowPopup(false);
+      setSelectedUserId(null);
+      setDeleteError(null);
+      toast.success(`User deleted successfully!`);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      toast.error(`Error deleting user!`); 
+      setShowPopup(false);
+    }
+  };
+
+
+  //Editing user type
+  const openEditModal = (user) => {   //popup
+    setEditUser(user);
+    setNewUserType(user.user_type || "");
+  };
+
+  const handleUpdateUserType = async () => {
+  try {
+    await updateUserType(editUser.uid, newUserType);
+    await fetchAllUsers(); 
+    setEditUser(null);
+    toast.success(`User updated successfully!`);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    toast.error(`Failed To Update User!`);
+  }
+  };
+
+
 
   return (
     <main className="users-page">
@@ -211,7 +209,21 @@ const ManageUsers = () => {
         <p className="user-management-subtitle">
           Onboard members, revoke access and assign roles!
         </p>
+      
       </header>
+
+
+
+{/* Breadcrumb */}
+      <nav className="breadcrumb-nav">
+        <button 
+          onClick={() => handleNavigate('/admin-home')} 
+          className="breadcrumb-link"
+        >
+          <span className="home-icon">🏠</span> Dashboard
+        </button>
+      
+      </nav>
       <button
         className="onboard-button"
         onClick={() => {
@@ -289,7 +301,7 @@ const ManageUsers = () => {
               </tr>
             ) : (
               currentUsers.map((user, index) => (
-                <tr key={user.id || `user-${index}`}>
+                <tr key={user.uid || `user-${index}`}>
                   <td>{user.displayName}</td>
                   <td>{user.email}</td>
                   <td className="user-type-cell">
@@ -299,16 +311,14 @@ const ManageUsers = () => {
                   <td>
                     <button
                       className="edit-button"
-                      onClick={() => openEditModal(user)}
-                    >
+                      onClick={() => openEditModal(user)}>
                       <Pencil size={18} className="icon" />
                     </button>
                   </td>
                   <td>
                     <button
                       className="delete-button"
-                      onClick={() => confirmDelete(user.id)}
-                    >
+                      onClick={() => confirmDelete(user.uid)}>
                       <Trash2 size={18} className="icon" />
                     </button>
                   </td>
@@ -319,7 +329,7 @@ const ManageUsers = () => {
         </table>
       </section>
 
-      {/*Popups: delete,edit and onboard respectively*/}
+    {/*Popups: delete,edit and onboard respectively*/}
 
       {showPopup && (
         <>
@@ -329,13 +339,12 @@ const ManageUsers = () => {
               <p>This action cannot be undone!</p>
               <section className="modal-buttons">
                 <button onClick={handleDelete} className="confirm-btn">
-                  delete
+                  Delete
                 </button>
 
                 <button
                   onClick={() => setShowPopup(false)}
-                  className="cancel-btn"
-                >
+                  className="cancel-btn">
                   Cancel
                 </button>
               </section>
@@ -473,7 +482,7 @@ const ManageUsers = () => {
       </nav>
 
       <footer className="facility-footer">
-        <p>Facility Management System • Admin services • Version 1.0.3</p>
+        <p>Facility Management System • Admin services • Version 1.0.4</p>
       </footer>
     </main>
   );

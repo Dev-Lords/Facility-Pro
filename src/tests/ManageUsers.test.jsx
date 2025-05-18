@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ManageUsers from '../components/admin/ManageUsers.jsx';
 import { db } from '../../backend/firebase/firebase.config.js';
 import { collection, getDocs, deleteDoc } from 'firebase/firestore';
+import { fetchAllUsers } from '../../backend/services/userServices.js';
 import { useNavigate } from 'react-router-dom';
 import '@testing-library/jest-dom';
 
@@ -16,6 +17,7 @@ jest.mock('react-router-dom', () => ({
 
 // Update the mock at the top of your test file
 jest.mock('../../backend/services/userServices.js', () => ({
+    fetchAllUsers: jest.fn(),
     updateUserType: jest.fn(),
     createAccountRequest: jest.fn().mockResolvedValue({}),
     deleteAccount: jest.fn(),
@@ -62,14 +64,8 @@ describe('ManageUsers Component', () => {
   ];
 
   beforeEach(() => {
-    // Mock Firestore getDocs
-    getDocs.mockResolvedValue({
-      docs: mockUsers.map(user => ({
-        id: user.id,
-        data: () => ({ ...user })
-      }))
-    });
-
+    // Mock fetchAllUsers
+    fetchAllUsers.mockResolvedValue(mockUsers);
     // Mock useNavigate
     useNavigate.mockReturnValue(jest.fn());
   });
@@ -81,7 +77,7 @@ describe('ManageUsers Component', () => {
   test('renders loading state initially', async () => {
     render(<ManageUsers />);
     expect(screen.queryByText('No users found')).not.toBeInTheDocument();
-    await waitFor(() => expect(getDocs).toHaveBeenCalled());
+    await waitFor(() => expect(fetchAllUsers).toHaveBeenCalled());
   });
 
   test('displays users after loading', async () => {
@@ -96,7 +92,7 @@ describe('ManageUsers Component', () => {
   });
 
   test('displays "No users found" when there are no users', async () => {
-    getDocs.mockResolvedValue({ docs: [] });
+    fetchAllUsers.mockResolvedValue([]);
     render(<ManageUsers />);
     
     await waitFor(() => {
@@ -149,7 +145,9 @@ describe('ManageUsers Component', () => {
 
   test('shows loading state before users are fetched', () => {
     // Delay the mock response to test loading state
-    getDocs.mockImplementationOnce(() => new Promise(() => {}));
+    
+    fetchAllUsers.mockImplementationOnce(() => new Promise(() => {}));
+
     
     render(<ManageUsers />);
     expect(screen.queryByText('No users found')).not.toBeInTheDocument();
@@ -158,7 +156,7 @@ describe('ManageUsers Component', () => {
 
 
   test('displays empty state when no users exist', async () => {
-    getDocs.mockResolvedValueOnce({ docs: [] });
+    fetchAllUsers.mockResolvedValueOnce([]);
     
     render(<ManageUsers />);
     await waitFor(() => {

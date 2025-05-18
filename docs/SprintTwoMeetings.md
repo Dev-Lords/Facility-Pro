@@ -36,7 +36,7 @@
 
     Amahle and Austin on Residents Dashboard.
 
-    Phumla and Lindiwe on Admin Dashboard .
+    Phumla and Lindiwe on Admin Dashboard.
 
     Thembu and Tawana on Facility Staff Dashboard.
 

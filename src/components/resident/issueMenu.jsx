@@ -29,7 +29,19 @@ export default function IssueMenu(){
           </section>
         </section>
       </header>
-   
+
+      
+          {/* Breadcrumb */}
+      <nav className="breadcrumb-nav">
+        <button 
+          onClick={() => handleNavigate('/resident-home')} 
+          className="breadcrumb-link"
+        >
+          <span className="home-icon">🏠</span> Dashboard
+        </button>
+        <span className="separator">/</span>
+        <span className="current-page">Report Issues</span>
+      </nav>
       <section className = "card-grid">
 
         <article className ="card card-log-issues">

@@ -14,6 +14,7 @@ import { fetchMonthSummaryStats } from "../../../backend/services/logService";
 import { unparse } from "papaparse";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { useNavigate } from "react-router-dom";
 
 // Define color palettes for pie charts
 const BOOKING_COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
@@ -35,6 +36,9 @@ const renderCustomizedLabel = ({
   const radius = outerRadius * 1.1;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  
+
 
   return (
     <text
@@ -68,6 +72,13 @@ export default function UsageTrends() {
   const [issuesChange, setIssuesChange] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+
+  const navigate = useNavigate();
+const handleNavigate = (path) => {  
+  navigate(path);
+};
+
   //______________________________________
 
   // Fetch all Summary Stats and set variables accordingly
@@ -550,6 +561,22 @@ export default function UsageTrends() {
       <header className="usageTrends-header">
         <h2>Facility Trends Overview</h2>
       </header>
+
+      {/* Breadcrumb */}
+      <nav className="breadcrumb-nav">
+        <button 
+          onClick={() => handleNavigate('/admin-home')} 
+          className="breadcrumb-link"
+        >
+          <span className="home-icon">🏠</span> Dashboard
+        </button>
+        <span className="separator">/</span>
+        <button
+        className='breadcrumb-link'
+          onClick={() => handleNavigate('/reports')}>
+        <span className="current-page"></span> Reports 
+        </button>
+      </nav>
 
       {/* This section contains a bunch of other sections. We'll see what they are when I'm done*/}
       <section className="main-section">

@@ -2,7 +2,7 @@
 
 import { db } from "../firebase/firebase.config.js";
 import { User } from "../models/user.js"; // Adjust the import path as necessary
-import { collection, getDocs, deleteDoc,updateDoc, doc , query, orderBy,addDoc,getDoc,setDoc}from "firebase/firestore";
+import { doc,getDoc,setDoc}from "firebase/firestore";
 
 // Create or update user in Firestore
 export const saveUser = async (userData) => {
@@ -71,23 +71,6 @@ export const userExists = async (uid) => {
   }
 };
 
-// Update user type
-export const updateUserType = async (uid, newUserType) => {
-  try {
-    const userRef = doc(db, "users", uid);
-    await setDoc(userRef, {
-      user_type: newUserType,
-      updatedAt: new Date().toISOString()
-    }, { merge: true });
-
-    return true;
-  } catch (error) {
-    console.error("Error updating user type:", error);
-    throw error;
-  }
-};
-
-
 //Admin-functions:
 
 //onboard member
@@ -124,8 +107,6 @@ export const deleteAccount = async (uid) => {
   console.log("deleteAccount function hit", uid);
   const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/delete-account/${uid}`;
 
-
-
   const response = await fetch(url, {
     method: 'DELETE',
   });
@@ -138,3 +119,41 @@ export const deleteAccount = async (uid) => {
 
   return true;
 };
+
+//fetch users
+export const fetchAllUsers = async () => {
+  const url = 'https://us-central1-facilty-pro.cloudfunctions.net/api/get-all-users';
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error('Failed to fetch users');
+  }
+
+  const users = await response.json();
+  return users;
+};
+
+
+//update a user
+export const updateUserType = async (uid, newUserType) => {
+  const url = 'https://us-central1-facilty-pro.cloudfunctions.net/api/update-user-type';
+  const payload = {
+    uid,
+    newType: newUserType,
+  };
+
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    throw new Error(errorResponse.error || 'Failed to update user type');
+  }
+
+  return true;
+};
+
