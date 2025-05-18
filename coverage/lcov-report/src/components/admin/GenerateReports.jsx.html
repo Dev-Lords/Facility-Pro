@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -147,22 +147,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -180,26 +178,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -219,21 +219,21 @@ import {
 } from 'react-icons/fa';
 import './AdminDashboard.css'; // Reusing the existing CSS
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >ReportsDashboard(</span>) {
-  const token = <span class="cstat-no" title="statement not covered" >localStorage.getItem('authToken');</span>
-  const userType = <span class="cstat-no" title="statement not covered" >localStorage.getItem('userType');</span>
-  const isAuthenticated = <span class="cstat-no" title="statement not covered" >token &amp;&amp; userType === 'admin';</span>
-  const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
+export default function ReportsDashboard() {
+  const token = localStorage.getItem('authToken');
+  const userType = localStorage.getItem('userType');
+  const isAuthenticated = token &amp;&amp; userType === 'admin';
+  const navigate = useNavigate();
 &nbsp;
-  const handleNavigate = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>ath) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    navigate(path);</span>
+  const handleNavigate = (path) =&gt; {
+    navigate(path);
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!isAuthenticated) {</span>
-<span class="cstat-no" title="statement not covered" >    return &lt;Navigate to="/" replace /&gt;;</span>
+  if (!isAuthenticated) {
+    return &lt;Navigate to="/" replace /&gt;;
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;main className="dashboard-container"&gt;
       &lt;header className="dashboard-header"&gt;
         &lt;section className="header-content"&gt;
@@ -253,26 +253,26 @@ export default function <span class="fstat-no" title="function not covered" >Rep
           &lt;section className="card-icon"&gt;&lt;FaChartBar /&gt;&lt;/section&gt;
           &lt;h2&gt;Usage Trends by Facility&lt;/h2&gt;
           &lt;p&gt;Track facility utilization patterns and identify peak usage times.&lt;/p&gt;
-          &lt;button className="btn reports-btn" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate("/usage-trends")}</span>&gt;Generate Report&lt;/button&gt;
+          &lt;button className="btn reports-btn" onClick={() =&gt; handleNavigate("/usage-trends")}&gt;Generate Report&lt;/button&gt;
         &lt;/article&gt;
         
         &lt;article className="dashboard-card reports-card"&gt;   
           &lt;section className="card-icon"&gt;&lt;FaFileAlt /&gt;&lt;/section&gt;
           &lt;h2&gt;Maintenance Reports&lt;/h2&gt;
           &lt;p&gt;View open vs. closed maintenance tickets and track resolution status.&lt;/p&gt;
-          &lt;button className="btn reports-btn" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate("/maintenance-reports")}</span>&gt;Generate Report&lt;/button&gt;
+          &lt;button className="btn reports-btn" onClick={() =&gt; handleNavigate("/maintenance-reports")}&gt;Generate Report&lt;/button&gt;
         &lt;/article&gt;
         
         &lt;article className="dashboard-card reports-card"&gt;
           &lt;section className="card-icon"&gt;&lt;FaChartPie /&gt;&lt;/section&gt;
           &lt;h2&gt;Custom View&lt;/h2&gt;
           &lt;p&gt;Create personalized reports with specific parameters and data points.&lt;/p&gt;
-          &lt;button className="btn reports-btn" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate("/custom-reports")}</span>&gt;Create Custom Report&lt;/button&gt;
+          &lt;button className="btn reports-btn" onClick={() =&gt; handleNavigate("/custom-reports")}&gt;Create Custom Report&lt;/button&gt;
         &lt;/article&gt;
       &lt;/section&gt;
 &nbsp;
       &lt;section className="back-button-container"&gt;
-        &lt;button className="btn back-btn" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/admin-home')}</span>&gt;
+        &lt;button className="btn back-btn" onClick={() =&gt; handleNavigate('/admin-home')}&gt;
           &lt;FaArrowLeft /&gt; Back to Dashboard
         &lt;/button&gt;
       &lt;/section&gt;
@@ -289,7 +289,7 @@ export default function <span class="fstat-no" title="function not covered" >Rep
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-18T13:14:40.052Z
+                at 2025-05-18T14:28:06.144Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
