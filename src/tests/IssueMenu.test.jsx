@@ -41,8 +41,8 @@ describe('IssueMenu Component', () => {
       </Router>
     );
     
-    // Check if header elements are rendered
-    const reportIssuesText = screen.getByText('Report Issues');
+    // Check if header elements are rendered - use more specific selector for the heading
+    const reportIssuesText = screen.getByRole('heading', { name: 'Report Issues', level: 1 });
     expect(reportIssuesText).toBeInTheDocument();
     
     // Check if the subtitle is rendered

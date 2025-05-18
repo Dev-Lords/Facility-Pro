@@ -91,6 +91,8 @@ export async function createIssue(data) {
       issueStatus: "open", // Set default status
       feedback: "",       // Set default feedback
       assignedTo: null,   // Set default assignedTo
+      location: data.location || "Unspecified",  //  Ensure location is saved
+      relatedFacility: data.relatedFacility || "Not Specified", // ✅ Save the facility
       reportedAt: data.reportedAt || new Date().toISOString()
     };
     

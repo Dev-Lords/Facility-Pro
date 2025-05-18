@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.93% </span>
+                <span class="strong">66.4% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>83/124</span>
+                <span class='fraction'>85/128</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60.52% </span>
+                <span class="strong">57.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>23/38</span>
+                <span class='fraction'>23/40</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.64% </span>
+                <span class="strong">68.03% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>81/118</span>
+                <span class='fraction'>83/122</span>
             </div>
         
             
@@ -545,7 +545,28 @@
 <a name='L480'></a><a href='#L480'>480</a>
 <a name='L481'></a><a href='#L481'>481</a>
 <a name='L482'></a><a href='#L482'>482</a>
-<a name='L483'></a><a href='#L483'>483</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L483'></a><a href='#L483'>483</a>
+<a name='L484'></a><a href='#L484'>484</a>
+<a name='L485'></a><a href='#L485'>485</a>
+<a name='L486'></a><a href='#L486'>486</a>
+<a name='L487'></a><a href='#L487'>487</a>
+<a name='L488'></a><a href='#L488'>488</a>
+<a name='L489'></a><a href='#L489'>489</a>
+<a name='L490'></a><a href='#L490'>490</a>
+<a name='L491'></a><a href='#L491'>491</a>
+<a name='L492'></a><a href='#L492'>492</a>
+<a name='L493'></a><a href='#L493'>493</a>
+<a name='L494'></a><a href='#L494'>494</a>
+<a name='L495'></a><a href='#L495'>495</a>
+<a name='L496'></a><a href='#L496'>496</a>
+<a name='L497'></a><a href='#L497'>497</a>
+<a name='L498'></a><a href='#L498'>498</a>
+<a name='L499'></a><a href='#L499'>499</a>
+<a name='L500'></a><a href='#L500'>500</a>
+<a name='L501'></a><a href='#L501'>501</a>
+<a name='L502'></a><a href='#L502'>502</a>
+<a name='L503'></a><a href='#L503'>503</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -577,6 +598,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">48x</span>
 <span class="cline-any cline-yes">48x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">48x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">48x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -753,6 +779,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1037,6 +1077,7 @@ import {
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { Pencil, Trash2, Filter, Search, UserPlus, ChevronDown} from "lucide-react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "./ManageUsers.css";
 &nbsp;
 const ManageUsers = () =&gt; {
@@ -1060,6 +1101,11 @@ const ManageUsers = () =&gt; {
   const [currentPage, setCurrentPage] = useState(1);
   const UsersPerPage = 10;
   
+  const navigate = useNavigate();
+&nbsp;
+  const handleNavigate = <span class="fstat-no" title="function not covered" >(p</span>ath) =&gt; {
+<span class="cstat-no" title="statement not covered" >    navigate(path);</span>
+  };
 &nbsp;
   //filter and search properties
   const [users, setUsers] = useState([]);
@@ -1240,7 +1286,21 @@ const ManageUsers = () =&gt; {
         &lt;p className="user-management-subtitle"&gt;
           Onboard members, revoke access and assign roles!
         &lt;/p&gt;
+      
       &lt;/header&gt;
+&nbsp;
+&nbsp;
+&nbsp;
+{/* Breadcrumb */}
+      &lt;nav className="breadcrumb-nav"&gt;
+        &lt;button 
+          onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/admin-home')} </span>
+          className="breadcrumb-link"
+        &gt;
+          &lt;span className="home-icon"&gt;🏠&lt;/span&gt; Dashboard
+        &lt;/button&gt;
+      
+      &lt;/nav&gt;
       &lt;button
         className="onboard-button"
         onClick={() =&gt; {
@@ -1516,7 +1576,7 @@ export default ManageUsers;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-14T17:32:06.566Z
+                at 2025-05-18T03:13:46.193Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

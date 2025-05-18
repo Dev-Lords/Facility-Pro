@@ -1,0 +1,266 @@
+/* General Page Styles */
+.issues-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 1rem;
+  background-color: #f7f9fc;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Header */
+.usageTrends-header {
+  background: linear-gradient(135deg, #0b2e5b 0%, #1e4e8c 50%, #3d6ea8 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.usageTrends-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* Horizontal Summary Cards */
+.summary-stats-horizontal {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  scrollbar-width: thin;
+}
+
+.summary-card-sm {
+  min-width: 110px;
+  padding: 0.7rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1e4e8c, #3d6ea8);
+  color: white;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.summary-card-sm h3 {
+  margin: 0 0 0.3rem 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.summary-card-sm p {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* Filter Section */
+.filter-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.filter-section label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.filter-section select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: white;
+  min-width: 150px;
+}
+
+.apply-btn {
+  padding: 8px 16px;
+  background-color: #3182ce;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  height: fit-content;
+  align-self: flex-end;
+}
+
+.apply-btn:hover {
+  background-color: #2b6cb0;
+}
+
+.graph-btn {
+  padding: 8px 16px;
+  background-color: #5a67d8;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  height: fit-content;
+}
+
+.graph-btn:hover {
+  background-color: #4c51bf;
+}
+
+.graph-btn:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+/* COMPLETELY REMOVED ALL TABLE STYLING - Using your original table styles */
+
+/* Export Buttons (Unchanged from your original) */
+.Buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.export-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.csv-btn {
+  background-color: #2196f3;
+}
+
+.csv-btn:hover {
+  background-color: #1976d2;
+}
+
+.pdf-btn {
+  background-color: #7c4dff;
+}
+
+.pdf-btn:hover {
+  background-color: #5e35b1;
+}
+
+/* Graphs Section */
+.graphs-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-bottom: 1.5rem;
+}
+
+.graphs-section h2 {
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+.bar-charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.chart-wrapper {
+  width: 100%;
+  max-width: 400px;
+  height: 300px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .filter-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .apply-btn, .graph-btn {
+    align-self: stretch;
+  }
+  
+  .bar-charts {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .chart-wrapper {
+    max-width: 100%;
+  }
+}
+/* Facility Availability Cards */
+.facility-availability {
+  margin: 2rem 0;
+}
+
+.facility-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: start;
+  overflow-x: auto;
+}
+
+.facility-card {
+  flex: 0 0 200px;
+  padding: 1rem;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.facility-card.available {
+  background-color: #94edbe; /* green */
+}
+
+.facility-card.unavailable {
+  background-color: #feb075; /* red */
+}
+
+.facility-card h4 {
+  margin-bottom: 0.5rem;
+}
+
+.facility-card .percentage {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.facility-card .status {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.facility-cards {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: space-between;
+  flex-wrap: nowrap; /* ❗ Important: prevents wrapping */
+  overflow-x: auto;
+}
+
+.facility-card {
+  flex: 1 0 22%; /* 4 cards in one row with space */
+  min-width: 200px;
+}
+
+
+
+  

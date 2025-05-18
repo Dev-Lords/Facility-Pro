@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {updateUserType,createAccountRequest,deleteAccount,fetchAllUsers} from "../../../backend/services/userServices";
 import { Pencil, Trash2, Filter, Search, UserPlus, ChevronDown} from "lucide-react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "./ManageUsers.css";
 
 const ManageUsers = () => {
@@ -20,7 +21,15 @@ const ManageUsers = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);   //pagination:
   const UsersPerPage = 10;
-  const [users, setUsers] = useState([]);   //filter and search properties
+  
+  const navigate = useNavigate();
+
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
+  //filter and search properties
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -200,7 +209,21 @@ useEffect(() => {
         <p className="user-management-subtitle">
           Onboard members, revoke access and assign roles!
         </p>
+      
       </header>
+
+
+
+{/* Breadcrumb */}
+      <nav className="breadcrumb-nav">
+        <button 
+          onClick={() => handleNavigate('/admin-home')} 
+          className="breadcrumb-link"
+        >
+          <span className="home-icon">🏠</span> Dashboard
+        </button>
+      
+      </nav>
       <button
         className="onboard-button"
         onClick={() => {

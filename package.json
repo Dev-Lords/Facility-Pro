@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@mui/x-data-grid": "^7.28.3",
+    "chart.js": "^4.4.9",
     "firebase": "^11.6.0",
     "firebase-admin": "^13.2.0",
     "jspdf": "^3.0.1",
@@ -23,6 +24,7 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.5.0",
+    "react-select": "^5.10.1",
     "react-toastify": "^11.0.5",
     "recharts": "^2.15.3",
     "toastify": "^2.0.1",

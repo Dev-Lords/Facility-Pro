@@ -3,6 +3,8 @@ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import BookingsPage from '../components/admin/Bookings.jsx';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 
 // Mocking the necessary modules and services
 jest.mock('../../backend/services/bookingService.js', () => ({
@@ -69,13 +71,13 @@ describe('BookingsPage Component', () => {
   });
 
   test('renders loading state initially', () => {
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
     expect(screen.getByText('Bookings Review')).toBeInTheDocument();
     expect(screen.getByText('Approve and Decline bookings!')).toBeInTheDocument();
   });
 
   test('renders bookings after loading', async () => {
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
     
     await waitFor(() => {
       expect(screen.getByText('John Doe')).toBeInTheDocument();
@@ -90,7 +92,7 @@ describe('BookingsPage Component', () => {
 
 
   test('filters bookings by status', async () => {
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
     
     // Wait for bookings to load
     await waitFor(() => {
@@ -115,7 +117,7 @@ describe('BookingsPage Component', () => {
 
 
   test('searches bookings by user name', async () => {
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
     
     // Wait for bookings to load
     await waitFor(() => {
@@ -133,7 +135,7 @@ describe('BookingsPage Component', () => {
   });
 
   test('searches bookings by facility', async () => {
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
     
     // Wait for bookings to load
     await waitFor(() => {
@@ -151,7 +153,7 @@ describe('BookingsPage Component', () => {
   });
 
   test('searches bookings by date', async () => {
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
     
     // Wait for bookings to load
     await waitFor(() => {
@@ -174,7 +176,7 @@ describe('BookingsPage Component', () => {
     
     UpdateBooking.mockResolvedValue({ success: true });
 
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
   
     // Wait for bookings to load
     await waitFor(() => {
@@ -212,7 +214,7 @@ describe('BookingsPage Component', () => {
     
     UpdateBooking.mockResolvedValue({ success: true });
 
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
   
     // Wait for bookings to load
     await waitFor(() => {
@@ -247,7 +249,7 @@ describe('BookingsPage Component', () => {
     
     UpdateBooking.mockResolvedValue({ success: false });
     
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
     
     // Wait for bookings to load
     await waitFor(() => {
@@ -289,7 +291,7 @@ describe('BookingsPage Component', () => {
     
     // We need to manually trigger this since we can't directly test the handler
     // as approved/declined bookings don't show the buttons
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
     
     await waitFor(() => {
       expect(screen.getByText('Jane Smith')).toBeInTheDocument();
@@ -310,7 +312,7 @@ describe('BookingsPage Component', () => {
   });
 
   test('displays correct time format for booked slots', async () => {
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
     
     await waitFor(() => {
       expect(screen.getByText('John Doe')).toBeInTheDocument();
@@ -332,7 +334,7 @@ describe('BookingsPage Component', () => {
   });
 
   test('displays "No bookings to review" when filtered results are empty', async () => {
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
     
     await waitFor(() => {
       expect(screen.getByText('John Doe')).toBeInTheDocument();
@@ -354,7 +356,7 @@ describe('BookingsPage Component', () => {
     
     console.error = jest.fn(); // Silence console.error for this test
     
-    render(<BookingsPage />);
+    render(<Router><BookingsPage /></Router>);
     
     await waitFor(() => {
       expect(console.error).toHaveBeenCalled();
