@@ -565,7 +565,7 @@ const handleNavigate = (path) => {
       {/* Breadcrumb */}
       <nav className="breadcrumb-nav">
         <button 
-          onClick={() => handleNavigate('/resident-home')} 
+          onClick={() => handleNavigate('/admin-home')} 
           className="breadcrumb-link"
         >
           <span className="home-icon">🏠</span> Dashboard
