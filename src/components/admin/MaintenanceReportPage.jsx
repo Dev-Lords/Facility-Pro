@@ -3,8 +3,29 @@ import { fetchFilteredIssues, getStats, resolveStatus, exportToCsv } from "../..
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { useNavigate } from "react-router-dom";
-import { Chart } from "chart.js";
+// Updated Chart.js imports - add necessary components
+import { 
+  Chart as ChartJS, 
+  CategoryScale, 
+  LinearScale, 
+  BarElement, 
+  Title, 
+  Tooltip, 
+  Legend,
+  BarController // Add BarController
+} from "chart.js";
 import "./MaintenanceReport.css";
+
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  BarController, // Register BarController
+  Title,
+  Tooltip,
+  Legend
+);
 
 const MaintenanceReportPage = () => {
   const [allIssues, setAllIssues] = useState([]);
@@ -71,8 +92,10 @@ const MaintenanceReportPage = () => {
     cleanupCharts();
 
     const createBarChart = (ref, title, labels, data, colors) => {
+      if (!ref.current) return null;
+      
       const ctx = ref.current.getContext("2d");
-      return new Chart(ctx, {
+      return new ChartJS(ctx, {
         type: "bar",
         data: {
           labels,
