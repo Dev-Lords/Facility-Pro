@@ -89,6 +89,21 @@ const IssueHistory = () => {
         </div>
       </header>
 
+   {/* Breadcrumb */}
+      <nav className="breadcrumb-nav">
+        <button 
+          onClick={() => handleNavigate('/resident-home')} 
+          className="breadcrumb-link"
+        >
+          <span className="home-icon">🏠</span> Dashboard
+        </button>
+        <span className="separator">/</span>
+        <button
+        className='breadcrumb-link'
+          onClick={() => handleNavigate('/issue-menu')}>
+        <span className="current-page"></span> Report Issue
+        </button>
+      </nav>
    
 
       {/* Main Content */}

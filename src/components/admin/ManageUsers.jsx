@@ -8,6 +8,7 @@ import {
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { Pencil, Trash2, Filter, Search, UserPlus, ChevronDown} from "lucide-react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "./ManageUsers.css";
 
 const ManageUsers = () => {
@@ -31,6 +32,11 @@ const ManageUsers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const UsersPerPage = 10;
   
+  const navigate = useNavigate();
+
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
   //filter and search properties
   const [users, setUsers] = useState([]);
@@ -211,7 +217,21 @@ const ManageUsers = () => {
         <p className="user-management-subtitle">
           Onboard members, revoke access and assign roles!
         </p>
+      
       </header>
+
+
+
+{/* Breadcrumb */}
+      <nav className="breadcrumb-nav">
+        <button 
+          onClick={() => handleNavigate('/admin-home')} 
+          className="breadcrumb-link"
+        >
+          <span className="home-icon">🏠</span> Dashboard
+        </button>
+      
+      </nav>
       <button
         className="onboard-button"
         onClick={() => {

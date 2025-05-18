@@ -3,12 +3,13 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, 
   PieChart, Pie, Cell, LineChart, Line, ResponsiveContainer 
 } from "recharts";
+import { useNavigate } from "react-router-dom";
 import { fetchBookings, fetchEvents, fetchIssues } from "../../../backend/services/ReportDataService";
 import { exportToCSV, exportToPDF } from "../../../backend/services/ReportExportService";
 import { 
   Calendar, ChevronDown, DownloadCloud, Filter, X,
   BarChart2, PieChart as PieChartIcon, LineChart as LineChartIcon,
-  CheckSquare, Square,
+  CheckSquare, Square, Home
 } from "lucide-react";
 import "./CustomView.css";
 
@@ -21,8 +22,11 @@ const CustomView = () => {
   const [exporting, setExporting] = useState(false);
   const [viewMode, setViewMode] = useState("list");
   const [chartType, setChartType] = useState("bar");
+  const navigate = useNavigate();
 
-  
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
   
   // Date filtering states
   const [startDate, setStartDate] = useState("");
@@ -164,37 +168,38 @@ const CustomView = () => {
   };
 
   // Enhanced export function
-const handleExport = async (format) => {
-  setExporting(true);
-  try {
-    // Only include selected data types
-    const dataToExport = {};
-    
-    if (exportBookings) dataToExport.bookings = filteredBookings;
-    if (exportEvents) dataToExport.events = filteredEvents;
-    if (exportIssues) dataToExport.issues = filteredIssues;
-    
-    // Create descriptive filename based on selections
-    const typesIncluded = [];
-    if (exportBookings) typesIncluded.push('bookings');
-    if (exportEvents) typesIncluded.push('events');
-    if (exportIssues) typesIncluded.push('issues');
-    
-    const filename = typesIncluded.join('-');
-    
-    if (format === 'csv') {
-      await exportToCSV(filename, dataToExport);
-    } else if (format === 'pdf') {
-      await exportToPDF(filename, dataToExport);
+  const handleExport = async (format) => {
+    setExporting(true);
+    try {
+      // Only include selected data types
+      const dataToExport = {};
+      
+      if (exportBookings) dataToExport.bookings = filteredBookings;
+      if (exportEvents) dataToExport.events = filteredEvents;
+      if (exportIssues) dataToExport.issues = filteredIssues;
+      
+      // Create descriptive filename based on selections
+      const typesIncluded = [];
+      if (exportBookings) typesIncluded.push('bookings');
+      if (exportEvents) typesIncluded.push('events');
+      if (exportIssues) typesIncluded.push('issues');
+      
+      const filename = typesIncluded.join('-');
+      
+      if (format === 'csv') {
+        await exportToCSV(filename, dataToExport);
+      } else if (format === 'pdf') {
+        await exportToPDF(filename, dataToExport);
+      }
+    } catch (error) {
+      console.error(`Error exporting to ${format}:`, error);
+      alert(`Failed to export to ${format.toUpperCase()}. Please try again.`);
+    } finally {
+      setExporting(false);
+      setIsExportMenuOpen(false);
     }
-  } catch (error) {
-    console.error(`Error exporting to ${format}:`, error);
-    alert(`Failed to export to ${format.toUpperCase()}. Please try again.`);
-  } finally {
-    setExporting(false);
-    setIsExportMenuOpen(false);
-  }
-};
+  };
+
   const filterDataByDate = (data) => {
     // If no date filters are set, return all data
     if (!startDate && !endDate) return data;
@@ -275,60 +280,84 @@ const handleExport = async (format) => {
     return count;
   };
 
+  // Breadcrumb Navigation
+  const BreadcrumbNav = () => (
+    <nav className="breadcrumb-nav">
+      <button 
+        onClick={() => handleNavigate('/admin-home')} 
+        className="breadcrumb-link"
+      >
+        <Home size={16} className="home-icon" />
+        <span>Dashboard</span>
+      </button>
+      <span className="separator">/</span>
+      <button
+        className="breadcrumb-link"
+        onClick={() => handleNavigate('/reports')}>
+      <span className="current-page">Custom Reports</span>
+      </button>
+            <span className="separator">/</span>
+      <span className="current-page">{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</span>
+    </nav>
+  );
+
   const renderDashboardSummary = () => {
     return (
-      <section className="summary-cards">
-        <article className="summary-card summary-card-bookings">
-          <section className="summary-card-content">
-            <section>
-              <p className="summary-card-label">Total Bookings</p>
-              <h3 className="summary-card-value">{filteredBookings.length}</h3>
+      <>
+        <BreadcrumbNav />
+        <section className="summary-cards">
+          <article className="summary-card summary-card-bookings">
+            <section className="summary-card-content">
+              <section>
+                <p className="summary-card-label">Total Bookings</p>
+                <h3 className="summary-card-value">{filteredBookings.length}</h3>
+              </section>
+              <figure className="summary-card-icon">
+                <Calendar size={24} />
+              </figure>
             </section>
-            <figure className="summary-card-icon">
-              <Calendar size={24} />
-            </figure>
-          </section>
-          <footer className="summary-card-footer">
-            <small className="summary-card-badge">
-              {getDateRangeText()}
-            </small>
-          </footer>
-        </article>
-        
-        <article className="summary-card summary-card-events">
-          <section className="summary-card-content">
-            <section>
-              <p className="summary-card-label">Upcoming Events</p>
-              <h3 className="summary-card-value">{filteredEvents.length}</h3>
+            <footer className="summary-card-footer">
+              <small className="summary-card-badge">
+                {getDateRangeText()}
+              </small>
+            </footer>
+          </article>
+          
+          <article className="summary-card summary-card-events">
+            <section className="summary-card-content">
+              <section>
+                <p className="summary-card-label">Upcoming Events</p>
+                <h3 className="summary-card-value">{filteredEvents.length}</h3>
+              </section>
+              <figure className="summary-card-icon">
+                <Calendar size={24} />
+              </figure>
             </section>
-            <figure className="summary-card-icon">
-              <Calendar size={24} />
-            </figure>
-          </section>
-          <footer className="summary-card-footer">
-            <small className="summary-card-badge">
-              {getDateRangeText()}
-            </small>
-          </footer>
-        </article>
-        
-        <article className="summary-card summary-card-issues">
-          <section className="summary-card-content">
-            <section>
-              <p className="summary-card-label">Maintenance Issues</p>
-              <h3 className="summary-card-value">{filteredIssues.length}</h3>
+            <footer className="summary-card-footer">
+              <small className="summary-card-badge">
+                {getDateRangeText()}
+              </small>
+            </footer>
+          </article>
+          
+          <article className="summary-card summary-card-issues">
+            <section className="summary-card-content">
+              <section>
+                <p className="summary-card-label">Maintenance Issues</p>
+                <h3 className="summary-card-value">{filteredIssues.length}</h3>
+              </section>
+              <figure className="summary-card-icon">
+                <Calendar size={24} />
+              </figure>
             </section>
-            <figure className="summary-card-icon">
-              <Calendar size={24} />
-            </figure>
-          </section>
-          <footer className="summary-card-footer">
-            <small className="summary-card-badge">
-              {getDateRangeText()}
-            </small>
-          </footer>
-        </article>
-      </section>
+            <footer className="summary-card-footer">
+              <small className="summary-card-badge">
+                {getDateRangeText()}
+              </small>
+            </footer>
+          </article>
+        </section>
+      </>
     );
   };
 
@@ -473,7 +502,6 @@ const handleExport = async (format) => {
               </p>
               <footer className="issue-meta">
                 <small>Reported: {issue.reportedAt ? formatDate(issue.reportedAt) : "-"}</small>
-                
                 <small>Status: {issue.issueStatus || "Open"}</small>
                 {issue.location && <small>Location: {issue.location}</small>}
               </footer>
@@ -549,130 +577,129 @@ const handleExport = async (format) => {
       </section>
     );
   };
-  // Replace the existing AdvancedFilterMenu component with this improved version
 
-const AdvancedFilterMenu = () => {
-  const [tempStatusFilters, setTempStatusFilters] = useState([...statusFilters]);
-  const [tempFacilityFilters, setTempFacilityFilters] = useState([...facilityFilters]);
-  const [tempPriorityFilters, setTempPriorityFilters] = useState([...priorityFilters]);
-  
-  const applyFilters = () => {
-    setStatusFilters(tempStatusFilters);
-    setFacilityFilters(tempFacilityFilters);
-    setPriorityFilters(tempPriorityFilters);
-    setIsFilterMenuOpen(false);
-  };
-  
-  const clearAllFilters = () => {
-    setTempStatusFilters([]);
-    setTempFacilityFilters([]);
-    setTempPriorityFilters([]);
-  };
-  
-  const toggleFilter = (filter, value) => {
-    switch (filter) {
-      case 'status':
-        setTempStatusFilters(prev => 
-          prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
-        );
-        break;
-      case 'facility':
-        setTempFacilityFilters(prev => 
-          prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
-        );
-        break;
-      case 'priority':
-        setTempPriorityFilters(prev => 
-          prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
-        );
-        break;
-      default:
-        break;
-    }
-  };
-  
-  return (
-    <section className="dropdown filter-dropdown">
-      <button
-        type="button"
-        className={`dropdown-toggle ${getActiveFilterCount() > 0 ? 'active-filters' : ''}`}
-        onClick={() => setIsFilterMenuOpen(!isFilterMenuOpen)}
-      >
-        <Filter size={16} className="dropdown-icon" />
-        Filters
-        {getActiveFilterCount() > 0 && (
-          <sup className="filter-badge">{getActiveFilterCount()}</sup>
+  // Advanced Filter Menu component
+  const AdvancedFilterMenu = () => {
+    const [tempStatusFilters, setTempStatusFilters] = useState([...statusFilters]);
+    const [tempFacilityFilters, setTempFacilityFilters] = useState([...facilityFilters]);
+    const [tempPriorityFilters, setTempPriorityFilters] = useState([...priorityFilters]);
+    
+    const applyFilters = () => {
+      setStatusFilters(tempStatusFilters);
+      setFacilityFilters(tempFacilityFilters);
+      setPriorityFilters(tempPriorityFilters);
+      setIsFilterMenuOpen(false);
+    };
+    
+    const clearAllFilters = () => {
+      setTempStatusFilters([]);
+      setTempFacilityFilters([]);
+      setTempPriorityFilters([]);
+    };
+    
+    const toggleFilter = (filter, value) => {
+      switch (filter) {
+        case 'status':
+          setTempStatusFilters(prev => 
+            prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
+          );
+          break;
+        case 'facility':
+          setTempFacilityFilters(prev => 
+            prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
+          );
+          break;
+        case 'priority':
+          setTempPriorityFilters(prev => 
+            prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
+          );
+          break;
+        default:
+          break;
+      }
+    };
+    
+    return (
+      <section className="dropdown filter-dropdown">
+        <button
+          type="button"
+          className={`dropdown-toggle ${getActiveFilterCount() > 0 ? 'active-filters' : ''}`}
+          onClick={() => setIsFilterMenuOpen(!isFilterMenuOpen)}
+        >
+          <Filter size={16} className="dropdown-icon" />
+          Filters
+          {getActiveFilterCount() > 0 && (
+            <sup className="filter-badge">{getActiveFilterCount()}</sup>
+          )}
+          <ChevronDown size={16} className="dropdown-icon" />
+        </button>
+
+        {isFilterMenuOpen && (
+          <menu className="dropdown-menu filter-menu">
+            <section className="dropdown-content filter-content">
+              <h3 className="filter-section-title">Filter by Status</h3>
+              <menu className="filter-options">
+                {availableStatuses.map((status) => (
+                  <li key={status} className="filter-option">
+                    <input
+                      type="checkbox"
+                      id={`status-${status}`}
+                      checked={tempStatusFilters.includes(status)}
+                      onChange={() => toggleFilter('status', status)}
+                    />
+                    <label htmlFor={`status-${status}`}>{status}</label>
+                  </li>
+                ))}
+              </menu>
+              
+              <h3 className="filter-section-title">Filter by Facility</h3>
+              <menu className="filter-options">
+                {availableFacilities.map((facility) => (
+                  <li key={facility} className="filter-option">
+                    <input
+                      type="checkbox"
+                      id={`facility-${facility}`}
+                      checked={tempFacilityFilters.includes(facility)}
+                      onChange={() => toggleFilter('facility', facility)}
+                    />
+                    <label htmlFor={`facility-${facility}`}>{facility}</label>
+                  </li>
+                ))}
+              </menu>
+              
+              {availablePriorities.length > 0 && (
+                <>
+                  <h3 className="filter-section-title">Filter by Priority</h3>
+                  <menu className="filter-options">
+                    {availablePriorities.map((priority) => (
+                      <li key={priority} className="filter-option">
+                        <input
+                          type="checkbox"
+                          id={`priority-${priority}`}
+                          checked={tempPriorityFilters.includes(priority)}
+                          onChange={() => toggleFilter('priority', priority)}
+                        />
+                        <label htmlFor={`priority-${priority}`}>{priority}</label>
+                      </li>
+                    ))}
+                  </menu>
+                </>
+              )}
+              
+              <menu className="filter-actions">
+                <li><button onClick={clearAllFilters} className="filter-btn clear-btn">
+                  Clear All
+                </button></li>
+                <li><button onClick={applyFilters} className="filter-btn apply-btn">
+                  Apply Filters
+                </button></li>
+              </menu>
+            </section>
+          </menu>
         )}
-        <ChevronDown size={16} className="dropdown-icon" />
-      </button>
-
-      {isFilterMenuOpen && (
-        <menu className="dropdown-menu filter-menu">
-          <section className="dropdown-content filter-content">
-            <h3 className="filter-section-title">Filter by Status</h3>
-            <menu className="filter-options">
-              {availableStatuses.map((status) => (
-                <li key={status} className="filter-option">
-                  <input
-                    type="checkbox"
-                    id={`status-${status}`}
-                    checked={tempStatusFilters.includes(status)}
-                    onChange={() => toggleFilter('status', status)}
-                  />
-                  <label htmlFor={`status-${status}`}>{status}</label>
-                </li>
-              ))}
-            </menu>
-            
-            <h3 className="filter-section-title">Filter by Facility</h3>
-            <menu className="filter-options">
-              {availableFacilities.map((facility) => (
-                <li key={facility} className="filter-option">
-                  <input
-                    type="checkbox"
-                    id={`facility-${facility}`}
-                    checked={tempFacilityFilters.includes(facility)}
-                    onChange={() => toggleFilter('facility', facility)}
-                  />
-                  <label htmlFor={`facility-${facility}`}>{facility}</label>
-                </li>
-              ))}
-            </menu>
-            
-            {availablePriorities.length > 0 && (
-              <>
-                <h3 className="filter-section-title">Filter by Priority</h3>
-                <menu className="filter-options">
-                  {availablePriorities.map((priority) => (
-                    <li key={priority} className="filter-option">
-                      <input
-                        type="checkbox"
-                        id={`priority-${priority}`}
-                        checked={tempPriorityFilters.includes(priority)}
-                        onChange={() => toggleFilter('priority', priority)}
-                      />
-                      <label htmlFor={`priority-${priority}`}>{priority}</label>
-                    </li>
-                  ))}
-                </menu>
-              </>
-            )}
-            
-            <menu className="filter-actions">
-              <li><button onClick={clearAllFilters} className="filter-btn clear-btn">
-                Clear All
-              </button></li>
-              <li><button onClick={applyFilters} className="filter-btn apply-btn">
-                Apply Filters
-              </button></li>
-            </menu>
-          </section>
-        </menu>
-      )}
-    </section>
-  );
-};
-
+      </section>
+    );
+  };
 
   // Chart type selector
   const ChartTypeSelector = () => {
@@ -1007,9 +1034,5 @@ const AdvancedFilterMenu = () => {
     </main>
   );
 };
-
-
-
-
 
 export default CustomView;

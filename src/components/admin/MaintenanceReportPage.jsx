@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { fetchFilteredIssues, getStats, resolveStatus, exportToCsv } from "../../../backend/services/MaintenanceReportService";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { useNavigate } from "react-router-dom";
 import { Chart } from "chart.js";
 import "./MaintenanceReport.css";
 
@@ -16,6 +17,12 @@ const MaintenanceReportPage = () => {
   const statusChartRef = useRef(null);
   const priorityChartRef = useRef(null);
   const chartInstances = useRef({});
+
+  const navigate = useNavigate();
+
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -184,6 +191,22 @@ const MaintenanceReportPage = () => {
       <header className="usageTrends-header">
         <h2>Maintenance Report Dashboard</h2>
       </header>
+
+        {/* Breadcrumb */}
+      <nav className="breadcrumb-nav">
+        <button 
+          onClick={() => handleNavigate('/admin-home')} 
+          className="breadcrumb-link"
+        >
+          <span className="home-icon">🏠</span> Dashboard
+        </button>
+        <span className="separator">/</span>
+        <button
+        className='breadcrumb-link'
+          onClick={() => handleNavigate('/Reports')}>
+        <span className="current-page"></span> Reports
+        </button>
+      </nav>
 
       <section className="summary-stats-horizontal">
         <article className="summary-card-sm"><h3>Total Issues</h3><p>{filteredIssues.length}</p></article>

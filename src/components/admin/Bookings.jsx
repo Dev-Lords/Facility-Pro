@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchBookings, UpdateBooking } from "../../../backend/services/bookingService.js";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import { getUserByUid } from "../../../backend/services/userServices.js";
 import { Filter, Search, ChevronDown,X } from "lucide-react";
 import "./Bookings.css";
@@ -16,7 +17,11 @@ const BookingsPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const bookingsPerPage = 10;
+  const navigate = useNavigate();
 
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
 //FETCHING ALL BOOKINGS IN ORDER TO REVIEW THEM
   useEffect(() => {
@@ -146,6 +151,18 @@ useEffect(() => {
         <h1 className="bookings-title">Bookings Review</h1>
         <p className="bookings-subtitle">Approve and Decline bookings!</p>
       </header>
+
+       {/* Breadcrumb */}
+      <nav className="breadcrumb-nav">
+        <button 
+          onClick={() => handleNavigate('/admin-home')} 
+          className="breadcrumb-link"
+        >
+          <span className="home-icon">🏠</span> Dashboard
+        </button>
+        <span className="separator">/</span>
+        
+      </nav>
 
       <form className="search-filter-container" onSubmit={(e) => e.preventDefault()}>
         <fieldset className="search-container">

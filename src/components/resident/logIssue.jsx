@@ -104,6 +104,9 @@ export default function LogIssueForm() {
 
   return (
     <main className="issue-form-container">
+
+
+
       <section className="issue-form">
         <figure className="form-image">
           <blockquote className="form-message-bounce">
