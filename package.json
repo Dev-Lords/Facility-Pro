@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@mui/x-data-grid": "^7.28.3",
+    "chart.js": "^4.4.9",
     "firebase": "^11.6.0",
     "firebase-admin": "^13.2.0",
     "jspdf": "^3.0.1",

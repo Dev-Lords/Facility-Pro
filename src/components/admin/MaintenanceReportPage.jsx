@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { fetchFilteredIssues, getStats, resolveStatus, exportToCsv } from "../../../backend/services/MaintenanceReportService";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { Chart } from "chart.js/auto";
+import { Chart } from "chart.js";
 import "./MaintenanceReport.css";
 
 const MaintenanceReportPage = () => {
