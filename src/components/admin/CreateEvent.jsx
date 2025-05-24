@@ -18,6 +18,7 @@ const CreateEvents = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const [eventData, setEventData] = useState({
     title: '',
@@ -44,12 +45,65 @@ const CreateEvents = () => {
       ...eventData,
       [name]: type === 'checkbox' ? checked : value
     });
+    
+    // Clear error message when user starts typing/changing values
+    if (errorMessage) {
+      setErrorMessage('');
+      setShowErrorPopup(false);
+    }
   };
 
   // Helper function to convert time string to minutes for comparison
   const timeToMinutes = (timeStr) => {
     const [hours, minutes] = timeStr.split(':');
     return parseInt(hours) * 60 + parseInt(minutes);
+  };
+
+  // Function to check if the event date/time is in the past
+  const isEventInPast = (date, time) => {
+    const now = new Date();
+    const eventDateTime = new Date(`${date}T${time}`);
+    return eventDateTime < now;
+  };
+
+  // Function to check if the event date is today and time validation
+  const validateEventDateTime = (date, startTime, endTime) => {
+    const errors = [];
+    
+    // Check if date is in the past
+    const today = new Date();
+    const eventDate = new Date(date);
+    const todayDateString = today.toISOString().split('T')[0];
+    
+    if (date < todayDateString) {
+      errors.push('Event date cannot be in the past');
+    }
+    
+    // If event is today, check if start time is in the past
+    if (date === todayDateString && startTime) {
+      const now = new Date();
+      const currentTime = now.getHours().toString().padStart(2, '0') + ':' + 
+                         now.getMinutes().toString().padStart(2, '0');
+      
+      if (startTime <= currentTime) {
+        errors.push('Event start time cannot be in the past');
+      }
+    }
+    
+    // Check if end time is after start time
+    if (startTime && endTime) {
+      if (timeToMinutes(endTime) <= timeToMinutes(startTime)) {
+        errors.push('End time must be after start time');
+      }
+      
+      // Check for minimum event duration (optional - you can adjust or remove this)
+      const durationMinutes = timeToMinutes(endTime) - timeToMinutes(startTime);
+      if (durationMinutes < 30) {
+        errors.push('Event must be at least 30 minutes long');
+      }
+    }
+    
+    return errors;
   };
 
   // Function to check if events overlap
@@ -103,9 +157,27 @@ const CreateEvents = () => {
     setErrorMessage('');
 
     try {
-      // Validate end time is after start time
-      if (timeToMinutes(eventData.endTime) <= timeToMinutes(eventData.startTime)) {
-        setErrorMessage('End time must be after start time');
+      // Validate date and time
+      const dateTimeErrors = validateEventDateTime(eventData.date, eventData.startTime, eventData.endTime);
+      if (dateTimeErrors.length > 0) {
+        setErrorMessage(dateTimeErrors.join('. '));
+        setShowErrorPopup(true);
+        setIsSubmitting(false);
+        return;
+      }
+      
+      // Validate max participants
+      if (parseInt(eventData.maxParticipants) <= 0) {
+        setErrorMessage('Maximum participants must be greater than 0');
+        setShowErrorPopup(true);
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Validate max participants is reasonable (optional limit)
+      if (parseInt(eventData.maxParticipants) > 1000) {
+        setErrorMessage('Maximum participants cannot exceed 1000');
+        setShowErrorPopup(true);
         setIsSubmitting(false);
         return;
       }
@@ -114,7 +186,8 @@ const CreateEvents = () => {
       const overlapCheck = await checkForOverlap(eventData);
       
       if (overlapCheck.hasOverlap) {
-        setErrorMessage(`This time slot overlaps with an existing "${overlapCheck.conflictingEvent.title}" event scheduled at ${overlapCheck.conflictingEvent.startTime} to ${overlapCheck.conflictingEvent.endTime}`);
+        setErrorMessage(`This time slot overlaps with an existing "${overlapCheck.conflictingEvent.title}" event scheduled from ${overlapCheck.conflictingEvent.startTime} to ${overlapCheck.conflictingEvent.endTime}`);
+        setShowErrorPopup(true);
         setIsSubmitting(false);
         return;
       }
@@ -156,13 +229,23 @@ const CreateEvents = () => {
         setErrorMessage('Firebase service is currently unavailable. Please try again later.');
       } else if (error.code === 'not-found') {
         setErrorMessage('Firestore database not found. Please check your Firebase configuration.');
+      } else if (error.code === 'deadline-exceeded') {
+        setErrorMessage('Request timed out. Please check your internet connection and try again.');
+      } else if (error.code === 'resource-exhausted') {
+        setErrorMessage('Service temporarily unavailable due to high demand. Please try again later.');
+      } else if (error.code === 'unauthenticated') {
+        setErrorMessage('Authentication required. Please log in again.');
       } else {
         setErrorMessage(`Failed to create event: ${error.message}`);
       }
+      setShowErrorPopup(true);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Get today's date for min attribute
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <section className="issue-form-container">
@@ -180,7 +263,8 @@ const CreateEvents = () => {
         <form className="form-fields" onSubmit={handleSubmit}>
           <h2>Create New Event</h2>
 
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {/* Inline error message for immediate feedback */}
+          {errorMessage && !showErrorPopup && <p className="error-message">{errorMessage}</p>}
 
           <label htmlFor="title">Event Title</label>
           <input
@@ -190,6 +274,7 @@ const CreateEvents = () => {
             onChange={handleChange}
             value={eventData.title}
             required
+            maxLength={100}
           />
 
           <label htmlFor="description">Description</label>
@@ -200,6 +285,8 @@ const CreateEvents = () => {
             onChange={handleChange}
             value={eventData.description}
             required
+            maxLength={500}
+            rows={4}
           />
 
           <fieldset className="form-row">
@@ -211,6 +298,7 @@ const CreateEvents = () => {
               name="date"
               onChange={handleChange}
               value={eventData.date}
+              min={today}
               required
             />
             
@@ -276,6 +364,7 @@ const CreateEvents = () => {
             onChange={handleChange}
             value={eventData.maxParticipants}
             min="1"
+            max="1000"
             required
           />
 
@@ -285,15 +374,53 @@ const CreateEvents = () => {
         </form>
       </article>
 
+      {/* Error Pop-up Modal */}
+      {showErrorPopup && (
+        <dialog className="error-popup" open>
+          <article className="popup-content error-content">
+            <h3>⚠️ Unable to Create Event</h3>
+            <p>{errorMessage}</p>
+            <div className="popup-actions">
+              <button 
+                className="popup-button primary"
+                onClick={() => {
+                  setShowErrorPopup(false);
+                  setErrorMessage('');
+                }}
+              >
+                OK, I'll Fix It
+              </button>
+            </div>
+          </article>
+        </dialog>
+      )}
+
+      {/* Success Pop-up Modal */}
+
       {showSuccessMessage && (
         <dialog className="success-popup" open>
-          <article className="popup-content">
-            <h3>Your event was created successfully!</h3>
+          <article className="popup-content success-content">
+            <h3>✅ Event Created Successfully!</h3>
             <p>The event has been added to the calendar and is now visible to community members.</p>
-            <button onClick={() => {
-              setShowSuccessMessage(false);
-              navigate('/admin-home');
-            }}>Return to Dashboard</button>
+            <div className="popup-actions">
+              <button 
+                className="popup-button primary"
+                onClick={() => {
+                  setShowSuccessMessage(false);
+                  navigate(dashboardPath);
+                }}
+              >
+                Return to Dashboard
+              </button>
+              <button 
+                className="popup-button secondary"
+                onClick={() => {
+                  setShowSuccessMessage(false);
+                }}
+              >
+                Create Another Event
+              </button>
+            </div>
           </article>
         </dialog>
       )}
