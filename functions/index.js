@@ -37,6 +37,59 @@ app.get('/get-all-users', async (req, res) => {
   }
 });
 
+app.get("/available-slots", async (req, res) => {
+  const { facilityId, selectedDate } = req.query;
+
+  if (!facilityId || !selectedDate) {
+    return res.status(400).json({ error: "Missing facilityId or selectedDate query parameter" });
+  }
+
+  try {
+    console.log("Function called with facilityId:", facilityId, "and selectedDate:", selectedDate);
+    
+    const facilitiesRef = collection(db, "facilities");
+    const facilityQuery = query(facilitiesRef, where("facilityID", "==", facilityId));
+    const facilityQuerySnapshot = await getDocs(facilityQuery);
+    
+    if (facilityQuerySnapshot.empty) {
+      console.log("Facility not found with facilityID:", facilityId);
+      return res.json([]);
+    }
+
+    const facilityDoc = facilityQuerySnapshot.docs[0];
+    const facilityData = facilityDoc.data();
+    const allSlots = facilityData.slots || [];
+
+    let formattedDate = selectedDate;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(selectedDate)) {
+      formattedDate = new Date(selectedDate).toISOString().split('T')[0];
+    }
+
+    const bookingsRef = collection(db, "bookings");
+    const bookingQuery = query(bookingsRef, where("facilityID", "==", facilityId), where("date", "==", formattedDate));
+    const bookingSnap = await getDocs(bookingQuery);
+
+    let takenSlots = [];
+    bookingSnap.forEach(doc => {
+      const data = doc.data();
+      if (Array.isArray(data.bookedSlots)) {
+        takenSlots = [...takenSlots, ...data.bookedSlots];
+      }
+    });
+
+    const uniqueTakenSlots = [...new Set(takenSlots)];
+    const takenSlotsAsNumbers = uniqueTakenSlots.map(Number);
+    const allSlotsAsNumbers = allSlots.map(Number);
+    const availableSlots = allSlotsAsNumbers.filter(slot => !takenSlotsAsNumbers.includes(slot));
+
+    res.json(availableSlots);
+  } catch (error) {
+    console.error("Error fetching available numeric slots:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
 
 //Creating a user account (Post-sending information)
 app.post('/create-account', async (req, res) => {
@@ -440,101 +493,7 @@ exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (eve
   
 
 
-exports.fetchAvailableNumericSlots = functions.https.onCall(async (data, context) => {
 
-  const { facilityId, selectedDate } = data;
-  
-  // Validate required parameters
-  if (!facilityId || !selectedDate) {
-    throw new functions.https.HttpsError(
-      'invalid-argument',
-      'The function must be called with facilityId and selectedDate arguments.'
-    );
-  }
-
-  try {
-    console.log("Function called with facilityId:", facilityId, "and selectedDate:", selectedDate);
-    
-    // First, query for the facility document where facilityID matches the passed parameter
-    const facilitiesRef = db.collection("facilities");
-    const facilityQuery = facilitiesRef.where("facilityID", "==", facilityId);
-    const facilityQuerySnapshot = await facilityQuery.get();
-    
-    if (facilityQuerySnapshot.empty) {
-      console.log("Facility not found with facilityID:", facilityId);
-      return [];
-    }
-    
-    const facilityDoc = facilityQuerySnapshot.docs[0];
-    const facilityData = facilityDoc.data();
-    const allSlots = facilityData.slots || [];
-    console.log("All slots from facility:", allSlots);
-
-    // Format the date consistently
-    let formattedDate = selectedDate;
-    if (selectedDate instanceof Date) {
-      formattedDate = selectedDate.toISOString().split('T')[0]; // format: "YYYY-MM-DD"
-    }
-    console.log("Formatted date for query:", formattedDate);
-    
-    // Query for bookings with matching facilityID and date
-    const bookingsRef = db.collection("bookings");
-    const q = bookingsRef
-      .where("facilityID", "==", facilityId)
-      .where("date", "==", formattedDate);
-    
-    const bookingSnap = await q.get();
-    console.log("Booking snapshot size:", bookingSnap.size);
-    console.log("Number of booking documents found:", bookingSnap.size);
-    
-    // If no bookings exist for the selected date, return all available slots
-    if (bookingSnap.empty) {
-      console.log("No bookings found for this date and facility. All slots are available.");
-      return allSlots;
-    }
-    
-    let takenSlots = [];
-    bookingSnap.forEach(doc => {
-      const data = doc.data();
-      console.log("Booking document ID:", doc.id);
-      console.log("Booking facilityID:", data.facilityID);
-      console.log("Booking date:", data.date);
-      
-      if (Array.isArray(data.bookedSlots)) {
-        console.log("Booked slots in this document:", data.bookedSlots);
-        takenSlots = [...takenSlots, ...data.bookedSlots];
-      } else {
-        console.warn("WARNING: Document", doc.id, "has no bookedSlots array");
-      }
-    });
-    
-    console.log("Combined taken slots:", takenSlots);
-    
-    const uniqueTakenSlots = [...new Set(takenSlots)];
-    console.log("Unique taken slots:", uniqueTakenSlots);
-    
-    const takenSlotsAsNumbers = uniqueTakenSlots.map(slot => Number(slot));
-    const allSlotsAsNumbers = allSlots.map(slot => Number(slot));
-    
-    console.log("Taken slots as numbers:", takenSlotsAsNumbers);
-    console.log("All slots as numbers:", allSlotsAsNumbers);
-    
-    const availableSlots = allSlotsAsNumbers.filter(slot => !takenSlotsAsNumbers.includes(slot));
-    console.log("Final available slots:", availableSlots);
-    
-    return availableSlots;
-  } catch (error) {
-    console.error("Error fetching available numeric slots:", error);
-    console.error("Error stack:", error.stack);
-    
-    // Properly throw an HTTPS error for Firebase Callable functions
-    throw new functions.https.HttpsError(
-      'internal',
-      'Error fetching available slots',
-      error.message
-    );
-  }
-});
  
 
 exports.api = functions.https.onRequest(app); 

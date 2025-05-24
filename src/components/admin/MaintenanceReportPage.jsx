@@ -3,6 +3,10 @@ import { fetchFilteredIssues, getStats, resolveStatus, exportToCsv } from "../..
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { useNavigate } from "react-router-dom";
+import { 
+
+  FaArrowLeft
+} from 'react-icons/fa';
 // Updated Chart.js imports - add necessary components
 import { 
   Chart as ChartJS, 
@@ -342,6 +346,11 @@ const MaintenanceReportPage = () => {
           </section>
         </section>
       )}
+       <section className="back-button-container">
+        <button className="btn back-btn" onClick={() => handleNavigate('/admin-home')}>
+          <FaArrowLeft /> Back to Dashboard
+        </button>
+      </section>
     </main>
   );
 };

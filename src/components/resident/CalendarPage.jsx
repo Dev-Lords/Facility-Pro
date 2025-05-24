@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './CalendarPage.css';
 import { fetchAvailableNumericSlots ,createBooking,validBooking} from "./../../../backend/services/bookingService";
 import { useNavigate } from 'react-router-dom';
-import { getFunctions, httpsCallable } from "firebase/functions";
-import { app } from "../../../backend/firebase/firebase.config.js";
-const functions = getFunctions(app);
-const callFetchAvailableNumericSlots = httpsCallable(functions, "fetchAvailableNumericSlots");
+
 
 const convertToTimeSlots = (hours) => {
   const convertToTimeSlot = (hour) => {
@@ -75,20 +72,34 @@ const CalendarPage = () => {
   const unbookableDates = [];
 
   useEffect(() => {
-    if (!selectedDate) return;
+  if (!selectedDate) return;
+
+  async function fetchSlots() {
     setLoading(true);
-    (async () => {
-      try {
-        const slots = await fetchAvailableNumericSlots(sessionStorage.getItem("facility"), selectedDate);
-        const wordSlots = convertToTimeSlots(slots);
-        setAvailableSlots(wordSlots);
-      } catch (error) {
-        console.error("Error fetching available slots:", error);
-      } finally {
-        setLoading(false);
+    try {
+      const facilityId = sessionStorage.getItem("facility");
+
+      const response = await fetch(
+        `https://us-central1-facilty-pro.cloudfunctions.net/api/available-slots?facilityId=${facilityId}&selectedDate=${selectedDate}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error : ${response.status}`);
       }
-    })();
-  }, [selectedDate]);
+
+      const slots = await response.json();
+      const wordSlots = convertToTimeSlots(slots);
+      setAvailableSlots(wordSlots);
+    } catch (error) {
+      console.error("Error fetching available slots:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  fetchSlots();
+}, [selectedDate]);
+
 
   useEffect(() => {
     setSelectedSlots([]);
