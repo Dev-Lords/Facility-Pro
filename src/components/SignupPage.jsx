@@ -82,7 +82,7 @@ const SignupPage = () => {
     
     }
       catch(error){
-        console.error("Error signing up: ", error);
+        console.error("Error signing up: ", error.message);
       }
       
     }
