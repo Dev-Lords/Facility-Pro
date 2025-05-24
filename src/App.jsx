@@ -10,7 +10,7 @@ import AdminDashboard from "./components/admin/AdminDashboard.jsx";
 import FacilityStaffDashboard from "./components/staff/FacilityStaffDashboard.jsx";
 import IssuesPage from "./components/staff/IssuesPage.jsx";
 import LogIssueForm from "./components/resident/logIssue.jsx";
-
+import Events from "./components/staff/Events.jsx";
 
 import FacilitySelection from "./components/resident/FacilitySelection.jsx"
 import CalenderPage from "./components/resident/CalendarPage.jsx";
@@ -49,7 +49,7 @@ function App() {
         <Route path="/usage-trends" element={<UsageTrends />} />
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/reports" element={<ReportsDashboard />} />
-
+        <Route path="/upcoming-events" element={< Events/>} />
         <Route path="/maintenance-reports" element={<MaintenanceReportPage />} />
 
         <Route path="/custom-reports" element={<CustomView />} />

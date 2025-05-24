@@ -123,8 +123,6 @@ const IssuesPage = () => {
   return (
     <main className="issues-page">
 
-      
-
       <header className="facility-header">
         <h1 className="facility-title">Issue Reports</h1>
         <p className="facility-subtitle">
