@@ -62,15 +62,18 @@
   
   /* Header Styles */
   .header-bar {
-    background: linear-gradient(90deg, var(--midnight-blue) 0%, var(--deep-navy) 50%, var(--royal-blue) 100%);
-    padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    backdrop-filter: blur(15px);
-    border-bottom: 2px solid var(--electric-blue);
-    box-shadow: 0 4px 20px rgba(0, 102, 255, 0.2);
-  }
+  background: linear-gradient(90deg, var(--midnight-blue) 0%, var(--deep-navy) 50%, var(--royal-blue) 100%);
+  padding: 1rem 0;
+  position: relative; /* Changed from sticky to fixed */
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  backdrop-filter: blur(15px);
+  border-bottom: 2px solid var(--electric-blue);
+  box-shadow: 0 4px 20px rgba(0, 102, 255, 0.2);
+}
   
   .header-content {
     max-width: 1200px;
