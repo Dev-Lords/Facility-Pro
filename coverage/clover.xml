@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1748089689638" clover="3.2.0">
-  <project timestamp="1748089689639" name="All files">
+<coverage generated="1748102052877" clover="3.2.0">
+  <project timestamp="1748102052877" name="All files">
     <metrics statements="1348" coveredstatements="1069" conditionals="760" coveredconditionals="532" methods="383" coveredmethods="282" elements="2491" coveredelements="1883" complexity="0" loc="1348" ncloc="1348" packages="5" files="24" classes="24"/>
     <package name="src">
       <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -253,15 +253,15 @@
         <line num="195" count="4" type="stmt"/>
         <line num="199" count="1" type="stmt"/>
         <line num="200" count="1" type="stmt"/>
-        <line num="231" count="71" type="cond" truecount="1" falsecount="1"/>
-        <line num="241" count="3" type="stmt"/>
-        <line num="276" count="0" type="stmt"/>
-        <line num="289" count="2" type="stmt"/>
-        <line num="297" count="1" type="stmt"/>
-        <line num="312" count="0" type="stmt"/>
-        <line num="318" count="29" type="stmt"/>
-        <line num="320" count="0" type="stmt"/>
-        <line num="328" count="0" type="stmt"/>
+        <line num="242" count="71" type="cond" truecount="1" falsecount="1"/>
+        <line num="252" count="3" type="stmt"/>
+        <line num="287" count="0" type="stmt"/>
+        <line num="300" count="2" type="stmt"/>
+        <line num="308" count="1" type="stmt"/>
+        <line num="323" count="0" type="stmt"/>
+        <line num="329" count="29" type="stmt"/>
+        <line num="331" count="0" type="stmt"/>
+        <line num="339" count="0" type="stmt"/>
       </file>
       <file name="CreateEvent.jsx" path="C:\Users\Phumla Lila\SD project\Facility-Pro\src\components\admin\CreateEvent.jsx">
         <metrics statements="58" coveredstatements="48" conditionals="30" coveredconditionals="16" methods="6" coveredmethods="5"/>
@@ -797,17 +797,17 @@
         <line num="267" count="3" type="stmt"/>
         <line num="271" count="1" type="stmt"/>
         <line num="272" count="1" type="stmt"/>
-        <line num="304" count="28" type="cond" truecount="2" falsecount="0"/>
-        <line num="314" count="1" type="stmt"/>
-        <line num="321" count="1" type="stmt"/>
-        <line num="346" count="0" type="stmt"/>
-        <line num="366" count="0" type="stmt"/>
-        <line num="378" count="0" type="stmt"/>
-        <line num="441" count="0" type="stmt"/>
-        <line num="460" count="0" type="stmt"/>
-        <line num="466" count="17" type="stmt"/>
-        <line num="468" count="0" type="stmt"/>
-        <line num="476" count="0" type="stmt"/>
+        <line num="316" count="28" type="cond" truecount="2" falsecount="0"/>
+        <line num="326" count="1" type="stmt"/>
+        <line num="331" count="1" type="stmt"/>
+        <line num="357" count="0" type="stmt"/>
+        <line num="377" count="0" type="stmt"/>
+        <line num="389" count="0" type="stmt"/>
+        <line num="452" count="0" type="stmt"/>
+        <line num="471" count="0" type="stmt"/>
+        <line num="477" count="17" type="stmt"/>
+        <line num="479" count="0" type="stmt"/>
+        <line num="487" count="0" type="stmt"/>
       </file>
       <file name="UsageTrends.jsx" path="C:\Users\Phumla Lila\SD project\Facility-Pro\src\components\admin\UsageTrends.jsx">
         <metrics statements="227" coveredstatements="130" conditionals="117" coveredconditionals="69" methods="40" coveredmethods="23"/>

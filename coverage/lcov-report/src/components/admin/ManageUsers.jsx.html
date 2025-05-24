@@ -554,7 +554,18 @@
 <a name='L489'></a><a href='#L489'>489</a>
 <a name='L490'></a><a href='#L490'>490</a>
 <a name='L491'></a><a href='#L491'>491</a>
-<a name='L492'></a><a href='#L492'>492</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L492'></a><a href='#L492'>492</a>
+<a name='L493'></a><a href='#L493'>493</a>
+<a name='L494'></a><a href='#L494'>494</a>
+<a name='L495'></a><a href='#L495'>495</a>
+<a name='L496'></a><a href='#L496'>496</a>
+<a name='L497'></a><a href='#L497'>497</a>
+<a name='L498'></a><a href='#L498'>498</a>
+<a name='L499'></a><a href='#L499'>499</a>
+<a name='L500'></a><a href='#L500'>500</a>
+<a name='L501'></a><a href='#L501'>501</a>
+<a name='L502'></a><a href='#L502'>502</a>
+<a name='L503'></a><a href='#L503'>503</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -857,6 +868,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -872,9 +895,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1327,54 +1349,65 @@ useEffect(() =&gt; {
         &lt;/fieldset&gt;
       &lt;/form&gt;
 &nbsp;
-      &lt;section className="users-table-container"&gt;
-        &lt;table className="users-table"&gt;
-          &lt;thead&gt;
-            &lt;tr&gt;
-              &lt;th&gt;Username&lt;/th&gt;
-              &lt;th&gt;Email&lt;/th&gt;
-              &lt;th&gt;User Type&lt;/th&gt;
-              &lt;th&gt;Last Modified&lt;/th&gt;
-              &lt;th&gt;Edit&lt;/th&gt;
-              &lt;th&gt;Delete&lt;/th&gt;
-            &lt;/tr&gt;
-          &lt;/thead&gt;
-          &lt;tbody&gt;
-            {isLoading ? null : filteredUsers.length === 0 ? (
-              &lt;tr&gt;
-                &lt;td colSpan="6" className="no-users-message"&gt;
-                  No users found
-                &lt;/td&gt;
-              &lt;/tr&gt;
-            ) : (
-              currentUsers.map((user, index) =&gt; (
-                &lt;tr key={user.uid || `user-${index}`}&gt;
-                  &lt;td&gt;{user.displayName}&lt;/td&gt;
-                  &lt;td&gt;{user.email}&lt;/td&gt;
-                  &lt;td className="user-type-cell"&gt;
-                    &lt;mark className="user-type-badge"&gt;{user.user_type.charAt(0).toUpperCase() + user.user_type.slice(1)}&lt;/mark&gt;
-                  &lt;/td&gt;
-                  &lt;td&gt;{formatDate(user.updatedAt)}&lt;/td&gt;
-                  &lt;td&gt;
-                    &lt;button
-                      className="edit-button"
-                      onClick={() =&gt; openEditModal(user)}&gt;
-                      &lt;Pencil size={18} className="icon" /&gt;
-                    &lt;/button&gt;
-                  &lt;/td&gt;
-                  &lt;td&gt;
-                    &lt;button
-                      className="delete-button"
-                      onClick={() =&gt; confirmDelete(user.uid)}&gt;
-                      &lt;Trash2 size={18} className="icon" /&gt;
-                    &lt;/button&gt;
-                  &lt;/td&gt;
-                &lt;/tr&gt;
-              ))
-            )}
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-      &lt;/section&gt;
+  &lt;section className="users-table-container"&gt;
+  &lt;table className="users-table"&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Username&lt;/th&gt;
+        &lt;th&gt;Email&lt;/th&gt;
+        &lt;th&gt;User Type&lt;/th&gt;
+        &lt;th&gt;Last Modified&lt;/th&gt;
+        &lt;th&gt;Edit&lt;/th&gt;
+        &lt;th&gt;Delete&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      {isLoading ? (
+        &lt;tr&gt;
+          &lt;td colSpan="6"&gt;
+            &lt;section className="spinner-container"&gt;
+              &lt;svg className="spinner" viewBox="0 0 50 50"&gt;
+                &lt;circle className="spinner-ring" cx="25" cy="25" r="20" /&gt;
+              &lt;/svg&gt;
+&nbsp;
+              &lt;p&gt;Loading...&lt;/p&gt;
+            &lt;/section&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      ) : filteredUsers.length === 0 ? (
+        &lt;tr&gt;
+          &lt;td colSpan="6" className="no-users-message"&gt;
+            No users found
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      ) : (
+        currentUsers.map((user, index) =&gt; (
+          &lt;tr key={user.uid || `user-${index}`}&gt;
+            &lt;td&gt;{user.displayName}&lt;/td&gt;
+            &lt;td&gt;{user.email}&lt;/td&gt;
+            &lt;td className="user-type-cell"&gt;
+              &lt;mark className="user-type-badge"&gt;
+                {user.user_type.charAt(0).toUpperCase() + user.user_type.slice(1)}
+              &lt;/mark&gt;
+            &lt;/td&gt;
+            &lt;td&gt;{formatDate(user.updatedAt)}&lt;/td&gt;
+            &lt;td&gt;
+              &lt;button className="edit-button" onClick={() =&gt; openEditModal(user)}&gt;
+                &lt;Pencil size={18} className="icon" /&gt;
+              &lt;/button&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+              &lt;button className="delete-button" onClick={() =&gt; confirmDelete(user.uid)}&gt;
+                &lt;Trash2 size={18} className="icon" /&gt;
+              &lt;/button&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        ))
+      )}
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/section&gt;
+&nbsp;
 &nbsp;
     {/*Popups: delete,edit and onboard respectively*/}
 &nbsp;
@@ -1543,7 +1576,7 @@ export default ManageUsers;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-24T12:28:09.469Z
+                at 2025-05-24T15:54:12.704Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -220,7 +220,18 @@ useEffect(() => {
             </tr>
           </thead>
           <tbody>
-            {isLoading ? null : currentBookings.length === 0 ? (
+            {isLoading ? (
+            <tr>
+               <td colSpan="6" className="loading-cell">
+                <section className="spinner-container">
+                  <svg className="spinner" viewBox="0 0 50 50">
+                  <circle className="spinner-ring" cx="25" cy="25" r="20" />
+                  </svg>
+                  <p>Loading bookings...</p>
+                </section>
+               </td>
+            </tr>
+            ) : currentBookings.length === 0 ? (
               <tr>
                 <td colSpan="6" className="loading-cell">
                   <p>No bookings to review</p>
