@@ -8,8 +8,6 @@ const { onDocumentCreated } = require('firebase-functions/firestore');
 const { onDocumentUpdated } = require('firebase-functions/firestore');
 
 
-
-
 admin.initializeApp();
 const db = admin.firestore();
 const app = express();
@@ -22,7 +20,7 @@ app.use(cors({
 app.use(express.json());
 
 
-//Fetching all users (Get- getting a file)
+//Fetching all users (Get-getting a file)
 app.get('/get-all-users', async (req, res) => {
   try {
     const usersSnapshot = await admin.firestore().collection('users').orderBy('displayName').get();
@@ -86,6 +84,31 @@ app.get("/available-slots", async (req, res) => {
   } catch (error) {
     console.error("Error fetching available numeric slots:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+
+//Fetching a specific user (Get-getting a file)
+app.get('/get-user/:uid', async (req, res) => {
+  const { uid } = req.params;
+
+  if (!uid) {
+    return res.status(400).json({ error: 'Missing UID in request' });
+  }
+
+  try {
+    const userRef = admin.firestore().collection("users").doc(uid);
+    const userDoc = await userRef.get();
+
+    if (!userDoc.exists) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    return res.status(200).json({ uid: userDoc.id, ...userDoc.data() });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return res.status(500).json({ error: 'Failed to fetch user' });
   }
 });
 
@@ -194,6 +217,57 @@ app.patch('/update-user-type', async (req, res) => {
 
 
 
+//BOOKINGS REVIEW:
+//Fetching all bookings
+app.get('/get-all-bookings', async (req, res) => {
+  try {
+    const bookingsCollection = admin.firestore().collection("bookings");
+    const bookingsSnapshot = await bookingsCollection.get();
+
+    const bookingsList = bookingsSnapshot.docs.map(doc => ({
+      bookingID: doc.id,
+      ...doc.data()
+    }));
+
+    res.status(200).json(bookingsList);
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    res.status(500).json({ error: 'Failed to fetch bookings' });
+  }
+});
+
+
+//updating the booking status
+app.patch('/update-booking-status', async (req, res) => {
+  const { bookingID, newStatus } = req.body;
+
+  if (!bookingID || !newStatus) {
+    return res.status(400).json({ error: 'Missing bookingID or newStatus in request body' });
+  }
+
+  try {
+    const bookingRef = admin.firestore().collection('bookings').doc(bookingID);
+
+    const bookingDoc = await bookingRef.get();
+    if (!bookingDoc.exists) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    await bookingRef.update({ status: newStatus });
+
+    res.status(200).json({ message: 'Booking status updated successfully' });
+  } catch (error) {
+    console.error('Error updating booking status:', error);
+    res.status(500).json({ error: 'Failed to update booking status' });
+  }
+});
+
+
+
+
+
+
+
 
 
 
@@ -280,7 +354,7 @@ exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (eve
   });
 
 
-  //Sending maintenance update notifications
+//Sending maintenance update notifications
  exports.sendIssueUpdateNotification = onDocumentUpdated('issues/{issueId}', async (issue) => {
    // Get the data before and after the update
    const beforeData = issue.data.before.data();

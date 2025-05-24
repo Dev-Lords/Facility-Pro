@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { fetchBookings, UpdateBooking } from "../../../backend/services/bookingService.js";
+import { fetchBookings, updateBooking } from "../../../backend/services/bookingService.js";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { getUserByUid } from "../../../backend/services/userServices.js";
+import { fetchUser } from "../../../backend/services/userServices.js";
 import { Filter, Search, ChevronDown,X } from "lucide-react";
 import "./Bookings.css";
 
@@ -23,6 +23,7 @@ const BookingsPage = () => {
     navigate(path);
   };
 
+
 //FETCHING ALL BOOKINGS IN ORDER TO REVIEW THEM
   useEffect(() => {
     const getBookings = async () => {
@@ -34,7 +35,7 @@ const BookingsPage = () => {
         await Promise.all(
           bookingsList.map(async (booking) => {
             if (!usersMap[booking.userID]) {
-              const userData = await getUserByUid(booking.userID);
+              const userData = await fetchUser(booking.userID);
               if (userData) {
                 usersMap[booking.userID] = userData;
               }
@@ -54,6 +55,7 @@ const BookingsPage = () => {
     };
     getBookings();
   }, []);
+
 
 
 //Pagination improvements for smoother UI experience
@@ -112,7 +114,7 @@ useEffect(() => {
        );
 
         setIsProcessing(true);
-        const { success } = await UpdateBooking(booking.bookingID, newStatus);
+        const { success } = await updateBooking(booking.bookingID, newStatus);
     
         if (success) {
           toast.success(`${newStatus} booking successfully!`);
@@ -121,7 +123,7 @@ useEffect(() => {
         }
         setEditBooking(null);
       } catch (error) {
-        toast.error("Error updating booking status.");
+        toast.error("Failed to update booking status.");
       } finally {
         setIsProcessing(false);
       }
