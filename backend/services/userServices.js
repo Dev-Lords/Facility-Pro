@@ -122,7 +122,7 @@ export const deleteAccount = async (uid) => {
 
 //fetch users
 export const fetchAllUsers = async () => {
-  const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/get-all-users`;
+  const url = 'https://us-central1-facilty-pro.cloudfunctions.net/api/get-all-users';
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error('Failed to fetch users');
@@ -133,24 +133,9 @@ export const fetchAllUsers = async () => {
 };
 
 
-// fetch a user by id
-export const fetchUser = async (uid) => {
-  const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/get-user/${uid}`;
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch user');
-  }
-
-  const user = await response.json();
-  return user;
-};
-
-
-
 //update a user
 export const updateUserType = async (uid, newUserType) => {
-  const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/update-user-type`;
+  const url = 'https://us-central1-facilty-pro.cloudfunctions.net/api/update-user-type';
   const payload = {
     uid,
     newType: newUserType,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { fetchIssues } from "../../../backend/services/issuesService.js";
 import { UpdateIssue } from "../../../backend/services/issuesService.js"; // Import the UpdateIssue function
 import { toast } from "react-toastify";
