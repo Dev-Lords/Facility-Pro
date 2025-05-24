@@ -66,7 +66,7 @@ export default function ReportsDashboard() {
         </button>
       </section>
 
-      <footer className="dashboard-footer">
+      <footer className="footer">
         <p>Facility Management System • Reports Dashboard • Version 1.0.0</p>
       </footer>
     </main>

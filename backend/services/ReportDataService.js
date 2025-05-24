@@ -1,7 +1,7 @@
 // reportService.js
 import { collection, getDocs } from "firebase/firestore";
-import db from "./firebase";
 
+import { db } from '../../backend/firebase/firebase.config.js';
 export const fetchBookings = async () => {
   const snapshot = await getDocs(collection(db, "bookings"));
   return snapshot.docs.map(doc => doc.data());

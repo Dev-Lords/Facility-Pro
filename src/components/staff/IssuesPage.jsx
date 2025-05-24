@@ -153,7 +153,6 @@ const IssuesPage = () => {
         <table className="issues-table">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Title</th>
               <th>Status</th>
               <th>Priority</th>
@@ -180,7 +179,6 @@ const IssuesPage = () => {
                       : ""
                   }
                 >
-                  <td>{issue.issueID}</td>
                   <td>{issue.issueTitle}</td>
                   <td>
                     <span

@@ -34,32 +34,32 @@ export default function AdminDashboard() {
           <section className="card-icon"><FaUsers /></section>
           <h2>Manage Users</h2>
           <p>Add, edit, or remove users and manage their access permissions.</p>
-          <button className="btn manage-btn" onClick={() => handleNavigate("/manage-users")}>Manage Users</button>
+          <button className="btn btn-issues" onClick={() => handleNavigate("/manage-users")}>Manage Users</button>
         </article>
 
         <article className="dashboard-card reports-card">
           <section className="card-icon"><FaFileAlt /></section>
           <h2>Generate Reports</h2>
           <p>Create custom reports and export your data for analysis.</p>
-          <button className="btn reports-btn" onClick={() => handleNavigate("/reports")}>Generate Reports</button>
+          <button className="btn btn-issues" onClick={() => handleNavigate("/reports")}>Generate Reports</button>
         </article>
 
         <article className="dashboard-card events-card">
           <section className="card-icon"><FaRegCalendarPlus /></section>
           <h2>Events</h2>
           <p>Schedule and manage events to keep facilities organized and up to date.</p>
-          <button className="btn events-btn" onClick={() => handleNavigate("/events")}>Create events</button>
+          <button className="btn btn-issues" onClick={() => handleNavigate("/events")}>Create events</button>
         </article>
 
         <article className="dashboard-card bookings-card">
           <section className="card-icon"><FaClipboardCheck/></section>
           <h2>Bookings</h2>
           <p>Review and approve pending bookings to ensure smooth scheduling and facility use.</p>
-          <button className="btn bookings-btn" onClick={() => handleNavigate("/bookings")}>Review bookings</button>
+          <button className="btn btn-issues" onClick={() => handleNavigate("/bookings")}>Review bookings</button>
         </article>
       </section>
 
-      <footer className="dashboard-footer">
+      <footer className="footer">
         <p>Facility Management System • Admin Dashboard • Version 1.0.0</p>
       </footer>
     </main>

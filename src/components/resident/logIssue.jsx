@@ -222,9 +222,7 @@ export default function LogIssueForm() {
             {isSubmitting ? "Submitting..." : "Submit Issue"}
           </button>
           
-          {!currentUser && (
-            <footer className="login-warning">You must be logged in to submit an issue</footer>
-          )}
+         
         </form>
       </section>
 

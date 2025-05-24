@@ -9,7 +9,7 @@ import {
 
 import { app } from "../firebase/firebase.config.js";
 import { saveUser, getUserByUid } from "../services/userServices.js"; // Service functions
-import { User } from "../models/user.js"; // Model only
+
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
