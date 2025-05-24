@@ -195,41 +195,37 @@ export const validBooking = async (facilityId, selectedDate, slotsToBook, userId
 
 //Admin functions
 export const fetchBookings = async () => {
-  try {
-    const bookingsCollection = collection(db, "bookings");
-    const bookingsSnapshot = await getDocs(bookingsCollection);
-    const bookingsList = bookingsSnapshot.docs.map(doc => {
-      const data = doc.data();
-      console.log("Raw Firebase doc:", doc.id, data); // Log raw data
-      return {
-        bookingID: doc.id,
-        ...data
-      };
-    });
-    console.log("Processed issues list:", bookingsList); // Log processed list
-    return bookingsList;
-  } catch (error) {
-    console.error("Error fetching issues:", error);
-    return [];
+  const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/get-all-bookings`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error('Failed to fetch bookings');
   }
+
+  const bookings = await response.json();
+  return bookings;
 };
 
 
-export const UpdateBooking = async (bookingID, newStatus) => {
+//updating booking status
+export const updateBooking = async (bookingID, newStatus) => {
+  const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/update-booking-status`;
+  const payload = {
+    bookingID,
+    newStatus: newStatus,
+  };
 
-  if (!bookingID) {
-    throw new Error("No booking ID provided");
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    throw new Error(errorResponse.error || 'Failed to booking status');
   }
 
-  try {
-    const bookingRef = doc(db, "bookings", bookingID);
-    await setDoc(bookingRef, {status: newStatus,}, { merge: true });
-
-    console.log("Booking reviewed successfully:", bookingID);
-    return {success: true};
-
-  } catch (error) {
-    console.error("Error updating booking status:", error);
-    throw error;
-  }
+  return { success: true };
 };

@@ -9,11 +9,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Mocking the necessary modules and services
 jest.mock('../../backend/services/bookingService.js', () => ({
   fetchBookings: jest.fn(),
-  UpdateBooking: jest.fn()
+  updateBooking: jest.fn()
 }));
 
 jest.mock('../../backend/services/userServices.js', () => ({
-  getUserByUid: jest.fn()
+  fetchUser: jest.fn()
 }));
 
 jest.mock('react-toastify', () => ({
@@ -64,10 +64,10 @@ describe('BookingsPage Component', () => {
     
     // Setup default mocks
     const { fetchBookings } = require('../../backend/services/bookingService.js');
-    const { getUserByUid } = require('../../backend/services/userServices.js');
+    const { fetchUser } = require('../../backend/services/userServices.js');
     
     fetchBookings.mockResolvedValue(mockBookings);
-    getUserByUid.mockImplementation((uid) => Promise.resolve(mockUsers[uid] || null));
+    fetchUser.mockImplementation((uid) => Promise.resolve(mockUsers[uid] || null));
   });
 
   test('renders loading state initially', () => {
@@ -75,6 +75,7 @@ describe('BookingsPage Component', () => {
     expect(screen.getByText('Bookings Review')).toBeInTheDocument();
     expect(screen.getByText('Approve and Decline bookings!')).toBeInTheDocument();
   });
+
 
   test('renders bookings after loading', async () => {
     render(<Router><BookingsPage /></Router>);
@@ -134,6 +135,7 @@ describe('BookingsPage Component', () => {
     expect(screen.queryByText('Alex Johnson')).not.toBeInTheDocument();
   });
 
+
   test('searches bookings by facility', async () => {
     render(<Router><BookingsPage /></Router>);
     
@@ -151,6 +153,7 @@ describe('BookingsPage Component', () => {
     expect(screen.queryByText('Swimming Pool')).not.toBeInTheDocument();
     expect(screen.getByText('Basketball Court')).toBeInTheDocument();
   });
+
 
   test('searches bookings by date', async () => {
     render(<Router><BookingsPage /></Router>);
@@ -170,11 +173,12 @@ describe('BookingsPage Component', () => {
     expect(screen.getByText('2025-05-01')).toBeInTheDocument();
   });
 
+
   test('opens modal and approves a pending booking', async () => {
-    const { UpdateBooking } = require('../../backend/services/bookingService.js');
+    const { updateBooking } = require('../../backend/services/bookingService.js');
     const { toast } = require('react-toastify');
     
-    UpdateBooking.mockResolvedValue({ success: true });
+    updateBooking.mockResolvedValue({ success: true });
 
     render(<Router><BookingsPage /></Router>);
   
@@ -201,7 +205,7 @@ describe('BookingsPage Component', () => {
 
   // Check if UpdateBooking was called with correct parameters
   await waitFor(() => {
-    expect(UpdateBooking).toHaveBeenCalledWith('booking1', 'approved');
+    expect(updateBooking).toHaveBeenCalledWith('booking1', 'approved');
     expect(toast.success).toHaveBeenCalledWith('approved booking successfully!');
   });
     
@@ -209,10 +213,10 @@ describe('BookingsPage Component', () => {
   
 
   test('opens modal and declines a pending booking', async () => {
-    const { UpdateBooking } = require('../../backend/services/bookingService.js');
+    const { updateBooking } = require('../../backend/services/bookingService.js');
     const { toast } = require('react-toastify');
     
-    UpdateBooking.mockResolvedValue({ success: true });
+    updateBooking.mockResolvedValue({ success: true });
 
     render(<Router><BookingsPage /></Router>);
   
@@ -237,17 +241,17 @@ describe('BookingsPage Component', () => {
 
   // Check if UpdateBooking was called with correct parameters
   await waitFor(() => {
-    expect(UpdateBooking).toHaveBeenCalledWith('booking1', 'declined');
+    expect(updateBooking).toHaveBeenCalledWith('booking1', 'declined');
     expect(toast.success).toHaveBeenCalledWith('declined booking successfully!');
   }); 
   });
 
 
   test('handles booking update failure', async () => {
-    const { UpdateBooking } = require('../../backend/services/bookingService.js');
+    const { updateBooking } = require('../../backend/services/bookingService.js');
     const { toast } = require('react-toastify');
     
-    UpdateBooking.mockResolvedValue({ success: false });
+    updateBooking.mockResolvedValue({ success: false });
     
     render(<Router><BookingsPage /></Router>);
     
@@ -276,9 +280,10 @@ describe('BookingsPage Component', () => {
     });
   });
 
+
   test('prevents status change for already reviewed bookings', async () => {
     const { toast } = require('react-toastify');
-    const { UpdateBooking } = require('../../backend/services/bookingService.js');
+    const { updateBooking } = require('../../backend/services/bookingService.js');
     
     // Mock implementation to modify the component's state
     const mockHandleStatusChange = jest.fn().mockImplementation((booking, newStatus) => {
@@ -286,7 +291,7 @@ describe('BookingsPage Component', () => {
         toast.info('This booking has already been reviewed and cannot be changed.');
         return;
       }
-      UpdateBooking(booking.bookingID, newStatus);
+      updateBooking(booking.bookingID, newStatus);
     });
     
     // We need to manually trigger this since we can't directly test the handler
@@ -308,8 +313,10 @@ describe('BookingsPage Component', () => {
     
     // Check if info toast was shown
     expect(toast.info).toHaveBeenCalledWith('This booking has already been reviewed and cannot be changed.');
-    expect(UpdateBooking).not.toHaveBeenCalled();
+    expect(updateBooking).not.toHaveBeenCalled();
   });
+
+
 
   test('displays correct time format for booked slots', async () => {
     render(<Router><BookingsPage /></Router>);
@@ -333,6 +340,8 @@ describe('BookingsPage Component', () => {
     expect(alexTimes).toHaveTextContent(/6pm.*7pm/i);
   });
 
+
+
   test('displays "No bookings to review" when filtered results are empty', async () => {
     render(<Router><BookingsPage /></Router>);
     
@@ -347,6 +356,8 @@ describe('BookingsPage Component', () => {
     // Check if "No bookings to review" message is shown
     expect(screen.getByText('No bookings to review')).toBeInTheDocument();
   });
+
+
 
   test('handles API error when fetching bookings', async () => {
     const { fetchBookings } = require('../../backend/services/bookingService.js');
