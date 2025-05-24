@@ -1,23 +1,13 @@
-import {  getDocs, collection, doc, setDoc } from "firebase/firestore";
-import { db , storage} from "../firebase/firebase.config.js";
-import { Issue } from "../models/issue.js";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL,getStorage } from "firebase/storage";
 
-// In your fetchIssues function
+
 export const fetchIssues = async () => {
+  const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/fetch-issues`;
   try {
-    const issuesCollection = collection(db, "issues");
-    const issuesSnapshot = await getDocs(issuesCollection);
-    const issuesList = issuesSnapshot.docs.map(doc => {
-      const data = doc.data();
-      console.log("Raw Firebase doc:", doc.id, data); // Log raw data
-      return {
-        issueID: doc.id,
-        ...data
-      };
-    });
-    console.log("Processed issues list:", issuesList); // Log processed list
-    return issuesList;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch issues");
+    const issues = await response.json();
+    return issues;
   } catch (error) {
     console.error("Error fetching issues:", error);
     return [];
@@ -26,112 +16,93 @@ export const fetchIssues = async () => {
 
 
 export const UpdateIssue = async (issueID, updatedIssue) => {
-  if (!issueID) {
-    throw new Error("No issue ID provided");
-  }
   
+   const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/issues/${issueID}`;
   try {
-    console.log("UpdateIssue called with ID:", issueID);
-    console.log("UpdateIssue data:", updatedIssue);
-    
-    const issueRef = doc(db, "issues", issueID);
-    await setDoc(issueRef, updatedIssue, { merge: true });
-    
-    console.log("Issue updated successfully in Firebase:", issueID);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedIssue)
+    });
+
+    if (!response.ok) throw new Error("Failed to update issue");
     return true;
   } catch (error) {
-    console.error("Error updating issue in Firebase:", error);
-    throw error; // Re-throw to handle in the component
+    console.error("Error updating issue:", error);
+    throw error;
   }
 };
 
-
-
-
-export async function uploadIssueImages(issueID, images) {
+export async function uploadIssueImages(storage, issueID, images) {
   const imageUrls = [];
-  
+
   if (!images || images.length === 0) {
     return imageUrls;
   }
 
   for (let image of images) {
-    // Generate a unique filename using timestamp if needed
     const fileName = `${Date.now()}-${image.name}`;
     const imageRef = ref(storage, `issues/${issueID}/${fileName}`);
-    
+
     try {
       const snapshot = await uploadBytes(imageRef, image);
       const url = await getDownloadURL(snapshot.ref);
       imageUrls.push(url);
     } catch (error) {
       console.error("Error uploading image:", error);
-      // Continue with other images if one fails
     }
   }
-  
+
   return imageUrls;
 }
 
 
-export async function createIssue(data) {
+
+export const createIssue = async (issueData) => {
+  const storage = getStorage();
+  const issueID = `${Date.now()}`; 
+
   try {
-    // Generate a new document reference with auto-generated ID
-    const issueRef = doc(collection(db, "issues"));
-    const issueID = issueRef.id;
     
-    // Handle image uploads
-    const imageUrls = await uploadIssueImages(issueID, data.images);
-    
-    // Create issue data with uploaded image URLs and ensure issueID matches document ID
-    const issueData = {
-      ...data,
-      issueID: issueID, // Use Firebase's auto-generated ID
+    const imageUrls = await uploadIssueImages(storage, issueID, issueData.images);
+
+    const data = {
+      ...issueData,
+      issueID,
       images: imageUrls,
-      issueStatus: "open", // Set default status
-      feedback: "",       // Set default feedback
-      assignedTo: null,   // Set default assignedTo
-      location: data.location || "Unspecified",  //  Ensure location is saved
-      relatedFacility: data.relatedFacility || "Not Specified", // ✅ Save the facility
-      reportedAt: data.reportedAt || new Date().toISOString()
     };
-    
-    // Create an instance of the Issue model
-    const issue = new Issue(issueData);
-    
-    // Use the toJSON method to convert to a plain object for Firestore
-    const issueForFirestore = issue.toJSON();
-    
-    // Save the plain object to Firestore with the auto-generated ID
-    await setDoc(issueRef, issueForFirestore);
-    
-    return issueID;
+
+    const response = await fetch("https://us-central1-facilty-pro.cloudfunctions.net/api/create-issue", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error("Backend error:", errText);
+      throw new Error("Issue creation failed");
+    }
+
+    const result = await response.json();
+    return result.issueID;
   } catch (error) {
-    console.error("Error in createIssue:", error);
-    throw error; // Re-throw to handle in the component
+    console.error("Error creating full issue:", error);
+    throw error;
   }
-}
+};
 
 
 
 export const getIssueByUserId = async (userId) => {
+   const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/issuesByUser?userId=${encodeURIComponent(userId)}`;
   try {
-    const issuesCollection = collection(db, "issues");
-    const issuesSnapshot = await getDocs(issuesCollection);
-    const issuesList = issuesSnapshot.docs.map(doc => {
-      const data = doc.data();
-      return {
-        issueID: doc.id,
-        ...data
-      };
-    });
-    
-    // Filter issues by userId
-    const userIssues = issuesList.filter(issue => issue.reporter === userId);
-    
-    return userIssues;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch user issues");
+    const issues = await response.json();
+    return issues;
   } catch (error) {
-    console.error("Error fetching issues by user ID:", error);
+    console.error("Error fetching user issues:", error);
     return [];
   }
-}
+};

@@ -13,7 +13,8 @@ const db = admin.firestore();
 const app = express();
 app.use(cors({
     origin: [
-      'http://localhost:5173', 
+      'http://localhost:5173',
+      'http://localhost:5174',
       'https://purple-flower-02549321e.6.azurestaticapps.net'
     ]
 }));
@@ -35,30 +36,280 @@ app.get('/get-all-users', async (req, res) => {
   }
 });
 
+app.get('/available-slots/:facilityId/:date', async (req, res) => {
+  const { facilityId, date } = req.params;
 
-//Fetching a specific user (Get-getting a file)
-app.get('/get-user/:uid', async (req, res) => {
-  const { uid } = req.params;
-
-  if (!uid) {
-    return res.status(400).json({ error: 'Missing UID in request' });
+  if (!facilityId || !date) {
+    return res.status(400).json({ error: "Missing facilityId or date parameter" });
   }
 
   try {
-    const userRef = admin.firestore().collection("users").doc(uid);
-    const userDoc = await userRef.get();
-
-    if (!userDoc.exists) {
-      return res.status(404).json({ error: 'User not found' });
+    console.log("Function called with facilityId:", facilityId, "and date:", date);
+    const facilitiesRef = db.collection("facilities");
+    const facilityQuery = facilitiesRef.where("facilityID", "==", facilityId);
+    const facilityQuerySnapshot = await facilityQuery.get();
+    
+    if (facilityQuerySnapshot.empty) {
+      console.log("Facility not found with facilityID:", facilityId);
+      return res.json([]);
     }
 
-    return res.status(200).json({ uid: userDoc.id, ...userDoc.data() });
+    const facilityDoc = facilityQuerySnapshot.docs[0];
+    const facilityData = facilityDoc.data();
+    const allSlots = facilityData.slots || [];
+
+    let formattedDate = date;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      formattedDate = new Date(date).toISOString().split('T')[0];
+    }
+
+  
+    const bookingsRef = db.collection("bookings");
+    const bookingQuery = bookingsRef
+      .where("facilityID", "==", facilityId)
+      .where("date", "==", formattedDate);
+    const bookingSnap = await bookingQuery.get();
+
+    let takenSlots = [];
+    bookingSnap.forEach(doc => {
+      const data = doc.data();
+      if (Array.isArray(data.bookedSlots)) {
+        takenSlots = [...takenSlots, ...data.bookedSlots];
+      }
+    });
+
+    const uniqueTakenSlots = [...new Set(takenSlots)];
+    const takenSlotsAsNumbers = uniqueTakenSlots.map(Number);
+    const allSlotsAsNumbers = allSlots.map(Number);
+    const availableSlots = allSlotsAsNumbers.filter(slot => !takenSlotsAsNumbers.includes(slot));
+    availableSlots.sort((a, b) => a - b); 
+
+
+    console.log("Available slots:", availableSlots);
+    res.json(availableSlots);
   } catch (error) {
-    console.error("Error fetching user:", error);
-    return res.status(500).json({ error: 'Failed to fetch user' });
+    console.error("Error fetching available numeric slots:", error);
+    res.status(500).json({ error: "Internal server error", details: error.message });
+  }
+});
+app.post('/create-booking', async (req, res) => {
+  try {
+    const { facilityId, selectedDate, slotsToBook, userId } = req.body;
+
+    // Validate required parameters
+    if (!facilityId || !selectedDate || !Array.isArray(slotsToBook) || slotsToBook.length === 0 || !userId) {
+      return res.status(400).json({ 
+        error: "Missing or invalid parameters", 
+        required: ["facilityId", "selectedDate", "slotsToBook", "userId"] 
+      });
+    }
+
+    console.log("Creating booking for:", { facilityId, selectedDate, slotsToBook, userId });
+
+    // Format date
+    let formattedDate = selectedDate;
+    if (selectedDate instanceof Date) {
+      formattedDate = selectedDate.toISOString().split('T')[0];
+    }
+
+    
+    const bookingsRef = db.collection("bookings");
+    const existingBookingQuery = bookingsRef
+      .where("facilityID", "==", facilityId)
+      .where("date", "==", formattedDate)
+      .where("userID", "==", userId);
+
+    const querySnapshot = await existingBookingQuery.get();
+
+    let totalBookedSlots = 0;
+    let existingData = null;
+    let bookingDoc = null;
+
+    if (!querySnapshot.empty) {
+      // Update existing booking
+      bookingDoc = querySnapshot.docs[0];
+      existingData = bookingDoc.data();
+      const existingSlots = Array.isArray(existingData.bookedSlots) ? existingData.bookedSlots : [];
+      totalBookedSlots = existingSlots.length;
+
+      // Check if adding the new slots would exceed the limit
+      if (totalBookedSlots + slotsToBook.length > 3) {
+        return res.status(400).json({ 
+          error: "You cannot book more than 3 slots for one facility in one day.",
+          currentSlots: totalBookedSlots,
+          requestedSlots: slotsToBook.length 
+        });
+      }
+
+      // Merge existing and new slots, remove duplicates
+      const updatedSlots = Array.from(new Set([...existingSlots, ...slotsToBook.map(Number)]));
+      
+      await bookingDoc.ref.update({
+        bookedSlots: updatedSlots
+      });
+
+      console.log("Booking updated successfully for booking ID:", bookingDoc.id);
+      
+      return res.status(200).json({
+        success: true,
+        message: "Booking updated successfully",
+        bookingId: bookingDoc.id,
+        bookedSlots: updatedSlots
+      });
+
+    } else {
+      if (slotsToBook.length > 3) {
+        return res.status(400).json({ 
+          error: "You cannot book more than 3 slots for one facility in one day.",
+          requestedSlots: slotsToBook.length 
+        });
+      }
+
+      const newBookingRef = db.collection("bookings").doc();
+      const bookingData = {
+        facilityID: facilityId,
+        date: formattedDate,
+        bookedSlots: slotsToBook.map(Number),
+        bookingID: newBookingRef.id,
+        userID: userId,
+        status: "pending",
+        createdAt: admin.firestore.FieldValue.serverTimestamp()
+      };
+
+      await newBookingRef.set(bookingData);
+      
+      console.log("New booking created successfully with ID:", newBookingRef.id);
+     return res.status(201).json({
+        success: true,
+        message: "New booking created successfully",
+        bookingId: newBookingRef.id,
+        bookedSlots: bookingData.bookedSlots
+      });
+    }
+
+  } catch (error) {
+    console.error("Error creating:", error);
+    return res.status(500).json({ 
+      error: "Internal server error", 
+      details: error.message 
+    });
+  }
+});
+app.post('/validate-booking', async (req, res) => {
+  try {
+    const { facilityId, selectedDate, slotsToBook, userId } = req.body;
+
+    if (!facilityId || !selectedDate || !Array.isArray(slotsToBook) || slotsToBook.length === 0 || !userId) {
+      return res.status(400).json({ 
+        result: "error creating booking",
+        error: "Missing or invalid parameters"
+      });
+    }
+
+    let formattedDate = selectedDate;
+    if (selectedDate instanceof Date) {
+      formattedDate = selectedDate.toISOString().split('T')[0];
+    }
+
+    const bookingsRef = db.collection("bookings");
+    const q = bookingsRef
+      .where("facilityID", "==", facilityId)
+      .where("date", "==", formattedDate)
+      .where("userID", "==", userId);
+
+    const querySnapshot = await q.get();
+
+    let totalBookedSlots = 0;
+
+    querySnapshot.forEach(doc => {
+      const data = doc.data();
+      const slots = Array.isArray(data.bookedSlots) ? data.bookedSlots : [];
+      totalBookedSlots += slots.length;
+    });
+
+    if (totalBookedSlots + slotsToBook.length > 3) {
+      return res.status(200).json({ result: "booking limit exceeded" });
+    }
+
+    return res.status(200).json({ result: "valid" });
+  } catch (error) {
+    console.error("Error validating booking:", error);
+    return res.status(200).json({ result: "error creating booking" });
+  }
+});
+app.get('/fetch-issues', async (req, res) => {
+  try {
+    const snapshot = await db.collection('issues').get();
+    const issues = snapshot.docs.map(doc => ({
+      issueID: doc.id,
+      ...doc.data()
+    }));
+    res.status(200).json(issues);
+  } catch (error) {
+    console.error('Error fetching issues:', error);
+    res.status(500).json({ error: 'Failed to fetch issues' });
+  }
+});
+app.post('/issues/:id', async (req, res) => {
+  const issueID = req.params.id;
+  const updatedIssue = req.body;
+
+  if (!issueID) {
+    return res.status(400).json({ error: 'No issue ID provided' });
+  }
+
+  try {
+    await db.collection('issues').doc(issueID).set(updatedIssue, { merge: true });
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error('Error updating issue:', error);
+    res.status(500).json({ error: 'Failed to update issue' });
+  }
+});
+app.get('/issuesByUser', async (req, res) => {
+  const userId = req.query.userId;
+  if (!userId) {
+    return res.status(400).json({ error: 'Missing userId' });
+  }
+
+  try {
+    const snapshot = await db.collection('issues').where('reporter', '==', userId).get();
+    const userIssues = snapshot.docs.map(doc => ({
+      issueID: doc.id,
+      ...doc.data()
+    }));
+    res.status(200).json(userIssues);
+  } catch (error) {
+    console.error('Error fetching user issues:', error);
+    res.status(500).json({ error: 'Failed to fetch user issues' });
   }
 });
 
+app.post('/create-issue', async (req, res) => {
+  try {
+    const data = req.body;
+    const issueRef = db.collection('issues').doc();
+    const issueID = issueRef.id;
+
+    const issueData = {
+      ...data,
+      issueID,
+      images: data.images || [],
+      issueStatus: 'open',
+      feedback: '',
+      assignedTo: null,
+      location: data.location || 'Unspecified',
+      relatedFacility: data.relatedFacility || 'Not Specified',
+      reportedAt: data.reportedAt || new Date().toISOString(),
+    };
+
+    await issueRef.set(issueData);
+    res.status(200).json({ issueID });
+  } catch (error) {
+    console.error('Error creating issue:', error);
+    res.status(500).json({ error: 'Failed to create issue' });
+  }
+});
 
 
 //Creating a user account (Post-sending information)
@@ -159,6 +410,65 @@ app.patch('/update-user-type', async (req, res) => {
   } catch (error) {
     console.error('Error updating user type:', error);
     res.status(500).json({ error: 'Failed to update user type' });
+  }
+});
+app.post("/save-user", async (req, res) => {
+  try {
+    const userData = req.body;
+    if (!userData.uid) return res.status(400).json({ error: "Missing UID" });
+
+    const userRef = db.collection("users").doc(userData.uid);
+    await userRef.set(
+      {
+        ...userData,
+        updatedAt: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+
+    res.status(200).json({ message: "User saved", user: userData });
+  } catch (error) {
+    console.error("Error saving user:", error);
+    res.status(500).json({ error: "Failed to save user" });
+  }
+});
+
+app.get("/get-user/:uid", async (req, res) => {
+  try {
+    const uid = req.params.uid;
+    const docRef = db.collection("users").doc(uid);
+    const docSnap = await docRef.get();
+
+    if (!docSnap.exists) return res.status(404).json({ error: "User not found" });
+
+    res.status(200).json(docSnap.data());
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).json({ error: "Failed to get user" });
+  }
+});
+app.get("/get-user-type/:uid", async (req, res) => {
+  try {
+    const uid = req.params.uid;
+    const docSnap = await db.collection("users").doc(uid).get();
+
+    if (!docSnap.exists) return res.status(404).json({ error: "User not found" });
+
+    const data = docSnap.data();
+    res.status(200).json({ user_type: data.user_type || null });
+  } catch (error) {
+    console.error("Error getting user type:", error);
+    res.status(500).json({ error: "Failed to get user type" });
+  }
+});
+app.get("/user-exists/:uid", async (req, res) => {
+  try {
+    const uid = req.params.uid;
+    const docSnap = await db.collection("users").doc(uid).get();
+    res.status(200).json({ exists: docSnap.exists });
+  } catch (error) {
+    console.error("Error checking user existence:", error);
+    res.status(500).json({ error: "Failed to check user existence" });
   }
 });
 
@@ -514,101 +824,7 @@ exports.sendEventNotification = onDocumentCreated('events/{eventId}', async (eve
   
 
 
-exports.fetchAvailableNumericSlots = functions.https.onCall(async (data, context) => {
 
-  const { facilityId, selectedDate } = data;
-  
-  // Validate required parameters
-  if (!facilityId || !selectedDate) {
-    throw new functions.https.HttpsError(
-      'invalid-argument',
-      'The function must be called with facilityId and selectedDate arguments.'
-    );
-  }
-
-  try {
-    console.log("Function called with facilityId:", facilityId, "and selectedDate:", selectedDate);
-    
-    // First, query for the facility document where facilityID matches the passed parameter
-    const facilitiesRef = db.collection("facilities");
-    const facilityQuery = facilitiesRef.where("facilityID", "==", facilityId);
-    const facilityQuerySnapshot = await facilityQuery.get();
-    
-    if (facilityQuerySnapshot.empty) {
-      console.log("Facility not found with facilityID:", facilityId);
-      return [];
-    }
-    
-    const facilityDoc = facilityQuerySnapshot.docs[0];
-    const facilityData = facilityDoc.data();
-    const allSlots = facilityData.slots || [];
-    console.log("All slots from facility:", allSlots);
-
-    // Format the date consistently
-    let formattedDate = selectedDate;
-    if (selectedDate instanceof Date) {
-      formattedDate = selectedDate.toISOString().split('T')[0]; // format: "YYYY-MM-DD"
-    }
-    console.log("Formatted date for query:", formattedDate);
-    
-    // Query for bookings with matching facilityID and date
-    const bookingsRef = db.collection("bookings");
-    const q = bookingsRef
-      .where("facilityID", "==", facilityId)
-      .where("date", "==", formattedDate);
-    
-    const bookingSnap = await q.get();
-    console.log("Booking snapshot size:", bookingSnap.size);
-    console.log("Number of booking documents found:", bookingSnap.size);
-    
-    // If no bookings exist for the selected date, return all available slots
-    if (bookingSnap.empty) {
-      console.log("No bookings found for this date and facility. All slots are available.");
-      return allSlots;
-    }
-    
-    let takenSlots = [];
-    bookingSnap.forEach(doc => {
-      const data = doc.data();
-      console.log("Booking document ID:", doc.id);
-      console.log("Booking facilityID:", data.facilityID);
-      console.log("Booking date:", data.date);
-      
-      if (Array.isArray(data.bookedSlots)) {
-        console.log("Booked slots in this document:", data.bookedSlots);
-        takenSlots = [...takenSlots, ...data.bookedSlots];
-      } else {
-        console.warn("WARNING: Document", doc.id, "has no bookedSlots array");
-      }
-    });
-    
-    console.log("Combined taken slots:", takenSlots);
-    
-    const uniqueTakenSlots = [...new Set(takenSlots)];
-    console.log("Unique taken slots:", uniqueTakenSlots);
-    
-    const takenSlotsAsNumbers = uniqueTakenSlots.map(slot => Number(slot));
-    const allSlotsAsNumbers = allSlots.map(slot => Number(slot));
-    
-    console.log("Taken slots as numbers:", takenSlotsAsNumbers);
-    console.log("All slots as numbers:", allSlotsAsNumbers);
-    
-    const availableSlots = allSlotsAsNumbers.filter(slot => !takenSlotsAsNumbers.includes(slot));
-    console.log("Final available slots:", availableSlots);
-    
-    return availableSlots;
-  } catch (error) {
-    console.error("Error fetching available numeric slots:", error);
-    console.error("Error stack:", error.stack);
-    
-    // Properly throw an HTTPS error for Firebase Callable functions
-    throw new functions.https.HttpsError(
-      'internal',
-      'Error fetching available slots',
-      error.message
-    );
-  }
-});
  
 
 exports.api = functions.https.onRequest(app); 

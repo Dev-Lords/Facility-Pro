@@ -1,4 +1,3 @@
-import { Log } from "../models/log";
 import { collection, addDoc, getDocs, serverTimestamp, Timestamp, query, where} from "firebase/firestore";
 import { db } from "../firebase/firebase.config";
 
