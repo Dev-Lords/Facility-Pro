@@ -157,3 +157,15 @@ export const updateUserType = async (uid, newUserType) => {
   return true;
 };
 
+export const fetchUser = async (uid) => {
+  const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/get-user/${uid}`;
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch user');
+  }
+
+  const user = await response.json();
+  return user;
+};
+
