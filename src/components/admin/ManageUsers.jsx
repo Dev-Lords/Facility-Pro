@@ -280,54 +280,65 @@ useEffect(() => {
         </fieldset>
       </form>
 
-      <section className="users-table-container">
-        <table className="users-table">
-          <thead>
-            <tr>
-              <th>Username</th>
-              <th>Email</th>
-              <th>User Type</th>
-              <th>Last Modified</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? null : filteredUsers.length === 0 ? (
-              <tr>
-                <td colSpan="6" className="no-users-message">
-                  No users found
-                </td>
-              </tr>
-            ) : (
-              currentUsers.map((user, index) => (
-                <tr key={user.uid || `user-${index}`}>
-                  <td>{user.displayName}</td>
-                  <td>{user.email}</td>
-                  <td className="user-type-cell">
-                    <mark className="user-type-badge">{user.user_type.charAt(0).toUpperCase() + user.user_type.slice(1)}</mark>
-                  </td>
-                  <td>{formatDate(user.updatedAt)}</td>
-                  <td>
-                    <button
-                      className="edit-button"
-                      onClick={() => openEditModal(user)}>
-                      <Pencil size={18} className="icon" />
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      className="delete-button"
-                      onClick={() => confirmDelete(user.uid)}>
-                      <Trash2 size={18} className="icon" />
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </section>
+  <section className="users-table-container">
+  <table className="users-table">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>User Type</th>
+        <th>Last Modified</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {isLoading ? (
+        <tr>
+          <td colSpan="6">
+            <section className="spinner-container">
+              <svg className="spinner" viewBox="0 0 50 50">
+                <circle className="spinner-ring" cx="25" cy="25" r="20" />
+              </svg>
+
+              <p>Loading...</p>
+            </section>
+          </td>
+        </tr>
+      ) : filteredUsers.length === 0 ? (
+        <tr>
+          <td colSpan="6" className="no-users-message">
+            No users found
+          </td>
+        </tr>
+      ) : (
+        currentUsers.map((user, index) => (
+          <tr key={user.uid || `user-${index}`}>
+            <td>{user.displayName}</td>
+            <td>{user.email}</td>
+            <td className="user-type-cell">
+              <mark className="user-type-badge">
+                {user.user_type.charAt(0).toUpperCase() + user.user_type.slice(1)}
+              </mark>
+            </td>
+            <td>{formatDate(user.updatedAt)}</td>
+            <td>
+              <button className="edit-button" onClick={() => openEditModal(user)}>
+                <Pencil size={18} className="icon" />
+              </button>
+            </td>
+            <td>
+              <button className="delete-button" onClick={() => confirmDelete(user.uid)}>
+                <Trash2 size={18} className="icon" />
+              </button>
+            </td>
+          </tr>
+        ))
+      )}
+    </tbody>
+  </table>
+</section>
+
 
     {/*Popups: delete,edit and onboard respectively*/}
 

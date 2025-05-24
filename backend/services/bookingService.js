@@ -37,7 +37,7 @@ export const validBooking = async (facilityId, selectedDate, slotsToBook, userId
 
 //Admin functions
 export const fetchBookings = async () => {
-  const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/get-all-bookings`;
+  const url = 'https://us-central1-facilty-pro.cloudfunctions.net/api/get-all-bookings';
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error('Failed to fetch bookings');
