@@ -48,6 +48,20 @@ export default function FacilityStaffDashboard() {
           </button>
         </article>
 
+         <article className="card card-facilities">
+           <section className="card-icon"><FaFileAlt /></section>
+          <h2>Events</h2>
+          <p> View upcoming facility events to prepare in advance.</p>
+          <button
+            className="btn btn-facilities"
+            onClick={() => handleNavigate("/upcoming-events")}
+            role="button"
+            aria-label="View upcoming events"
+          >
+            View Events
+          </button>
+        </article>
+
       </section>
 
       <footer className="footer">

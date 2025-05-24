@@ -1,43 +1,239 @@
 /* Make date and time input icons visible */
 /* Target the calendar icon in date inputs */
 input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(0.5); /* Makes the icon darker */
-    opacity: 0.8;
-    cursor: pointer;
-  }
-  
-  /* Target the clock icon in time inputs */
-  input[type="time"]::-webkit-calendar-picker-indicator {
-    filter: invert(0.5); /* Makes the icon darker */
-    opacity: 0.8;
-    cursor: pointer;
-  }
-  
-  /* Ensure icons have enough contrast */
-  .issue-form input[type="date"],
-  .issue-form input[type="time"] {
-    color: #003366; /* Ensure text is dark */
-    background-color: #f6f9fc; /* Light background */
-    padding-right: 30px; /* Make space for the icon */
-    position: relative;
-  }
-  
-  /* If you're using custom icons via a positioning technique */
-  .date-input-container,
-  .time-input-container {
-    position: relative;
-  }
-  
-  .input-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #003366; /* Dark blue icon color */
-    pointer-events: none; /* Let clicks pass through to the input */
-  }
-  
-  /* If you're using React Icons like FaCalendarAlt and FaClock */
-  .form-fields svg {
-    color: #003366; /* Make React Icons visible */
-  }
+  filter: invert(0.5); /* Makes the icon darker */
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+/* Target the clock icon in time inputs */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5); /* Makes the icon darker */
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+/* Ensure icons have enough contrast */
+.issue-form input[type="date"],
+.issue-form input[type="time"] {
+  color: #003366; /* Ensure text is dark */
+  background-color: #f6f9fc; /* Light background */
+  padding-right: 30px; /* Make space for the icon */
+  position: relative;
+}
+
+/* If you're using custom icons via a positioning technique */
+.date-input-container,
+.time-input-container {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #003366; /* Dark blue icon color */
+  pointer-events: none; /* Let clicks pass through to the input */
+}
+
+/* If you're using React Icons like FaCalendarAlt and FaClock */
+.form-fields svg {
+  color: #003366; /* Make React Icons visible */
+}
+/* Enhanced Pop-up Styles - Add these to your CreateEvents.css file */
+
+/* Base dialog/modal styles */
+.error-popup,
+.success-popup {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.6);
+backdrop-filter: blur(4px);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 1000;
+border: none;
+padding: 0;
+margin: 0;
+}
+
+/* Pop-up content container */
+.popup-content {
+background: white;
+border-radius: 12px;
+padding: 2rem;
+max-width: 500px;
+width: 90%;
+max-height: 80vh;
+overflow-y: auto;
+box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+text-align: center;
+position: relative;
+animation: popupSlideIn 0.3s ease-out;
+}
+
+/* Pop-up animation */
+@keyframes popupSlideIn {
+from {
+  opacity: 0;
+  transform: scale(0.8) translateY(20px);
+}
+to {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+}
+
+/* Error-specific styling */
+.error-content {
+border-top: 4px solid #e74c3c;
+}
+
+.error-content h3 {
+color: #e74c3c;
+margin-bottom: 1rem;
+font-size: 1.25rem;
+}
+
+.error-content p {
+color: #555;
+line-height: 1.5;
+margin-bottom: 1.5rem;
+}
+
+/* Success-specific styling */
+.success-content {
+border-top: 4px solid #27ae60;
+}
+
+.success-content h3 {
+color: #27ae60;
+margin-bottom: 1rem;
+font-size: 1.25rem;
+}
+
+.success-content p {
+color: #555;
+line-height: 1.5;
+margin-bottom: 1.5rem;
+}
+
+/* Pop-up actions container */
+.popup-actions {
+display: flex;
+gap: 1rem;
+justify-content: center;
+flex-wrap: wrap;
+}
+
+/* Pop-up buttons */
+.popup-button {
+padding: 0.75rem 1.5rem;
+border: none;
+border-radius: 6px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s ease;
+font-size: 0.95rem;
+min-width: 120px;
+}
+
+.popup-button.primary {
+background: #3498db;
+color: white;
+}
+
+.popup-button.primary:hover {
+background: #2980b9;
+transform: translateY(-1px);
+}
+
+.popup-button.secondary {
+background: #95a5a6;
+color: white;
+}
+
+.popup-button.secondary:hover {
+background: #7f8c8d;
+transform: translateY(-1px);
+}
+
+/* Error-specific button styling */
+.error-content .popup-button.primary {
+background: #e74c3c;
+}
+
+.error-content .popup-button.primary:hover {
+background: #c0392b;
+}
+
+/* Success-specific button styling */
+.success-content .popup-button.primary {
+background: #27ae60;
+}
+
+.success-content .popup-button.primary:hover {
+background: #229954;
+}
+
+/* Enhanced inline error message styling */
+.error-message {
+background: #fff5f5;
+border: 1px solid #fed7d7;
+border-left: 4px solid #e74c3c;
+color: #e74c3c;
+padding: 0.75rem 1rem;
+border-radius: 4px;
+margin-bottom: 1rem;
+font-weight: 500;
+animation: errorShake 0.5s ease-in-out;
+}
+
+@keyframes errorShake {
+0%, 100% { transform: translateX(0); }
+25% { transform: translateX(-5px); }
+75% { transform: translateX(5px); }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+.popup-content {
+  padding: 1.5rem;
+  margin: 1rem;
+  width: calc(100% - 2rem);
+}
+
+.popup-actions {
+  flex-direction: column;
+}
+
+.popup-button {
+  width: 100%;
+}
+}
+
+/* Focus states for accessibility */
+.popup-button:focus {
+outline: 2px solid #3498db;
+outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+.popup-content {
+  border: 2px solid #000;
+}
+
+.error-content {
+  border-top-width: 6px;
+}
+
+.success-content {
+  border-top-width: 6px;
+}
+}

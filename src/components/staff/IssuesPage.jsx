@@ -1,3 +1,4 @@
+import React from "react";
 import  { useEffect, useState } from "react";
 import { fetchIssues } from "../../../backend/services/issuesService.js";
 import { UpdateIssue } from "../../../backend/services/issuesService.js"; // Import the UpdateIssue function
@@ -122,8 +123,6 @@ const IssuesPage = () => {
 
   return (
     <main className="issues-page">
-
-      
 
       <header className="facility-header">
         <h1 className="facility-title">Issue Reports</h1>
