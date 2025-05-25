@@ -18,7 +18,6 @@ export default {
 
     
   },
-   setupFiles: ['<rootDir>/jest.setup.js'],
 
   collectCoverageFrom: [
     'src/**/*.{js,jsx}',
