@@ -842,7 +842,8 @@
 <a name='L777'></a><a href='#L777'>777</a>
 <a name='L778'></a><a href='#L778'>778</a>
 <a name='L779'></a><a href='#L779'>779</a>
-<a name='L780'></a><a href='#L780'>780</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L780'></a><a href='#L780'>780</a>
+<a name='L781'></a><a href='#L781'>781</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1555,13 +1556,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1569,15 +1563,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1611,6 +1599,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2176,11 +2178,11 @@ const toggleMenu = <span class="fstat-no" title="function not covered" >()</span
     <span class="missing-if-branch" title="if path not taken" >I</span>if (isNaN(numChange)) <span class="cstat-no" title="statement not covered" >return null;</span>
 &nbsp;
     if (numChange &gt; 0) {
-      return &lt;span className="trend-up"&gt;↑&lt;/span&gt;;
+      return &lt;section className="trend-up"&gt;↑&lt;/section&gt;;
     } else if (numChange &lt; 0) {
-      return &lt;span className="trend-down"&gt;↓&lt;/span&gt;;
+      return &lt;section className="trend-down"&gt;↓&lt;/section&gt;;
     }
-    return &lt;span className="trend-neutral"&gt;→&lt;/span&gt;;
+    return &lt;section className="trend-neutral"&gt;→&lt;/section&gt;;
   };
 &nbsp;
   return (
@@ -2208,13 +2210,13 @@ const toggleMenu = <span class="fstat-no" title="function not covered" >()</span
           onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/admin-home')} </span>
           className="breadcrumb-link"
         &gt;
-          &lt;span className="home-icon"&gt;🏠&lt;/span&gt; Dashboard
+          &lt;section className="home-icon"&gt;🏠&lt;/section&gt; Dashboard
         &lt;/button&gt;
-        &lt;span className="separator"&gt;/&lt;/span&gt;
+        &lt;section className="separator"&gt;/&lt;/section&gt;
         &lt;button
         className='breadcrumb-link'
           onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/reports')}</span>&gt;
-        &lt;span className="current-page"&gt;&lt;/span&gt; Reports 
+        &lt;section className="current-page"&gt;&lt;/section&gt; Reports 
         &lt;/button&gt;
       &lt;/nav&gt;
 &nbsp;
@@ -2315,7 +2317,7 @@ const toggleMenu = <span class="fstat-no" title="function not covered" >()</span
               &lt;/select&gt;
             &lt;/label&gt;
 &nbsp;
-            &lt;label htmlFor="facility-filter"&gt;Facility:&lt;/label&gt;
+            &lt;label htmlFor="facility-filter"&gt;Facility:
 &nbsp;
             &lt;select
               data-testid="facility-filter"
@@ -2329,6 +2331,7 @@ const toggleMenu = <span class="fstat-no" title="function not covered" >()</span
               &lt;option value="soccer"&gt;Soccer Field&lt;/option&gt;
               &lt;option value="basketball"&gt;Basketball Court&lt;/option&gt;
             &lt;/select&gt;
+            &lt;/label&gt;
             &lt;label&gt;
               From:
               &lt;input
@@ -2345,20 +2348,6 @@ const toggleMenu = <span class="fstat-no" title="function not covered" >()</span
                 onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setEndDate(new Date(e.target.value))}</span>
               /&gt;
             &lt;/label&gt;
-          &lt;/section&gt;
-          &lt;section className="Buttons"&gt;
-            &lt;button
-              onClick={() =&gt; exportCSV(filteredLogs)}
-              className="export-btn csv-btn"
-            &gt;
-              Export as CSV
-            &lt;/button&gt;
-            &lt;button
-              onClick={() =&gt; exportPDF(filteredLogs)}
-              className="export-btn pdf-btn"
-            &gt;
-              Export As PDF
-            &lt;/button&gt;
           &lt;/section&gt;
           &lt;section className="table-section"&gt;
             &lt;table className="log-table"&gt;
@@ -2395,6 +2384,20 @@ const toggleMenu = <span class="fstat-no" title="function not covered" >()</span
               &lt;/tbody&gt;
             &lt;/table&gt;
           &lt;/section&gt;
+                    &lt;section className="Buttons"&gt;
+            &lt;button
+              onClick={() =&gt; exportCSV(filteredLogs)}
+              className="export-btn csv-btn"
+            &gt;
+              Export as CSV
+            &lt;/button&gt;
+            &lt;button
+              onClick={() =&gt; exportPDF(filteredLogs)}
+              className="export-btn pdf-btn"
+            &gt;
+              Export As PDF
+            &lt;/button&gt;
+          &lt;/section&gt;
         &lt;/section&gt;
       &lt;/section&gt;
     &lt;/main&gt;
@@ -2407,7 +2410,7 @@ const toggleMenu = <span class="fstat-no" title="function not covered" >()</span
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-25T17:03:02.207Z
+                at 2025-05-25T19:35:08.097Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

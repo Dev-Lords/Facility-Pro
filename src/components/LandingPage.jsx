@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Users,  Star, ArrowRight, Play, Award,  } from 'lucide-react';
+import { Link } from "react-router-dom";
 import "./LandingPage.css";
 
 import basketballImage from '../assets/polish/basketball_court.jpg';
@@ -72,7 +73,7 @@ const features = [
   {
     icon: Users,
     title: "Community Management", 
-    description: "Connect players, organize teams, and build lasting sporting communities"
+    description:"Participate in tournaments,competitions and build long lasting sports communities"
   },
   
   {
@@ -257,9 +258,8 @@ const LandingPage = () => {
           <nav className="header-right">
             <ul className="nav-links">
               <li><a href="https://dev-lords.github.io/Facility-Pro/#/">Documentation</a></li>
-              <li><a href="#">Terms</a></li>
-              <li><a href="#">Privacy</a></li>
-              <li><a href="#">FAQs</a></li>
+              <li><Link to="/terms">Terms</Link></li>
+              <li><Link to="/FAQ">FAQ</Link></li>
             </ul>
           </nav>
         </section>

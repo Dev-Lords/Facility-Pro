@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">86.31% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>78/91</span>
+                <span class='fraction'>82/95</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.57% </span>
+                <span class="strong">72.72% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>22/28</span>
+                <span class='fraction'>16/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70.58% </span>
+                <span class="strong">71.42% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>24/34</span>
+                <span class='fraction'>25/35</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.2% </span>
+                <span class="strong">86.51% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>75/87</span>
+                <span class='fraction'>77/89</span>
             </div>
         
             
@@ -438,9 +438,9 @@
 <a name='L373'></a><a href='#L373'>373</a>
 <a name='L374'></a><a href='#L374'>374</a>
 <a name='L375'></a><a href='#L375'>375</a>
-<a name='L376'></a><a href='#L376'>376</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L376'></a><a href='#L376'>376</a>
+<a name='L377'></a><a href='#L377'>377</a>
+<a name='L378'></a><a href='#L378'>378</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -488,8 +488,10 @@
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -522,12 +524,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">128x</span>
 <span class="cline-any cline-yes">88x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">88x</span>
+<span class="cline-any cline-yes">88x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">88x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -668,9 +673,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -805,6 +808,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -819,9 +823,8 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { useNavigate } from "react-router-dom";
 import { 
-  FaArrowLeft,FaBars
+  FaArrowLeft, FaBars
 } from 'react-icons/fa';
-// Updated Chart.js imports - add necessary components
 import { 
   Chart as ChartJS, 
   CategoryScale, 
@@ -830,16 +833,15 @@ import {
   Title, 
   Tooltip, 
   Legend,
-  BarController // Add BarController
+  BarController
 } from "chart.js";
 import "./MaintenanceReport.css";
 &nbsp;
-// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  BarController, // Register BarController
+  BarController,
   Title,
   Tooltip,
   Legend
@@ -863,10 +865,12 @@ const MaintenanceReportPage = () =&gt; {
   const handleNavigate = <span class="fstat-no" title="function not covered" >(p</span>ath) =&gt; {
 <span class="cstat-no" title="statement not covered" >    navigate(path);</span>
   };
+&nbsp;
   const toggleMenu = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
 <span class="cstat-no" title="statement not covered" >    setMenuOpen(!menuOpen);</span>
   };
-   const handleSignOut = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
+&nbsp;
+  const handleSignOut = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
 <span class="cstat-no" title="statement not covered" >    localStorage.removeItem('authToken');</span>
 <span class="cstat-no" title="statement not covered" >    localStorage.removeItem('userType');</span>
 <span class="cstat-no" title="statement not covered" >    navigate('/');</span>
@@ -895,17 +899,20 @@ const MaintenanceReportPage = () =&gt; {
     };
   };
 &nbsp;
-  const calculateFacilityAvailability = (issues) =&gt; {
-    const facilities = ["Gym", "Pool", "Soccer Field", "Basketball Court"];
+  const getFacilityMaintenanceStats = (issues) =&gt; {
+    const facilities = ["Soccer Field", "Gym", "Pool", "Basketball Court"];
+    
     return facilities.map(facility =&gt; {
-      const hasOpenIssues = issues.some(issue =&gt;
-        issue.relatedFacility === facility &amp;&amp;
-        resolveStatus(issue.issueStatus) === "Open"
-      );
+      const facilityIssues = issues.filter(issue =&gt; issue.relatedFacility === facility);
+      const totalIssues = facilityIssues.length;
+      const openIssues = facilityIssues.filter(issue =&gt; resolveStatus(issue.issueStatus) === "Open").length;
+      const closedIssues = totalIssues - openIssues;
+      
       return {
         facility,
-        availability: hasOpenIssues ? 0 : 100,
-        status: hasOpenIssues ? "Unavailable" : "Available"
+        totalIssues,
+        openIssues,
+        closedIssues
       };
     });
   };
@@ -1034,25 +1041,23 @@ const MaintenanceReportPage = () =&gt; {
 &nbsp;
   const { open, closed } = getStats(filteredIssues);
   const priorityCounts = getPriorityCounts(filteredIssues);
-  const facilityAvailability = calculateFacilityAvailability(filteredIssues);
+  const facilityStats = getFacilityMaintenanceStats(filteredIssues);
 &nbsp;
   return (
     &lt;main className="issues-page" id="report-section"&gt;
-&nbsp;
-         &lt;header className="dashboard-header"&gt;
-          &lt;section className="hamburger-menu"&gt;
-                    &lt;FaBars className="hamburger-icon" onClick={toggleMenu} /&gt;
-                    {menuOpen &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >                      &lt;nav className="dropdown-menu"&gt;</span>
-                        &lt;button onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/')}</span>&gt;Home&lt;/button&gt;
-                        &lt;button onClick={handleSignOut}&gt;Sign Out&lt;/button&gt;
-                      &lt;/nav&gt;
-                    )}
-                  &lt;/section&gt;
+      &lt;header className="dashboard-header"&gt;
+        &lt;section className="hamburger-menu"&gt;
+          &lt;FaBars className="hamburger-icon" onClick={toggleMenu} /&gt;
+          {menuOpen &amp;&amp; (
+<span class="branch-1 cbranch-no" title="branch not covered" >            &lt;nav className="dropdown-menu"&gt;</span>
+              &lt;button onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/')}</span>&gt;Home&lt;/button&gt;
+              &lt;button onClick={handleSignOut}&gt;Sign Out&lt;/button&gt;
+            &lt;/nav&gt;
+          )}
+        &lt;/section&gt;
         &lt;h2&gt;Maintenance Report Dashboard&lt;/h2&gt;
       &lt;/header&gt;
 &nbsp;
-        {/* Breadcrumb */}
       &lt;nav className="breadcrumb-nav"&gt;
         &lt;button 
           onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/admin-home')} </span>
@@ -1062,9 +1067,9 @@ const MaintenanceReportPage = () =&gt; {
         &lt;/button&gt;
         &lt;strong className="separator"&gt;/&lt;/strong&gt;
         &lt;button
-        className='breadcrumb-link'
+          className='breadcrumb-link'
           onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/Reports')}</span>&gt;
-        &lt;strong className="current-page"&gt;&lt;/strong&gt; Reports
+          &lt;span className="current-page"&gt;&lt;/span&gt; Reports
         &lt;/button&gt;
       &lt;/nav&gt;
 &nbsp;
@@ -1077,17 +1082,17 @@ const MaintenanceReportPage = () =&gt; {
         &lt;article className="summary-card-sm"&gt;&lt;h3&gt;Low Priority&lt;/h3&gt;&lt;p&gt;{priorityCounts.Low}&lt;/p&gt;&lt;/article&gt;
       &lt;/section&gt;
 &nbsp;
-      &lt;section className="facility-availability"&gt;
-        &lt;h3&gt;Facility Availability&lt;/h3&gt;
-        &lt;section className="facility-cards"&gt;
-          {facilityAvailability.map((facility) =&gt; (
-            &lt;article 
-              key={facility.facility} 
-              className={`facility-card ${facility.status.toLowerCase()}`}
-            &gt;
+      &lt;section className="facility-maintenance-summary"&gt;
+        &lt;h3&gt;Maintenance Stats by Facility&lt;/h3&gt;
+        &lt;section className="facility-stats-cards"&gt;
+          {facilityStats.map((facility) =&gt; (
+            &lt;article key={facility.facility} className="facility-stat-card"&gt;
               &lt;h4&gt;{facility.facility}&lt;/h4&gt;
-              &lt;p className="percentage"&gt;{facility.availability}%&lt;/p&gt;
-              &lt;p className="status"&gt;{facility.status}&lt;/p&gt;
+              &lt;ul&gt;
+                &lt;li&gt;Total Issues: {facility.totalIssues}&lt;/li&gt;
+                &lt;li&gt;Open Issues: {facility.openIssues}&lt;/li&gt;
+                &lt;li&gt;Closed Issues: {facility.closedIssues}&lt;/li&gt;
+              &lt;/ul&gt;
             &lt;/article&gt;
           ))}
         &lt;/section&gt;
@@ -1179,7 +1184,8 @@ const MaintenanceReportPage = () =&gt; {
           &lt;/section&gt;
         &lt;/section&gt;
       )}
-       &lt;section className="back-button-container"&gt;
+&nbsp;
+      &lt;section className="back-button-container"&gt;
         &lt;button className="btn back-btn" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/admin-home')}</span>&gt;
           &lt;FaArrowLeft /&gt; Back to Dashboard
         &lt;/button&gt;
@@ -1195,7 +1201,7 @@ export default MaintenanceReportPage;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-25T17:03:02.207Z
+                at 2025-05-25T19:35:08.097Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
