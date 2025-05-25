@@ -29,7 +29,7 @@ file name:
 
 Copy and paste the following into the file: 
 
-Please see documentation, under "Link to GitHub repository" section. The file contents cannot be kept in the readme due to information sensitivity.
+Please see documentation, under the "Running Facility-Pro Locally" section. The file contents cannot be kept in the readme due to information sensitivity.
 
 
 Once this is done, make sure to save the file, and then run the app using:
