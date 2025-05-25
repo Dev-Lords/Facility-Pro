@@ -87,11 +87,40 @@ export const createBooking = async (facilityId, selectedDate, slotsToBook, userI
     }
 
     const successResponse = await response.json();
+
+    const urllog = `https://us-central1-facilty-pro.cloudfunctions.net/api/create-log`;
+
+    const logpayload = {
+      eventType: "booking",
+      facilityId: facilityId,
+      eventDocId: successResponse.bookingId,
+      userId: userId,
+      details: payload
+    };
+
+    const logresponse = await fetch(urllog, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(logpayload)
+    });
+
+    if(!logresponse.ok){
+      const errorResponselog = await logresponse.json();
+      console.error("Error response: ", errorResponselog);
+      throw new Error(errorResponselog.error || `HTTP ${logresponse.status}: ${logresponse.statusText}`);
+    }
+
+    console.log("No error for log")
+    const successResponselog = await logresponse.json();
     
     return {
       success: true,
-      data: successResponse
+      data: successResponse,
+      logdata: successResponselog
     };
+
 
   } catch (error) {
     console.error("Error in createBooking:", error);
