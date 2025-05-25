@@ -75,7 +75,7 @@ export default function UsageTrends() {
   const [error, setError] = useState(null);
 
 
-  const navigate = useNavigate();
+const navigate = useNavigate();
 const handleNavigate = (path) => {  
   navigate(path);
 };
@@ -96,7 +96,6 @@ const toggleMenu = () => {
       try {
         setIsLoading(true);
         const data = await fetchMonthSummaryStats();
-        console.log("API Response:", data);
 
         // Use default values if the API returns empty data
         setBookingsChart(

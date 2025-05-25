@@ -23,7 +23,6 @@ const SignupPage = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-	console.log('Form submitted with:', formData);
   setError(""); 
     
     
@@ -37,7 +36,7 @@ const SignupPage = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log("User signed up:", user);
+        
 		navigate('/LoginPage');
       })
       .catch((error) => {
@@ -60,7 +59,7 @@ const SignupPage = () => {
       try{
         const result = await signInWithGoogle();
         const user = result.user;
-        console.log("Account created for user signing up with google: ", user);
+        
         const token = await user.getIdToken();
         localStorage.setItem('authToken', token);
         const userData = {

@@ -6,7 +6,6 @@ export const fetchBookings = async () => {
   if (!response.ok) {
     throw new Error('Failed to fetch bookings');
   }
-
   const bookings = await response.json();
   return bookings;
 };

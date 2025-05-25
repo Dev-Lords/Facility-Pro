@@ -72,7 +72,6 @@ export const createAccountRequest = async (formData) => {
 
 //delete user
 export const deleteAccount = async (uid) => {
-  console.log("deleteAccount function hit", uid);
   const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/delete-account/${uid}`;
 
   const response = await fetch(url, {

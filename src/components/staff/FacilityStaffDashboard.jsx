@@ -83,7 +83,7 @@ export default function FacilityStaffDashboard() {
       </section>
 
       <footer className="footer">
-        <p>Facility Management System • Staff Portal • Version 1.0.0</p>
+        <p>Facility Management System • Staff Portal • Version 1.0.4</p>
       </footer>
       </main>
   );

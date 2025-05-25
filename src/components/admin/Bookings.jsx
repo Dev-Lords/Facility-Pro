@@ -346,7 +346,7 @@ useEffect(() => {
 
 
       <footer className="footer">
-        <p>Facility Management System • Admin services • Version 1.0.0</p>
+        <p>Facility Management System • Admin services • Version 1.0.4</p>
       </footer>
 
     </main>

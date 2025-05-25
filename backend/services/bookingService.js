@@ -71,7 +71,6 @@ export const createBooking = async (facilityId, selectedDate, slotsToBook, userI
       userId: userId
     };
 
-    console.log("Creating booking with payload:", payload);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -88,7 +87,6 @@ export const createBooking = async (facilityId, selectedDate, slotsToBook, userI
     }
 
     const successResponse = await response.json();
-    console.log("Booking created successfully:", successResponse);
     
     return {
       success: true,

@@ -21,6 +21,8 @@ const convertToTimeSlots = (hours) => {
   };
   return hours.map(convertToTimeSlot);
 };
+
+
 const convertToNumericHours = (slots) => {
   const parseTime = (timeStr) => {
     const match = timeStr.match(/^(\d+)(AM|PM)$/);
@@ -96,6 +98,7 @@ const CalendarPage = () => {
     })();
   }, [selectedDate]);
 
+  
   useEffect(() => {
     setSelectedSlots([]);
    

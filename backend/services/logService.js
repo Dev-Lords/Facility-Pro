@@ -7,7 +7,6 @@ const eventTypes = ["booking", "cancellation", "issue"];
 export const logFacilityEvent = async (eventType, facilityId, eventDocId, userId, details) => {
   if (!eventTypes.includes(eventType)) {
     console.log("Logging failed due to invalid event. Events allowed are: \n booking \n cancellation \n issue \n");
-    console.log("Your event: ", eventType);
     return;
   }
 
@@ -34,6 +33,7 @@ export const logFacilityEvent = async (eventType, facilityId, eventDocId, userId
     console.log(result.message || "Event Logged. Well done.");
   } catch (error) {
     console.error("Error logging event: ", error);
+    throw error
   }
 };
 
@@ -66,9 +66,7 @@ export const FecthPrevMonthLogs = async () => {
     }
     const data = await response.json();
     const docs = data.logs;
-    console.log(docs);
     return docs;
-
 }
 
 
@@ -89,7 +87,7 @@ export const fetchPastMonthLogs = async () => {
     const data = await q.json();
     const docs = data.logs; 
 
-      return docs;
+    return docs;
 
 }
 
@@ -185,6 +183,5 @@ export const fetchMonthSummaryStats = async () => {
         totalIssues: totalI, bookingsChange: bookingsChangeNum, issuesChange: issuesChangeNum
     };
     
-    console.log("Stats: ", stats);
     return stats;
 }

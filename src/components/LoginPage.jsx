@@ -20,12 +20,11 @@ const LoginPage = () => {
     try{
 		const result = await signInWithGoogle();
 		const user = result.user;
-		console.log("User signed in: ", user);
 		
 		const uid = user.uid;
 
-        // Check if the user exists in Firestore
-        const existingUser = await fetchUser(uid);
+    // Check if the user exists in Firestore
+    const existingUser = await fetchUser(uid);
 		
 		const userData = {
 			uid: user.uid,
@@ -90,7 +89,6 @@ const LoginPage = () => {
       const uid = user.uid;
       const User = await fetchUser(uid);
       const userType = User.user_type
-      //const userType = await getUserType(uid);
 
       const token = await user.getIdToken();
       localStorage.setItem('authToken', token);
