@@ -44,7 +44,6 @@
   --glass-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(235, 248, 255, 0.8) 100%);
 }
 
-
 body, html {
   height: 100%;
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -53,11 +52,10 @@ body, html {
 
 .login-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   background: var(--primary-gradient);
   position: relative;
-  overflow: hidden;
 }
 
 .login-container::before {
@@ -232,7 +230,7 @@ form {
 }
 
 input {
-   padding: 0.6rem 1rem;
+  padding: 0.6rem 1rem;
   font-size: 0.9rem; 
   width: 100%;
   border: 2px solid rgba(49, 130, 206, 0.2);
@@ -244,6 +242,7 @@ input {
   box-shadow: 
     0 4px 15px rgba(0, 0, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
 }
 
 input::placeholder {
@@ -279,6 +278,8 @@ button[type="submit"] {
   position: relative;
   overflow: hidden;
   animation: pulseBlue 3s ease-in-out infinite;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 button[type="submit"]::before {
@@ -359,6 +360,8 @@ button[type="submit"]:hover {
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .google-btn::before {
@@ -501,6 +504,14 @@ button[type="submit"]:hover {
   20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
+/* Desktop - keep original layout with overflow hidden */
+@media (min-width: 769px) {
+  .login-container {
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .login-panel {
@@ -518,13 +529,22 @@ button[type="submit"]:hover {
 }
 
 @media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  
   .login-container {
     flex-direction: column;
+    min-height: 100vh;
+    height: auto;
+    overflow-y: auto;
   }
   
   .brand-section {
     padding: 3rem 2rem 2rem;
     min-height: 40vh;
+    flex-shrink: 0;
   }
   
   .company-name {
@@ -538,7 +558,9 @@ button[type="submit"]:hover {
   }
   
   .login-panel {
-    width: 350px; 
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
     padding: 2rem;
     border-left: none;
     border-top: 2px solid rgba(49, 130, 206, 0.2);
@@ -546,6 +568,10 @@ button[type="submit"]:hover {
       0 -25px 80px rgba(26, 32, 44, 0.15),
       0 -10px 40px rgba(49, 130, 206, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+    min-height: auto;
+    padding-bottom: 3rem;
+    margin-bottom: 2rem;
   }
   
   .login-panel::before {
@@ -560,6 +586,7 @@ button[type="submit"]:hover {
 @media (max-width: 480px) {
   .brand-section {
     padding: 2rem 1rem 1.5rem;
+    min-height: 30vh;
   }
   
   .company-name {
@@ -572,6 +599,9 @@ button[type="submit"]:hover {
   
   .login-panel {
     padding: 1.5rem;
+    width: 100%;
+    max-width: none;
+    margin: 0;
   }
   
   .login-panel h2 {
