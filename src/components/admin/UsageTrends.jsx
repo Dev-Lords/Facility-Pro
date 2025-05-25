@@ -562,9 +562,9 @@ const toggleMenu = () => {
 
   return (
     <main className="usageTrends-main">
-      {error && <div className="error-message">{error}</div>}
+      {error && <strong className="error-message">{error}</strong>}
 
-      {isLoading && <div className="loading-message">Loading...</div>}
+      {isLoading && <strong className="loading-message">Loading...</strong>}
       {/* This is for the header, to show something, idk*/}
       <header className="dashboard-header">
           <section className="hamburger-menu">

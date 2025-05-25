@@ -154,7 +154,7 @@ const LoginPage = () => {
 
           <button type="submit">Sign In</button>
 
-          <p className="divider"><span>or</span></p>
+          <p className="divider"><strong>or</strong></p>
 
           <button type="button" className="google-btn" onClick={handleSignInWithGoogle}>
             <section className='google-icon'>

@@ -56,7 +56,7 @@ const SearchableLocationDropdown = ({ value, onChange }) => {
     .find(opt => opt.value === value);
 
   return (
-    <div className="location-dropdown">
+    <main className="location-dropdown">
       <label htmlFor="location-select" className="dropdown-label">Select Location</label>
       <Select
         id="location-select"
@@ -66,7 +66,7 @@ const SearchableLocationDropdown = ({ value, onChange }) => {
         placeholder="Search or choose location..."
         isSearchable
       />
-    </div>
+    </main>
   );
 };
 
