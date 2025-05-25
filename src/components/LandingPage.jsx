@@ -131,13 +131,7 @@ const LandingPage = () => {
           <FacilitySlideshow />
       
         </article>
-
-        <article className="LandingPage-Testimonial">
-          <blockquote>
-            "Facility Pro transformed how our local basketball league operates. We went from spending hours coordinating venues to booking everything in minutes. It's an absolute game-changer!"
-          </blockquote>
-          <p className="testimonial-author">- Mike J., Community Basketball League Organizer</p>
-        </article>
+\
       </section>
 
       <footer className="LandingPage-Footer">

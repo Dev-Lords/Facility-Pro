@@ -312,6 +312,7 @@ app.post('/create-issue', async (req, res) => {
 });
 
 
+
 //Creating a user account (Post-sending information)
 app.post('/create-account', async (req, res) => {
   const { email, password, displayName, user_type } = req.body;

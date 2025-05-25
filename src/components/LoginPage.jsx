@@ -9,6 +9,7 @@ import {
   saveUser,
   getUserType
 } from "../../backend/services/userServices.js";
+import { FcGoogle } from "react-icons/fc";
 
 
 const LoginPage = () => {
@@ -84,6 +85,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     try {
+      setError(""); 
       const user = await signInWithEmailAndPassword(formData.email, formData.password);
       
       const uid = user.uid;
@@ -107,7 +109,14 @@ const LoginPage = () => {
       }
       } catch (error) {
         console.error("Error signing in:", error);
-        setError(error.message);
+        let message = "Something went wrong.";
+        if(error.code == "auth/invalid-credential"){
+          message = "Invalid email or password.";
+        }
+        
+          
+        setError(message); 
+
       }
   };
   
@@ -149,7 +158,10 @@ const LoginPage = () => {
           <p className="divider"><span>or</span></p>
 
           <button type="button" className="google-btn" onClick={handleSignInWithGoogle}>
-            Continue with Google
+            <section className='google-icon'>
+                <FcGoogle/>
+              </section>
+             Continue with Google
           </button>
 
           {error && <p className="error">{error}</p>}

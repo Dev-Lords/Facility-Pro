@@ -4,6 +4,7 @@ import { signInWithGoogle } from "../../backend/auth/firebase-auth";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../backend/models/user.js";
 import { signUpWithEmailAndPassword } from '../../backend/auth/firebase-auth';
+import { FcGoogle } from "react-icons/fc";
 
 const SignupPage = () => {
 	 const navigate = useNavigate();
@@ -23,6 +24,7 @@ const SignupPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 	console.log('Form submitted with:', formData);
+  setError(""); 
     
     
     if (!formData.email || !formData.password) {
@@ -40,7 +42,13 @@ const SignupPage = () => {
       })
       .catch((error) => {
         console.error("Error signing up:", error);
-        setError(error.message); 
+        let message = "";
+        if(error.code == "auth/email-already-in-use")
+          message = "Email already in use. log in instead.";
+        if(error.code=="auth/weak-password"){
+          message = "Password should have at least 6 characters."
+        }
+        setError(message); 
       });
     
   };
@@ -150,6 +158,9 @@ const SignupPage = () => {
           <p className="divider"><span>or</span></p>
 
           <button type="button" className="google-btn" onClick={handleSignUpWithGoogle}>
+            <section className='google-icon'>
+              <FcGoogle/>
+            </section>
             Continue with Google
           </button>
 

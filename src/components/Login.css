@@ -143,15 +143,31 @@ button[type="submit"]:hover {
   z-index: 1;
 }
 
+
 .google-btn {
-  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; 
+  padding: 10px 16px;
   border: 1px solid var(--silver-pink-light);
   color: var(--dark-text);
-  padding: 0.75rem;
   border-radius: 4px;
   font-weight: 500;
+  background-color: white;
   cursor: pointer;
+  font-size: 16px;
 }
+
+
+.google-icon{
+   font-size: 30px;
+}
+
+
+
+
+
 
 .google-btn:hover {
   background-color: var(--silver-pink-light);
@@ -162,6 +178,7 @@ button[type="submit"]:hover {
   font-size: 0.85rem;
   margin-top: 0.5rem;
 }
+
 
 /* Responsive adjustment for smaller screens */
 @media (max-width: 768px) {
