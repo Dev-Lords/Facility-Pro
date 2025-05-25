@@ -128,6 +128,25 @@ export const createBooking = async (facilityId, selectedDate, slotsToBook, userI
   }
 };
 
+export const fetchUserBookings =  async(uid)=> {
+	
+  try {
+    const response = await fetch(`https://us-central1-facilty-pro.cloudfunctions.net/api/get-user-bookings?uid=${uid}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch bookings');
+    }
+
+    const bookings = await response.json();
+    console.log('User bookings:', bookings);
+    return bookings;
+  } catch (error) {
+    console.error('Error fetching user bookings:', error);
+  }
+}
+
+// Example usage
+
+
 //updating booking status
 export const updateBooking = async (bookingID, newStatus) => {
   const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/update-booking-status`;

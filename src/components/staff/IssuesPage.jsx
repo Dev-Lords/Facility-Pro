@@ -361,23 +361,7 @@ const IssuesPage = () => {
                     </time>
                   </p>
                 </article>
-                <article className="detail-item">
-                  <h4>Assigned To</h4>
-                  <select
-                    value={editedIssue.assignedTo || ""}
-                    onChange={(e) =>
-                      handleEditChange("assignedTo", e.target.value)
-                    }
-                    className="staff-select"
-                    aria-label="Assign to staff"
-                    data-testid="assignee-select"
-                  >
-                    <option value="">Unassigned</option>
-                    <option value="staff1">John Smith</option>
-                    <option value="staff2">Sarah Johnson</option>
-                    <option value="staff3">Michael Brown</option>
-                  </select>
-                </article>
+                
               </section>
 
               <section className="description-section">

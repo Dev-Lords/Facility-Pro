@@ -540,6 +540,31 @@ app.post('/saveUser', async (req, res) => {
   }
 });
 
+//Fetch all user's bookings
+app.get('/get-user-bookings', async (req, res) => {
+  const uid = req.query.uid;
+
+  if (!uid) {
+    return res.status(400).json({ error: 'Missing uid query parameter' });
+  }
+
+  try {
+    const bookingsCollection = admin.firestore().collection("bookings");
+    const querySnapshot = await bookingsCollection.where("userID", "==", uid).get();
+
+    const userBookings = querySnapshot.docs.map(doc => ({
+      bookingID: doc.id,
+      ...doc.data()
+    }));
+
+    res.status(200).json(userBookings);
+  } catch (error) {
+    console.error("Error fetching user bookings:", error);
+    res.status(500).json({ error: 'Failed to fetch user bookings' });
+  }
+});
+
+
 
 //BOOKINGS REVIEW CLOUD FUNCTIONS: used by admin
 //Fetching all bookings
@@ -585,21 +610,7 @@ app.patch('/update-booking-status', async (req, res) => {
     res.status(500).json({ error: 'Failed to update booking status' });
   }
 });
-exports.deleteRejectedBooking = onDocumentUpdated("bookings/{bookingID}", async (event) => {
-  const before = event.data.before.data();
-  const after = event.data.after.data();
 
-  if (before.status !== 'rejected' && after.status === 'rejected') {
-    const bookingID = event.params.bookingID;
-
-    try {
-      await db.collection('bookings').doc(bookingID).delete();
-      console.log(`Booking ${bookingID} deleted because status changed to rejected.`);
-    } catch (error) {
-      console.error(`Error deleting booking ${bookingID}:`, error);
-    }
-  }
-});
 
 
 //EVENTS CLOUD FUNCTIONS:
