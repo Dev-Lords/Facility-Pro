@@ -1,3 +1,192 @@
+/* Facility Maintenance Summary - Enhanced Styles */
+.facility-maintenance-summary {
+  margin: 2rem 0;
+}
+
+.facility-maintenance-summary h3 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.facility-stats-cards {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+.facility-stat-card {
+  min-width: 160px;
+  max-width: 180px;
+  padding: 1rem;
+  border-radius: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+/* Hover effects */
+.facility-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  border-color: rgba(255,255,255,0.3);
+}
+
+/* Soccer Field Card */
+.facility-stat-card:nth-child(1) {
+  background: linear-gradient(135deg, #86efac 0%, #4ade80 100%);
+  color: white;
+}
+
+.facility-stat-card:nth-child(1):hover {
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+}
+
+.facility-stat-card:nth-child(1) h4::before {
+  content: "⚽";
+  font-size: 1.5rem;
+}
+
+/* Gym Card */
+.facility-stat-card:nth-child(2) {
+  background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%);
+  color: white;
+}
+
+.facility-stat-card:nth-child(2):hover {
+  background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+}
+
+.facility-stat-card:nth-child(2) h4::before {
+  content: "🏋️";
+  font-size: 1.5rem;
+}
+
+/* Pool Card */
+.facility-stat-card:nth-child(3) {
+  background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 100%);
+  color: white;
+}
+
+.facility-stat-card:nth-child(3):hover {
+  background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+}
+
+.facility-stat-card:nth-child(3) h4::before {
+  content: "🏊";
+  font-size: 1.5rem;
+}
+
+/* Basketball Court Card */
+.facility-stat-card:nth-child(4) {
+  background: linear-gradient(135deg, #fdba74 0%, #fb923c 100%);
+  color: white;
+}
+
+.facility-stat-card:nth-child(4):hover {
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+}
+
+.facility-stat-card:nth-child(4) h4::before {
+  content: "🏀";
+  font-size: 1.5rem;
+}
+
+/* Tennis Court Card (if you have one) */
+.facility-stat-card:nth-child(5) {
+  background: linear-gradient(135deg, #f9a8d4 0%, #f472b6 100%);
+  color: white;
+}
+
+.facility-stat-card:nth-child(5):hover {
+  background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+}
+
+.facility-stat-card:nth-child(5) h4::before {
+  content: "🎾";
+  font-size: 1.5rem;
+}
+
+/* Track Field Card (if you have one) */
+.facility-stat-card:nth-child(6) {
+  background: linear-gradient(135deg, #bef264 0%, #a3e635 100%);
+  color: white;
+}
+
+.facility-stat-card:nth-child(6):hover {
+  background: linear-gradient(135deg, #a3e635 0%, #84cc16 100%);
+}
+
+.facility-stat-card:nth-child(6) h4::before {
+  content: "🏃";
+  font-size: 1.5rem;
+}
+
+.facility-stat-card h4 {
+  margin: 0 0 0.8rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.facility-stat-card h4::before {
+  flex-shrink: 0;
+}
+
+.facility-stat-card ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.facility-stat-card li {
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+  opacity: 0.95;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.facility-stat-card li:last-child {
+  margin-bottom: 0;
+}
+
+/* bullet points for list items */
+.facility-stat-card li::before {
+  content: "•";
+  margin-right: 0.5rem;
+  font-weight: bold;
+  opacity: 0.7;
+}
+
+/* Custom scrollbar for better appearance */
+.facility-stats-cards::-webkit-scrollbar {
+  height: 6px;
+}
+
+.facility-stats-cards::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.facility-stats-cards::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 3px;
+}
+
+.facility-stats-cards::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
 /* General Page Styles */
 .issues-page {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -9,7 +198,7 @@
 
 /* Header */
 .usageTrends-header {
-  background: linear-gradient(135deg, #0b2e5b 0%, #1e4e8c 50%, #3d6ea8 100%);
+  background: linear-gradient(135deg, #3182ce 0%, #2b6cb0 50%, #2c5aa0 100%);
   color: white;
   padding: 20px;
   border-radius: 12px;
@@ -22,7 +211,7 @@
   font-size: 1.5rem;
 }
 
-/* Horizontal Summary Cards */
+/* Horizontal Summary Cards with Enhanced Colors */
 .summary-stats-horizontal {
   display: flex;
   gap: 1rem;
@@ -36,11 +225,50 @@
   min-width: 110px;
   padding: 0.7rem;
   border-radius: 8px;
-  background: linear-gradient(135deg, #1e4e8c, #3d6ea8);
   color: white;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   flex-shrink: 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.summary-card-sm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Different colors for each summary card */
+.summary-card-sm:nth-child(1) {
+  background: linear-gradient(135deg, #5b12ee, #6b46c1);
+}
+
+.summary-card-sm:nth-child(2) {
+  background: linear-gradient(135deg,  #b096e6, #6b46c1);
+}
+
+.summary-card-sm:nth-child(3) {
+  background: linear-gradient(135deg, #5b12ee, #6b46c1);
+}
+
+.summary-card-sm:nth-child(4) {
+  background: linear-gradient(135deg, #b096e6, #6b46c1);
+}
+
+.summary-card-sm:nth-child(5) {
+  background: linear-gradient(135deg, #5b12ee, #6b46c1);
+}
+
+.summary-card-sm:nth-child(6) {
+  background: linear-gradient(135deg, #b096e6, #6b46c1);
+}
+
+.summary-card-sm:nth-child(7) {
+  background: linear-gradient(135deg, #5b12ee, #6b46c1);
+}
+
+.summary-card-sm:nth-child(8) {
+  background: linear-gradient(135deg, #b096e6, #6b46c1);
 }
 
 .summary-card-sm h3 {
@@ -118,9 +346,7 @@
   cursor: not-allowed;
 }
 
-/* COMPLETELY REMOVED ALL TABLE STYLING - Using your original table styles */
-
-/* Export Buttons (Unchanged from your original) */
+/* Export Buttons */
 .Buttons {
   display: flex;
   gap: 1rem;
@@ -184,6 +410,85 @@
   height: 300px;
 }
 
+/* Facility Availability Cards with Enhanced Colors */
+.facility-availability {
+  margin: 2rem 0;
+}
+
+.facility-cards {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.facility-card {
+  flex: 1 0 22%;
+  min-width: 200px;
+  padding: 1rem;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.facility-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* Different colors for each facility availability card */
+.facility-card:nth-child(1) {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+}
+
+.facility-card:nth-child(2) {
+  background: linear-gradient(135deg, #ed8936, #dd6b20);
+}
+
+.facility-card:nth-child(3) {
+  background: linear-gradient(135deg, #4299e1, #3182ce);
+}
+
+.facility-card:nth-child(4) {
+  background: linear-gradient(135deg, #9f7aea, #805ad5);
+}
+
+.facility-card:nth-child(5) {
+  background: linear-gradient(135deg, #f56565, #e53e3e);
+}
+
+.facility-card:nth-child(6) {
+  background: linear-gradient(135deg, #4fd1c7, #38b2ac);
+}
+
+/* Legacy classes for backward compatibility */
+.facility-card.available {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+}
+
+.facility-card.unavailable {
+  background: linear-gradient(135deg, #f56565, #e53e3e);
+}
+
+.facility-card h4 {
+  margin-bottom: 0.5rem;
+}
+
+.facility-card .percentage {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.facility-card .status {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .filter-section {
@@ -203,62 +508,24 @@
   .chart-wrapper {
     max-width: 100%;
   }
-}
-/* Facility Availability Cards */
-.facility-availability {
-  margin: 2rem 0;
-}
-
-.facility-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: start;
-  overflow-x: auto;
-}
-
-.facility-card {
-  flex: 0 0 200px;
-  padding: 1rem;
-  border-radius: 10px;
-  color: white;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.facility-card.available {
-  background-color: #94edbe; /* green */
-}
-
-.facility-card.unavailable {
-  background-color: #feb075; /* red */
-}
-
-.facility-card h4 {
-  margin-bottom: 0.5rem;
-}
-
-.facility-card .percentage {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.facility-card .status {
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-.facility-cards {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  justify-content: space-between;
-  flex-wrap: nowrap; /* ❗ Important: prevents wrapping */
-  overflow-x: auto;
-}
-
-.facility-card {
-  flex: 1 0 22%; /* 4 cards in one row with space */
-  min-width: 200px;
+  
+  .facility-stats-cards {
+    gap: 0.8rem;
+  }
+  
+  .facility-stat-card {
+    min-width: 140px;
+    max-width: 160px;
+    padding: 0.8rem;
+  }
+  
+  .facility-stat-card h4 {
+    font-size: 0.85rem;
+  }
+  
+  .facility-stat-card li {
+    font-size: 0.75rem;
+  }
 }
 
 
