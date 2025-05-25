@@ -5,9 +5,8 @@ import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { signInWithEmailAndPassword } from "../../backend/auth/firebase-auth";
 import {
-  getUserByUid,
   saveUser,
-  getUserType
+  fetchUser
 } from "../../backend/services/userServices.js";
 import { FcGoogle } from "react-icons/fc";
 
@@ -26,7 +25,7 @@ const LoginPage = () => {
 		const uid = user.uid;
 
         // Check if the user exists in Firestore
-        const existingUser = await getUserByUid(uid);
+        const existingUser = await fetchUser(uid);
 		
 		const userData = {
 			uid: user.uid,
@@ -89,7 +88,9 @@ const LoginPage = () => {
       const user = await signInWithEmailAndPassword(formData.email, formData.password);
       
       const uid = user.uid;
-      const userType = await getUserType(uid);
+      const User = await fetchUser(uid);
+      const userType = User.user_type
+      //const userType = await getUserType(uid);
 
       const token = await user.getIdToken();
       localStorage.setItem('authToken', token);

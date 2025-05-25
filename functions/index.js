@@ -21,21 +21,10 @@ app.use(cors({
 app.use(express.json());
 
 
-//Fetching all users (Get-getting a file)
-app.get('/get-all-users', async (req, res) => {
-  try {
-    const usersSnapshot = await admin.firestore().collection('users').orderBy('displayName').get();
-    const users = usersSnapshot.docs.map(doc => ({
-      uid: doc.id,
-      ...doc.data()
-    }));
-    res.status(200).json(users);
-  } catch (error) {
-    console.error('Error getting users:', error);
-    res.status(500).json({ error: 'Failed to fetch users' });
-  }
-});
 
+//BOOKING A FACILITY CLOUD FUNCTIONS: used by residents
+
+//Get the available slots for a specific faciility
 app.get('/available-slots/:facilityId/:date', async (req, res) => {
   const { facilityId, date } = req.params;
 
@@ -92,6 +81,10 @@ app.get('/available-slots/:facilityId/:date', async (req, res) => {
     res.status(500).json({ error: "Internal server error", details: error.message });
   }
 });
+
+
+
+//Create a new Booking doc
 app.post('/create-booking', async (req, res) => {
   try {
     const { facilityId, selectedDate, slotsToBook, userId } = req.body;
@@ -195,6 +188,9 @@ app.post('/create-booking', async (req, res) => {
     });
   }
 });
+
+
+//Validate booking before processing it
 app.post('/validate-booking', async (req, res) => {
   try {
     const { facilityId, selectedDate, slotsToBook, userId } = req.body;
@@ -237,6 +233,13 @@ app.post('/validate-booking', async (req, res) => {
     return res.status(200).json({ result: "error creating booking" });
   }
 });
+
+
+
+
+//MAINTENANCE ISSUES RELATED CLOUD FUNCTIONS:
+
+//Fetch all the issue in the database
 app.get('/fetch-issues', async (req, res) => {
   try {
     const snapshot = await db.collection('issues').get();
@@ -250,6 +253,9 @@ app.get('/fetch-issues', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch issues' });
   }
 });
+
+
+//Get the issue doc using its ID
 app.post('/issues/:id', async (req, res) => {
   const issueID = req.params.id;
   const updatedIssue = req.body;
@@ -266,6 +272,9 @@ app.post('/issues/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to update issue' });
   }
 });
+
+
+//Get the list of issues that a user has reported
 app.get('/issuesByUser', async (req, res) => {
   const userId = req.query.userId;
   if (!userId) {
@@ -285,6 +294,8 @@ app.get('/issuesByUser', async (req, res) => {
   }
 });
 
+
+//Create a new maintenance issue doc
 app.post('/create-issue', async (req, res) => {
   try {
     const data = req.body;
@@ -313,10 +324,27 @@ app.post('/create-issue', async (req, res) => {
 
 
 
+//USER SPECIFIC CLOUD FUNCTIONS:
+
+//Fetching all users (Get-getting a file)
+app.get('/get-all-users', async (req, res) => {
+  try {
+    const usersSnapshot = await admin.firestore().collection('users').orderBy('displayName').get();
+    const users = usersSnapshot.docs.map(doc => ({
+      uid: doc.id,
+      ...doc.data()
+    }));
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error getting users:', error);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
+
+
 //Creating a user account (Post-sending information)
 app.post('/create-account', async (req, res) => {
   const { email, password, displayName, user_type } = req.body;
-  
   
   if (!email || !password || !displayName || !user_type) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -386,8 +414,7 @@ app.delete('/delete-account/:uid',async(req,res)=>{
     res.status(500).json({ error: error.message });
   }
 
-}
-)
+})
 
 
 //Updating a user (Patch-changing only an attribute)
@@ -413,6 +440,9 @@ app.patch('/update-user-type', async (req, res) => {
     res.status(500).json({ error: 'Failed to update user type' });
   }
 });
+
+
+//Save user information in order to determine user role
 app.post("/save-user", async (req, res) => {
   try {
     const userData = req.body;
@@ -434,6 +464,8 @@ app.post("/save-user", async (req, res) => {
   }
 });
 
+
+//Get user by the id
 app.get("/get-user/:uid", async (req, res) => {
   try {
     const uid = req.params.uid;
@@ -448,6 +480,9 @@ app.get("/get-user/:uid", async (req, res) => {
     res.status(500).json({ error: "Failed to get user" });
   }
 });
+
+
+//Get a user role using the user id
 app.get("/get-user-type/:uid", async (req, res) => {
   try {
     const uid = req.params.uid;
@@ -462,6 +497,9 @@ app.get("/get-user-type/:uid", async (req, res) => {
     res.status(500).json({ error: "Failed to get user type" });
   }
 });
+
+
+//Check if the user exists
 app.get("/user-exists/:uid", async (req, res) => {
   try {
     const uid = req.params.uid;
@@ -475,7 +513,7 @@ app.get("/user-exists/:uid", async (req, res) => {
 
 
 
-//BOOKINGS REVIEW:
+//BOOKINGS REVIEW CLOUD FUNCTIONS: used by admin
 //Fetching all bookings
 app.get('/get-all-bookings', async (req, res) => {
   try {
@@ -521,9 +559,41 @@ app.patch('/update-booking-status', async (req, res) => {
 });
 
 
+//EVENTS CLOUD FUNCTIONS:
 
+//Fetch all events
+app.get('/get-all-events', async (req, res) => {
+  try {
+    const EventsCollection = admin.firestore().collection("events");
+    const EventsSnapshot = await EventsCollection.get();
+    const Events=EventsSnapshot.docs.map(doc => doc.data())
+    
 
+    res.status(200).json(Events);
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    res.status(500).json({ error: 'Failed to fetch bookings' });
+  }
+});
 
+//LOGS ClOUD FUNCTIONS:
+//Fetch all logs
+app.get('/get-all-logs', async (req, res) => {
+  try {
+    const LogsCollection = admin.firestore().collection("logs");
+    const LogsSnapshot = await LogsCollection.get();
+
+    const LogsList = LogsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    res.status(200).json(LogsList);
+  } catch (error) {
+    console.error("Error fetching logs:", error);
+    res.status(500).json({ error: 'Failed to fetch logs' });
+  }
+});
 
 
 

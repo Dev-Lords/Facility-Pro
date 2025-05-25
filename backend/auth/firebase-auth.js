@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 
 import { app } from "../firebase/firebase.config.js";
-import { saveUser, getUserByUid } from "../services/userServices.js"; // Service functions
+import { saveUser, fetchUser } from "../services/userServices.js"; // Service functions
 
 
 const auth = getAuth(app);
@@ -21,7 +21,7 @@ export const signInWithGoogle = async () => {
     const user = result.user;
 
     // Check if user exists
-    let existingUser = await getUserByUid(user.uid);
+    let existingUser = await fetchUser(user.uid);
 
     const userData = {
       uid: user.uid,
@@ -105,7 +105,7 @@ export const getCurrentUserProfile = async () => {
   if (!currentUser) return null;
 
   try {
-    return await getUserByUid(currentUser.uid);
+    return await fetchUser(currentUser.uid);
   } catch (error) {
     console.error("Error fetching current user profile:", error);
     return null;

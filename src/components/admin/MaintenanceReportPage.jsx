@@ -4,7 +4,6 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { useNavigate } from "react-router-dom";
 import { 
-
   FaArrowLeft,FaBars
 } from 'react-icons/fa';
 // Updated Chart.js imports - add necessary components

@@ -1,10 +1,10 @@
-
-import  { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchIssues } from "../../../backend/services/issuesService.js";
 import { UpdateIssue } from "../../../backend/services/issuesService.js"; 
 import "./IssuesPage.css";
-import { getUserByUid } from "../../../backend/services/userServices.js";
+import { fetchUser} from "../../../backend/services/userServices.js";
 import { FaBars } from 'react-icons/fa';
+import { toast } from "react-toastify";
 import { useNavigate ,Navigate} from "react-router-dom";
 
 const IssuesPage = () => {
@@ -52,7 +52,7 @@ const IssuesPage = () => {
     const selectIssue = async () => {
       if (selectedIssue) {
         setEditedIssue({ ...selectedIssue });
-        const reporter = await getUserByUid(selectedIssue.reporter);
+        const reporter = await fetchUser(selectedIssue.reporter);
         console.log("Reporter data:", reporter.displayName); // Log the reporter data
         setReporter(reporter.displayName); // Set the reporter state
       } else {

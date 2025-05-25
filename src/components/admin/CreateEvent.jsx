@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { 
-  getFirestore, 
-  collection, 
-  addDoc, 
-  serverTimestamp, 
-  query, 
-  where, 
-  getDocs 
-} from 'firebase/firestore';
+import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
 import { app } from "../../../backend/firebase/firebase.config.js";
 import { FaCalendarAlt, FaClock ,FaBars} from 'react-icons/fa';
 import './CreateEvents.css';

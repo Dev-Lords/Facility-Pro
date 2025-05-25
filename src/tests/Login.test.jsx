@@ -4,7 +4,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import LoginPage from '../components/LoginPage.jsx';
 import { signInWithGoogle, signInWithEmailAndPassword } from '../../backend/auth/firebase-auth.js';
-import { getUserByUid, saveUser, getUserType } from '../../backend/services/userServices.js';
+import { fetchUser, saveUser} from '../../backend/services/userServices.js';
 import { useNavigate } from 'react-router-dom';
 
 // Mock the modules
@@ -18,9 +18,8 @@ jest.mock('../../backend/auth/firebase-auth', () => ({
 }));
 
 jest.mock('../../backend/services/userServices', () => ({
-  getUserByUid: jest.fn(),
+  fetchUser: jest.fn(),
   saveUser: jest.fn(),
-  getUserType: jest.fn()
 }));
 
 describe('LoginPage Component', () => {
@@ -81,7 +80,7 @@ describe('LoginPage Component', () => {
     };
     
     signInWithEmailAndPassword.mockResolvedValue(mockUser);
-    getUserType.mockResolvedValue('resident');
+    fetchUser.mockResolvedValue({ user_type: 'resident' });
     
     render(<LoginPage />);
     
@@ -96,7 +95,7 @@ describe('LoginPage Component', () => {
     await waitFor(() => {
       // Check if functions were called correctly
       expect(signInWithEmailAndPassword).toHaveBeenCalledWith('test@example.com', 'password123');
-      expect(getUserType).toHaveBeenCalledWith('user123');
+      expect(fetchUser).toHaveBeenCalledWith('user123');
       expect(mockUser.getIdToken).toHaveBeenCalled();
       
       // Check localStorage values
@@ -117,7 +116,8 @@ describe('LoginPage Component', () => {
     };
     
     signInWithEmailAndPassword.mockResolvedValue(mockUser);
-    getUserType.mockResolvedValue('admin');
+    fetchUser.mockResolvedValue({ user_type: 'admin' });
+
     
     render(<LoginPage />);
     
@@ -127,6 +127,7 @@ describe('LoginPage Component', () => {
     fireEvent.click(screen.getByText('Sign In'));
     
     await waitFor(() => {
+      expect(fetchUser).toHaveBeenCalledWith('admin123');
       expect(mockNavigate).toHaveBeenCalledWith('/admin-home');
     });
   });
@@ -139,7 +140,8 @@ describe('LoginPage Component', () => {
     };
     
     signInWithEmailAndPassword.mockResolvedValue(mockUser);
-    getUserType.mockResolvedValue('staff');
+    fetchUser.mockResolvedValue({ user_type: 'staff' });
+
     
     render(<LoginPage />);
     
@@ -186,7 +188,7 @@ describe('LoginPage Component', () => {
     };
     
     signInWithGoogle.mockResolvedValue({ user: mockUser });
-    getUserByUid.mockResolvedValue(null); // User doesn't exist yet
+    fetchUser.mockResolvedValue(null); // User doesn't exist yet
     
     render(<LoginPage />);
     
@@ -220,7 +222,7 @@ describe('LoginPage Component', () => {
     };
     
     signInWithGoogle.mockResolvedValue({ user: mockUser });
-    getUserByUid.mockResolvedValue({ user_type: 'admin' }); // User exists as admin
+    fetchUser.mockResolvedValue({ user_type: 'admin' }); // User exists as admin
     
     render(<LoginPage />);
     

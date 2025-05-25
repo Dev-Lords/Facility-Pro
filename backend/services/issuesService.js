@@ -33,7 +33,8 @@ export const UpdateIssue = async (issueID, updatedIssue) => {
   }
 };
 
-export async function uploadIssueImages(storage, issueID, images) {
+
+export async function uploadIssueImages(storage, issueID, images) {  //needs to be migrated to api
   const imageUrls = [];
 
   if (!images || images.length === 0) {

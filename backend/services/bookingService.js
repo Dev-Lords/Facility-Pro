@@ -46,6 +46,8 @@ export const fetchBookings = async () => {
   const bookings = await response.json();
   return bookings;
 };
+
+
 export const fetchAvailableNumericSlots = async (facilityId, selectedDate) => {
 	const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/available-slots/${facilityId}/${selectedDate}`;
 	const response = await fetch(url);

@@ -5,7 +5,7 @@ import { User } from "../models/user.js"; // Adjust the import path as necessary
 import { doc,getDoc,setDoc}from "firebase/firestore";
 
 // Create or update user in Firestore
-export const saveUser = async (userData) => {
+export const saveUser = async (userData) => {  
   const user = new User(userData);
   const userRef = doc(db, "users", user.uid);
 
@@ -26,41 +26,9 @@ export const saveUser = async (userData) => {
   }
 };
 
-// Get user by UID
-export const getUserByUid = async (uid) => {
-  try {
-    const userRef = doc(db, "users", uid);
-    const userDoc = await getDoc(userRef);
-
-    if (userDoc.exists()) {
-      return new User(userDoc.data());
-    }
-    return null;
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    throw error;
-  }
-};
-
-// Get user type
-export const getUserType = async (uid) => {
-  try {
-    const userRef = doc(db, "users", uid);
-    const userDoc = await getDoc(userRef);
-
-    if (userDoc.exists()) {
-      const data = userDoc.data();
-      return data.user_type || null;
-    }
-    return null;
-  } catch (error) {
-    console.error("Error getting user type:", error);
-    throw error;
-  }
-};
 
 // Check if user exists
-export const userExists = async (uid) => {
+export const userExists = async (uid) => {  
   try {
     const userRef = doc(db, "users", uid);
     const userDoc = await getDoc(userRef);

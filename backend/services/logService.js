@@ -2,8 +2,6 @@ import { collection, addDoc, getDocs, serverTimestamp, Timestamp, query, where} 
 import { db } from "../firebase/firebase.config";
 
 
-
-
 //Used to check that the eventTypes passed in on call of logging function
 // are valid
 const eventTypes = ["booking", "cancellation", "issue"];
@@ -20,7 +18,7 @@ export const logFacilityEvent = async (eventType, facilityId, eventDocId, userId
 
     //Add log to database
     try{
-        await addDoc(collection(db, "logs"), {
+        await addDoc(collection(db, "logs"), {  //need to be migrated to api-create log
             eventType: eventType,
             facilityId: facilityId,
             eventDocId: eventDocId,
@@ -36,27 +34,16 @@ export const logFacilityEvent = async (eventType, facilityId, eventDocId, userId
 }
 
 
-
 export const fetchFacilityEvents = async () => {
-    try{
-        const logsCollection = (collection(db, "logs"));
-        const logsSnapshot = await getDocs(logsCollection);
-        const logsList = logsSnapshot.docs.map(doc => {
-            const data = doc.data();
-            return{
-                id: doc.id,
-                ...data
-            };
-        });
+  const url = 'https://us-central1-facilty-pro.cloudfunctions.net/api/get-all-logs';
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error('Failed to fetch logs');
+  }
+  const logs = await response.json();
+  return logs;
+};
 
-        console.log("Logs fetched: ", logsList);
-
-        return logsList;
-    } catch (error){
-        console.error("Error fetching logs: ", error);
-        return [];
-    }
-}
 
 export const FecthPrevMonthLogs = async () => {
     const now = new Date();
@@ -67,7 +54,7 @@ export const FecthPrevMonthLogs = async () => {
     const startPrev = Timestamp.fromDate(startOfPrevMonth);
     const endPrev = Timestamp.fromDate(endOfPrevMonth);
 
-    const q = query(
+    const q = query(   //need to migrate to api
         collection(db, "logs"), where("timestamp", ">=", startPrev), where("timestamp", "<=", endPrev)
     );
 
@@ -78,6 +65,7 @@ export const FecthPrevMonthLogs = async () => {
       return docs;
 
 }
+
 
 export const fetchPastMonthLogs = async () => {
 
@@ -90,7 +78,7 @@ export const fetchPastMonthLogs = async () => {
     const end = Timestamp.fromDate(endOfMonth);
 
     const q = query(
-        collection(db, "logs"), where("timestamp", ">=", start), where("timestamp", "<=", end)
+        collection(db, "logs"), where("timestamp", ">=", start), where("timestamp", "<=", end)  //need to migrate to api
     );
       
       const snapshot = await getDocs(q);
@@ -99,7 +87,7 @@ export const fetchPastMonthLogs = async () => {
 
 }
 
-export const fetchMonthSummaryStats = async () => {
+export const fetchMonthSummaryStats = async () => {  
 
     const monthLogs = await fetchPastMonthLogs();
     const prevMonthLogs = await FecthPrevMonthLogs();
