@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Users, MapPin, Star, ArrowRight, Play, Award, Clock } from 'lucide-react';
+import { Link } from "react-router-dom";
 import "./LandingPage.css";
 
 import basketballImage from '../assets/polish/basketball_court.jpg';
@@ -82,17 +83,17 @@ const features = [
   {
     icon: Calendar,
     title: "Smart Scheduling",
-    description: "AI-powered booking system that prevents conflicts and optimizes facility usage"
+    description: "Book with ease,in just 4 steps"
   },
   {
     icon: Users,
     title: "Community Management", 
-    description: "Connect players, organize teams, and build lasting sporting communities"
+    description:"Participate in tournaments,competitions and build long lasting sports communities"
   },
   {
     icon: MapPin,
     title: "Location Discovery",
-    description: "Find the perfect venue with detailed maps and facility information"
+    description: "Everything close to you(sports facilities I mean)"
   },
   {
     icon: Award,
@@ -101,8 +102,8 @@ const features = [
   },
   {
     icon: Clock,
-    title: "24/7 Availability",
-    description: "Book facilities anytime with instant confirmation and flexible cancellation"
+    title: "Availability",
+    description: "Have up to 3 hrs to your team and whole day events"
   },
   {
     icon: Star,
@@ -280,8 +281,8 @@ const LandingPage = () => {
           <nav className="header-right">
             <ul className="nav-links">
               <li><a href="https://dev-lords.github.io/Facility-Pro/#/">Documentation</a></li>
+              <li><Link to="/terms">Terms</Link></li>
               <li><a href="#">Terms</a></li>
-              <li><a href="#">Privacy</a></li>
               <li><a href="#">FAQs</a></li>
             </ul>
           </nav>
@@ -375,43 +376,10 @@ const LandingPage = () => {
           <TestimonialCarousel />
         </article>
       </section>
-
-      <footer className="footer">
-        <section className="container">
-          <section className="footer-content">
-            <article className="footer-section">
-              <h3>About Facility Pro</h3>
-              <p>Connecting communities through sport with seamless facility management and booking solutions.</p>
-            </article>
             
-            <article className="footer-section">
-              <h3>Quick Links</h3>
-              <ul>
-                <li><a href="#">Find Facilities</a></li>
-                <li><a href="#">Book Now</a></li>
-                <li><a href="#">Community</a></li>
-                <li><a href="#">Support</a></li>
-              </ul>
-            </article>
-            
-            <article className="footer-section">
-              <h3>Contact</h3>
-              <address>
-                <p>Email: help@facilitypro.com</p>
-              </address>
-              <nav className="social-links">
-                <a href="#" aria-label="Facebook">📘</a>
-                <a href="#" aria-label="Twitter">🐦</a>
-                <a href="#" aria-label="Instagram">📷</a>
-                <a href="#" aria-label="LinkedIn">💼</a>
-              </nav>
-            </article>
-          </section>
           
-          <footer className="footer-bottom">
-            <p>&copy; 2025 Facility Pro. All rights reserved.</p>
-          </footer>
-        </section>
+      <footer className="footer-bottom">
+        <p>&copy; 2025 Facility Pro. All rights reserved.</p>
       </footer>
     </main>
   );

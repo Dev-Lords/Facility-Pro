@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import LandingPage from "./components/LandingPage";
 import LoginPage from "./components/LoginPage.jsx";
 import SignupPage from "./components/SignupPage.jsx";
+import Terms from "./components/Terms.jsx";
 import ResidentDashboard from "./components/resident/ResidentDashboard.jsx"; //
 import AdminDashboard from "./components/admin/AdminDashboard.jsx";
 import FacilityStaffDashboard from "./components/staff/FacilityStaffDashboard.jsx";
@@ -51,7 +52,7 @@ function App() {
         <Route path="/reports" element={<ReportsDashboard />} />
         <Route path="/upcoming-events" element={< Events/>} />
         <Route path="/maintenance-reports" element={<MaintenanceReportPage />} />
-
+         <Route path="/terms" element={<Terms />} />
         <Route path="/custom-reports" element={<CustomView />} />
 
       </Routes>
