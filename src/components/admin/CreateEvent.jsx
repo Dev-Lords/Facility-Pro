@@ -369,7 +369,7 @@ const checkForOverlap = async (newEvent) => {
           <article className="popup-content error-content">
             <h3>⚠️ Unable to Create Event</h3>
             <p>{errorMessage}</p>
-            <div className="popup-actions">
+            <footer className="popup-actions">
               <button 
                 className="popup-button primary"
                 onClick={() => {
@@ -379,7 +379,7 @@ const checkForOverlap = async (newEvent) => {
               >
                 OK, I'll Fix It
               </button>
-            </div>
+            </footer>
           </article>
         </dialog>
       )}
@@ -391,7 +391,7 @@ const checkForOverlap = async (newEvent) => {
           <article className="popup-content success-content">
             <h3>✅ Event Created Successfully!</h3>
             <p>The event has been added to the calendar and is now visible to community members.</p>
-            <div className="popup-actions">
+            <footer className="popup-actions">
               <button 
                 className="popup-button primary"
                 onClick={() => {
@@ -409,7 +409,7 @@ const checkForOverlap = async (newEvent) => {
               >
                 Create Another Event
               </button>
-            </div>
+            </footer>
           </article>
         </dialog>
       )}

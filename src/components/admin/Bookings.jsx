@@ -3,7 +3,7 @@ import { fetchBookings, updateBooking } from "../../../backend/services/bookingS
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { fetchUser } from "../../../backend/services/userServices.js";
-import { Filter, Search, ChevronDown,X } from "lucide-react";
+import { Filter, Search, ChevronDown, X } from "lucide-react";
 import "./Bookings.css";
 
 const BookingsPage = () => {
@@ -23,8 +23,7 @@ const BookingsPage = () => {
     navigate(path);
   };
 
-
-//FETCHING ALL BOOKINGS IN ORDER TO REVIEW THEM
+  //FETCHING ALL BOOKINGS IN ORDER TO REVIEW THEM
   useEffect(() => {
     const getBookings = async () => {
       try {
@@ -56,22 +55,19 @@ const BookingsPage = () => {
     getBookings();
   }, []);
 
+  //Pagination improvements for smoother UI experience
+  useEffect(() => {
+    const tableTop = document.querySelector(".bookings-table-container");
+    if (tableTop && typeof tableTop.scrollIntoView === "function") {
+      tableTop.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [currentPage]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterType]);
 
-//Pagination improvements for smoother UI experience
-useEffect(() => {
-  const tableTop = document.querySelector(".bookings-table-container");
-  if (tableTop && typeof tableTop.scrollIntoView === "function") {
-    tableTop.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-}, [currentPage]);
-
-useEffect(() => {
-  setCurrentPage(1);
-}, [searchTerm, filterType]);
-
-
-//FILTERING AND SEARCHING THROUGH BOOKINGS
+  //FILTERING AND SEARCHING THROUGH BOOKINGS
   const filteredBookings = bookings.filter((booking) => {
     const user = users[booking.userID];
     const displayName = user?.displayName || "";
@@ -89,15 +85,12 @@ useEffect(() => {
     setIsFilterOpen(!isFilterOpen);
   };
   
-
-//EDIT BOOKING POP-UP SETTINGS
+  //EDIT BOOKING POP-UP SETTINGS
   const openEditModal = (booking) => {
     setEditBooking(booking);
-    //setNewBookingStatus(booking.status || "");
   };
 
-
-//HANDLE CHANGE OF BOOKING STATUS
+  //HANDLE CHANGE OF BOOKING STATUS
   const handleStatusChange = async (booking, newStatus) => {
     if (!editBooking) return;
 
@@ -107,44 +100,43 @@ useEffect(() => {
         return;
       }
 
-        setBookings(prevBookings =>
-          prevBookings.map(b =>
-            b.bookingID === booking.bookingID ? { ...b, status: newStatus } : b
-          )
-       );
+      setBookings(prevBookings =>
+        prevBookings.map(b =>
+          b.bookingID === booking.bookingID ? { ...b, status: newStatus } : b
+        )
+      );
 
-        setIsProcessing(true);
-        const { success } = await updateBooking(booking.bookingID, newStatus);
-    
-        if (success) {
-          toast.success(`${newStatus} booking successfully!`);
-        } else {
-          toast.error("Failed to update booking status.");
-        }
-        setEditBooking(null);
-      } catch (error) {
+      setIsProcessing(true);
+      const { success } = await updateBooking(booking.bookingID, newStatus);
+  
+      if (success) {
+        toast.success(`${newStatus} booking successfully!`);
+      } else {
         toast.error("Failed to update booking status.");
-      } finally {
-        setIsProcessing(false);
       }
-    };
+      setEditBooking(null);
+    } catch (error) {
+      toast.error("Failed to update booking status.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
-
-//PAGINATION IMPLEMENTATION FOR BETTER UI
+  //PAGINATION IMPLEMENTATION FOR BETTER UI
   const indexOfLastBooking = currentPage * bookingsPerPage;
   const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
   const currentBookings = filteredBookings.slice(indexOfFirstBooking, indexOfLastBooking);
   const totalPages = Math.ceil(filteredBookings.length / bookingsPerPage);
 
-//TIMESLOTS FUNCTION FOR BETTER UI
+  //TIMESLOTS FUNCTION FOR BETTER UI
   const formatTimeslots = (slots) => {
     return slots.map((slot, i) => {
       const startHour = slot;
       const endHour = slot + 1;
       const startTime = startHour > 12 ? `${startHour - 12}pm` : `${startHour}am`;
       const endTime = endHour > 12 ? `${endHour - 12}pm` : `${endHour}am`;
-    return `• ${startTime}-${endTime}${i < slots.length - 1 ? '  ' : ''}`;
-   }).join('');
+      return `• ${startTime}-${endTime}${i < slots.length - 1 ? '  ' : ''}`;
+    }).join('');
   };
 
   return (
@@ -154,16 +146,15 @@ useEffect(() => {
         <p className="bookings-subtitle">Approve and Decline bookings!</p>
       </header>
 
-       {/* Breadcrumb */}
+      {/* Breadcrumb */}
       <nav className="breadcrumb-nav">
         <button 
           onClick={() => handleNavigate('/admin-home')} 
           className="breadcrumb-link"
         >
-          <span className="home-icon">🏠</span> Dashboard
+          <i className="home-icon">🏠</i> Dashboard
         </button>
-        <span className="separator">/</span>
-        
+        <strong className="separator">/</strong>
       </nav>
 
       <form className="search-filter-container" onSubmit={(e) => e.preventDefault()}>
@@ -221,16 +212,16 @@ useEffect(() => {
           </thead>
           <tbody>
             {isLoading ? (
-            <tr>
-               <td colSpan="6" className="loading-cell">
-                <section className="spinner-container">
-                  <svg className="spinner" viewBox="0 0 50 50">
-                  <circle className="spinner-ring" cx="25" cy="25" r="20" />
-                  </svg>
-                  <p>Loading bookings...</p>
-                </section>
-               </td>
-            </tr>
+              <tr>
+                <td colSpan="6" className="loading-cell">
+                  <section className="spinner-container">
+                    <svg className="spinner" viewBox="0 0 50 50">
+                      <circle className="spinner-ring" cx="25" cy="25" r="20" />
+                    </svg>
+                    <p>Loading bookings...</p>
+                  </section>
+                </td>
+              </tr>
             ) : currentBookings.length === 0 ? (
               <tr>
                 <td colSpan="6" className="loading-cell">
@@ -241,9 +232,13 @@ useEffect(() => {
               currentBookings.map((booking, index) => (
                 <tr key={booking.bookingID || `booking-${index}`}>
                   <td>{users[booking.userID]?.displayName || booking.userID}</td>
-                  <td>{booking.date}</td>
+                  <td>
+                    <time dateTime={booking.date}>{booking.date}</time>
+                  </td>
                   <td>{booking.facilityID.charAt(0).toUpperCase() + booking.facilityID.slice(1)}</td>
-                  <td className="timeslot-cell">{formatTimeslots(booking.bookedSlots)}</td>
+                  <td className="timeslot-cell">
+                    <small>{formatTimeslots(booking.bookedSlots)}</small>
+                  </td>
                   <td className="action-cell">
                     {/* Pending Button */}
                     {booking.status === "pending" && (
@@ -251,7 +246,8 @@ useEffect(() => {
                         className="pending-button"
                         onClick={() => openEditModal(booking)}
                         disabled={isProcessing}
-                      >Pending
+                      >
+                        Pending
                       </button>
                     )}
 
@@ -259,7 +255,9 @@ useEffect(() => {
                     {booking.status === "declined" && (
                       <button
                         className="decline-button"
-                      >{booking.status} 
+                        disabled
+                      >
+                        {booking.status}
                       </button>
                     )}
 
@@ -267,7 +265,9 @@ useEffect(() => {
                     {booking.status === "approved" && (
                       <button
                         className="approve-button"
-                      >{booking.status} 
+                        disabled
+                      >
+                        {booking.status}
                       </button>
                     )}
                   </td>
@@ -278,28 +278,46 @@ useEffect(() => {
         </table>
       </section>
 
-{/* Edit booking popup */}
+      {/* Edit booking popup */}
       {editBooking && (
-        <section className="modal-overlay">
-          <section className="modal-box edit-modal-box">
+        <section className="modal-overlay" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+          <article className="modal-box edit-modal-box">
             <button
               className="close-popup-btn"
               onClick={() => setEditBooking(null)}
-              ><X size={18} />
+              aria-label="Close modal"
+            >
+              <X size={18} />
             </button>
 
-            <h4> Review Booking!</h4>
-            <p>Name: {users[editBooking.userID]?.displayName || editBooking.userID} </p>
-            <p>Date: {editBooking.date}</p>
-            <p>Facility: {editBooking.facilityID.charAt(0).toUpperCase() + editBooking.facilityID.slice(1)}</p>
-            <p>Timeslots: {formatTimeslots(editBooking.bookedSlots)} </p>
+            <header>
+              <h4 id="modal-title">Review Booking!</h4>
+            </header>
+            
+            <dl className="booking-details">
+              <dt>Name:</dt>
+              <dd>{users[editBooking.userID]?.displayName || editBooking.userID}</dd>
+              
+              <dt>Date:</dt>
+              <dd>
+                <time dateTime={editBooking.date}>{editBooking.date}</time>
+              </dd>
+              
+              <dt>Facility:</dt>
+              <dd>{editBooking.facilityID.charAt(0).toUpperCase() + editBooking.facilityID.slice(1)}</dd>
+              
+              <dt>Timeslots:</dt>
+              <dd>
+                <small>{formatTimeslots(editBooking.bookedSlots)}</small>
+              </dd>
+            </dl>
 
-            <section className="modal-buttons">
+            <footer className="modal-buttons">
               <button
                 className="approve-button"
                 onClick={() => handleStatusChange(editBooking, "approved")}
                 disabled={isProcessing}
-                >
+              >
                 Approve
               </button>
               
@@ -307,48 +325,50 @@ useEffect(() => {
                 className="decline-button"
                 onClick={() => handleStatusChange(editBooking, "declined")}
                 disabled={isProcessing}
-                >
+              >
                 Decline
               </button>
-            </section>
-          </section>
+            </footer>
+          </article>
         </section>
       )}
 
-{/* Pagination */}
-      <nav aria-label="Users pagination">
+      {/* Pagination */}
+      <nav aria-label="Bookings pagination">
         <ul className="pagination-list">
           <li>
-          <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            >Previous
-          </button>
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
           </li>
           {Array.from({ length: totalPages }, (_, i) => (
             <li key={i}>
-            <button
-              onClick={() => setCurrentPage(i + 1)}
-              className={currentPage === i + 1 ? "active-page" : ""}
-              >{i + 1}
-            </button>
+              <button
+                onClick={() => setCurrentPage(i + 1)}
+                className={currentPage === i + 1 ? "active-page" : ""}
+                aria-current={currentPage === i + 1 ? "page" : undefined}
+              >
+                {i + 1}
+              </button>
             </li>
-            ))}
+          ))}
           <li>
             <button
               onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
-            >Next
+            >
+              Next
             </button>
           </li>
         </ul>
       </nav>
 
-
       <footer className="footer">
         <p>Facility Management System • Admin services • Version 1.0.4</p>
       </footer>
-
     </main>
   );
 };

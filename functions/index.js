@@ -417,7 +417,7 @@ app.delete('/delete-account/:uid',async(req,res)=>{
 })
 
 
-//Updating a user (Patch-changing only an attribute)
+
 app.patch('/update-user-type', async (req, res) => {
   const { uid, newType } = req.body;
 
@@ -442,72 +442,125 @@ app.patch('/update-user-type', async (req, res) => {
 });
 
 
-//Save user information in order to determine user role
-app.post("/save-user", async (req, res) => {
+//User self account creation
+class User {
+  constructor(userData) {
+    this.uid = userData.uid || null;
+    this.email = userData.email || null;
+    this.displayName = userData.displayName || null;
+    this.photoURL = userData.photoURL || null;
+    this.phoneNumber = userData.phoneNumber || null;
+    this.providerId = userData.providerId || null;
+    this.emailVerified = userData.emailVerified || false;
+    this.user_type = userData.user_type || "resident";
+    this.createdAt = userData.createdAt || new Date().toISOString();
+  }
+
+  toJSON() {
+    return {
+      uid: this.uid,
+      email: this.email,
+      displayName: this.displayName,
+      photoURL: this.photoURL,
+      phoneNumber: this.phoneNumber,
+      providerId: this.providerId,
+      emailVerified: this.emailVerified,
+      user_type: this.user_type,
+      createdAt: this.createdAt
+    };
+  }
+
+  // Validation method
+  validate() {
+    const errors = [];
+    
+    if (!this.uid) {
+      errors.push('UID is required');
+    }
+    
+    if (!this.email) {
+      errors.push('Email is required');
+    } else if (!/\S+@\S+\.\S+/.test(this.email)) {
+      errors.push('Email format is invalid');
+    }
+    
+    if (this.user_type && !['resident', 'admin', 'staff'].includes(this.user_type)) {
+      errors.push('Invalid user type. Must be resident, admin, or staff');
+    }
+    
+    return {
+      isValid: errors.length === 0,
+      errors: errors
+    };
+  }
+}
+
+app.post('/saveUser', async (req, res) => {
   try {
     const userData = req.body;
-    if (!userData.uid) return res.status(400).json({ error: "Missing UID" });
+    
+  
+    const user = new User(userData);
+  
+    const validation = user.validate();
+    if (!validation.isValid) {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: validation.errors
+      });
+    }
 
-    const userRef = db.collection("users").doc(userData.uid);
-    await userRef.set(
-      {
-        ...userData,
-        updatedAt: new Date().toISOString(),
-      },
-      { merge: true }
-    );
+   
+    const userRef = db.collection('users').doc(user.uid);
 
-    res.status(200).json({ message: "User saved", user: userData });
+  
+    const userDataToSave = {
+      ...user.toJSON(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    };
+
+  
+    await userRef.set(userDataToSave, { merge: true });
+
+  
+    res.status(200).json({
+      success: true,
+      message: 'User saved successfully',
+      user: user.toJSON()
+    });
+
   } catch (error) {
-    console.error("Error saving user:", error);
-    res.status(500).json({ error: "Failed to save user" });
+    console.error('Error saving user:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to save user',
+      details: error.message
+    });
   }
 });
 
+//Fetch all user's bookings
+app.get('/get-user-bookings', async (req, res) => {
+  const uid = req.query.uid;
 
-//Get user by the id
-app.get("/get-user/:uid", async (req, res) => {
-  try {
-    const uid = req.params.uid;
-    const docRef = db.collection("users").doc(uid);
-    const docSnap = await docRef.get();
-
-    if (!docSnap.exists) return res.status(404).json({ error: "User not found" });
-
-    res.status(200).json(docSnap.data());
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).json({ error: "Failed to get user" });
+  if (!uid) {
+    return res.status(400).json({ error: 'Missing uid query parameter' });
   }
-});
 
-
-//Get a user role using the user id
-app.get("/get-user-type/:uid", async (req, res) => {
   try {
-    const uid = req.params.uid;
-    const docSnap = await db.collection("users").doc(uid).get();
+    const bookingsCollection = admin.firestore().collection("bookings");
+    const querySnapshot = await bookingsCollection.where("userID", "==", uid).get();
 
-    if (!docSnap.exists) return res.status(404).json({ error: "User not found" });
+    const userBookings = querySnapshot.docs.map(doc => ({
+      bookingID: doc.id,
+      ...doc.data()
+    }));
 
-    const data = docSnap.data();
-    res.status(200).json({ user_type: data.user_type || null });
+    res.status(200).json(userBookings);
   } catch (error) {
-    console.error("Error getting user type:", error);
-    res.status(500).json({ error: "Failed to get user type" });
-  }
-});
-
-
-//Check if the user exists
-app.get("/user-exists/:uid", async (req, res) => {
-  try {
-    const uid = req.params.uid;
-    const docSnap = await db.collection("users").doc(uid).get();
-    res.status(200).json({ exists: docSnap.exists });
-  } catch (error) {
-    console.error("Error checking user existence:", error);
-    res.status(500).json({ error: "Failed to check user existence" });
+    console.error("Error fetching user bookings:", error);
+    res.status(500).json({ error: 'Failed to fetch user bookings' });
   }
 });
 
@@ -557,21 +610,7 @@ app.patch('/update-booking-status', async (req, res) => {
     res.status(500).json({ error: 'Failed to update booking status' });
   }
 });
-exports.deleteRejectedBooking = onDocumentUpdated("bookings/{bookingID}", async (event) => {
-  const before = event.data.before.data();
-  const after = event.data.after.data();
 
-  if (before.status !== 'rejected' && after.status === 'rejected') {
-    const bookingID = event.params.bookingID;
-
-    try {
-      await db.collection('bookings').doc(bookingID).delete();
-      console.log(`Booking ${bookingID} deleted because status changed to rejected.`);
-    } catch (error) {
-      console.error(`Error deleting booking ${bookingID}:`, error);
-    }
-  }
-});
 
 
 //EVENTS CLOUD FUNCTIONS:

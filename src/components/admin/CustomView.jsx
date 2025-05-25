@@ -294,21 +294,22 @@ const CustomView = () => {
   // Breadcrumb Navigation
   const BreadcrumbNav = () => (
     <nav className="breadcrumb-nav">
+      
       <button 
         onClick={() => handleNavigate('/admin-home')} 
         className="breadcrumb-link"
       >
         <Home size={16} className="home-icon" />
-        <span>Dashboard</span>
+        <strong>Dashboard</strong>
       </button>
-      <span className="separator">/</span>
+      <strong className="separator">/</strong>
       <button
         className="breadcrumb-link"
         onClick={() => handleNavigate('/reports')}>
-      <span className="current-page">Custom Reports</span>
+      <strong className="current-page">Custom Reports</strong>
       </button>
-            <span className="separator">/</span>
-      <span className="current-page">{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</span>
+            <strong className="separator">/</strong>
+      <strong className="current-page">{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</strong>
     </nav>
   );
 

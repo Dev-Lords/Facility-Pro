@@ -284,7 +284,16 @@
 <a name='L219'></a><a href='#L219'>219</a>
 <a name='L220'></a><a href='#L220'>220</a>
 <a name='L221'></a><a href='#L221'>221</a>
-<a name='L222'></a><a href='#L222'>222</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L222'></a><a href='#L222'>222</a>
+<a name='L223'></a><a href='#L223'>223</a>
+<a name='L224'></a><a href='#L224'>224</a>
+<a name='L225'></a><a href='#L225'>225</a>
+<a name='L226'></a><a href='#L226'>226</a>
+<a name='L227'></a><a href='#L227'>227</a>
+<a name='L228'></a><a href='#L228'>228</a>
+<a name='L229'></a><a href='#L229'>229</a>
+<a name='L230'></a><a href='#L230'>230</a>
+<a name='L231'></a><a href='#L231'>231</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -495,6 +504,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -592,7 +610,7 @@ const IssueHistory = () =&gt; {
     &lt;main className="issue-history-page"&gt;
       {/* Header Banner */}
 &nbsp;
-      {error &amp;&amp; &lt;div role="alert" className="error-message"&gt;{error}&lt;/div&gt;}
+      {error &amp;&amp; &lt;output role="alert" className="error-message"&gt;{error}&lt;/output&gt;}
 &nbsp;
       &lt;header className="dashboard-header"&gt;
         
@@ -605,15 +623,15 @@ const IssueHistory = () =&gt; {
                       &lt;/nav&gt;
                     )}
                   &lt;/section&gt;
-        &lt;div className="banner-content"&gt;
-          &lt;div className="icon-container"&gt;
-            &lt;div className="home-icon"&gt;&lt;FaWrench/&gt;&lt;/div&gt;
-          &lt;/div&gt;
-          &lt;div className="banner-text"&gt;
+        &lt;section className="banner-content"&gt;
+          &lt;figure className="icon-container"&gt;
+            &lt;i className="home-icon"&gt;&lt;FaWrench/&gt;&lt;/i&gt;
+          &lt;/figure&gt;
+          &lt;hgroup className="banner-text"&gt;
             &lt;h1&gt;Issue History&lt;/h1&gt;
             &lt;p&gt;View and manage your maintenance requests&lt;/p&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
+          &lt;/hgroup&gt;
+        &lt;/section&gt;
       &lt;/header&gt;
 &nbsp;
    {/* Breadcrumb */}
@@ -622,24 +640,24 @@ const IssueHistory = () =&gt; {
           onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/resident-home')} </span>
           className="breadcrumb-link"
         &gt;
-          &lt;span className="home-icon"&gt;&lt;FaHome/&gt;&lt;/span&gt; Dashboard
+          &lt;i className="home-icon"&gt;&lt;FaHome/&gt;&lt;/i&gt; Dashboard
         &lt;/button&gt;
-        &lt;span className="separator"&gt;/&lt;/span&gt;
+        &lt;strong className="separator"&gt;/&lt;/strong&gt;
         &lt;button
         className='breadcrumb-link'
           onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleNavigate('/issue-menu')}</span>&gt;
-        &lt;span className="current-page"&gt;&lt;/span&gt; Report Issue
+        &lt;i className="current-page"&gt;&lt;/i&gt; Report Issue
         &lt;/button&gt;
       &lt;/nav&gt;
    
 &nbsp;
       {/* Main Content */}
-      &lt;div className="main-content"&gt;
+      &lt;section className="main-content"&gt;
         {/* Filter Controls */}
         &lt;section className="filter-section"&gt;
-          &lt;div className="filter-container"&gt;
+          &lt;header className="filter-container"&gt;
             &lt;h2 className="section-title"&gt;Your Issues&lt;/h2&gt;
-            &lt;div className="filter-controls"&gt;
+            &lt;fieldset className="filter-controls"&gt;
               &lt;label htmlFor="status-filter"&gt;Filter by status:&lt;/label&gt;
               &lt;select 
                 id="status-filter" 
@@ -652,22 +670,22 @@ const IssueHistory = () =&gt; {
                 &lt;option value="in-progress"&gt;In Progress&lt;/option&gt;
                 &lt;option value="resolved"&gt;Resolved&lt;/option&gt;
               &lt;/select&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
+            &lt;/fieldset&gt;
+          &lt;/header&gt;
         &lt;/section&gt;
 &nbsp;
         {/* Issues List */}
         &lt;section className="issues-section"&gt;
           {loading ? (
-            &lt;div className="loading-container"&gt;
-              &lt;div className="loading-spinner"&gt;&lt;/div&gt;
+            &lt;aside className="loading-container"&gt;
+              &lt;figure className="loading-spinner"&gt;&lt;/figure&gt;
               &lt;p className="loading-text"&gt;Loading issues...&lt;/p&gt;
-            &lt;/div&gt;
+            &lt;/aside&gt;
           ) : filteredIssues.length === 0 ? (
-            &lt;div className="no-issues-container"&gt;
-              &lt;div className="info-icon"&gt;ℹ️&lt;/div&gt;
+            &lt;aside className="no-issues-container"&gt;
+              &lt;i className="info-icon"&gt;ℹ️&lt;/i&gt;
               &lt;p className="no-issues-text"&gt;No issues found with the selected status.&lt;/p&gt;
-            &lt;/div&gt;
+            &lt;/aside&gt;
           ) : (
             &lt;ul className="issues-list"&gt;
               {filteredIssues.map((issue) =&gt; (
@@ -675,35 +693,44 @@ const IssueHistory = () =&gt; {
                   &lt;article className="issue-content"&gt;
                     &lt;header className="issue-header"&gt;
                       &lt;h3 className="issue-title"&gt;{issue.issueTitle}&lt;/h3&gt;
-                      &lt;span className={`issue-status ${getStatusClass(issue.issueStatus)}`}&gt;
+                      &lt;mark className={`issue-status ${getStatusClass(issue.issueStatus)}`}&gt;
                         {issue.issueStatus.replace('-', ' ')}
-                      &lt;/span&gt;
+                      &lt;/mark&gt;
                     &lt;/header&gt;
                     
-                    &lt;div className="issue-meta"&gt;
-                      &lt;span className="issue-category"&gt;{issue.category}&lt;/span&gt;
-                      &lt;span className="issue-date"&gt;{formatDate(issue.reportedAt)}&lt;/span&gt;
-                    &lt;/div&gt;
+                    &lt;section className="issue-meta"&gt;
+                      &lt;small className="issue-category"&gt;{issue.category}&lt;/small&gt;
+                      &lt;time className="issue-date" dateTime={issue.reportedAt}&gt;
+                        {formatDate(issue.reportedAt)}
+                      &lt;/time&gt;
+                    &lt;/section&gt;
                     
                     &lt;p className="issue-description"&gt;{issue.issueDescription}&lt;/p&gt;
                     
-                    &lt;div className="issue-details"&gt;
-                      &lt;div className="issue-location"&gt;
-                        &lt;strong&gt;Location:&lt;/strong&gt; {issue.location}
-                      &lt;/div&gt;
+                    &lt;dl className="issue-details"&gt;
+                      &lt;dt className="issue-location"&gt;
+                        &lt;strong&gt;Location:&lt;/strong&gt;
+                      &lt;/dt&gt;
+                      &lt;dd&gt;{issue.location}&lt;/dd&gt;
                       
                       {issue.assignedTo &amp;&amp; (
-                        &lt;div className="issue-assigned"&gt;
-                          &lt;strong&gt;Assigned to:&lt;/strong&gt; {issue.assignedTo}
-                        &lt;/div&gt;
+                        &lt;&gt;
+                          &lt;dt className="issue-assigned"&gt;
+                            &lt;strong&gt;Assigned to:&lt;/strong&gt;
+                          &lt;/dt&gt;
+                          &lt;dd&gt;{issue.assignedTo}&lt;/dd&gt;
+                        &lt;/&gt;
                       )}
                       
                       {issue.feedback &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >                        &lt;div className="issue-feedback"&gt;</span>
-                          &lt;strong&gt;Feedback:&lt;/strong&gt; {issue.feedback}
-                        &lt;/div&gt;
+<span class="branch-1 cbranch-no" title="branch not covered" >                        &lt;&gt;</span>
+                          &lt;dt className="issue-feedback"&gt;
+                            &lt;strong&gt;Feedback:&lt;/strong&gt;
+                          &lt;/dt&gt;
+                          &lt;dd&gt;{issue.feedback}&lt;/dd&gt;
+                        &lt;/&gt;
                       )}
-                    &lt;/div&gt;
+                    &lt;/dl&gt;
                   &lt;/article&gt;
                 &lt;/li&gt;
               ))}
@@ -712,7 +739,7 @@ const IssueHistory = () =&gt; {
         &lt;/section&gt;
 &nbsp;
         {/* Action Button */}
-        &lt;div className="action-container"&gt;
+        &lt;footer className="action-container"&gt;
           &lt;button 
             type="button"
             className="btn btn-issues"
@@ -720,8 +747,8 @@ const IssueHistory = () =&gt; {
           &gt;
             Log New Issue
           &lt;/button&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
+        &lt;/footer&gt;
+      &lt;/section&gt;
     &lt;/main&gt;
   );
 };
@@ -733,7 +760,7 @@ export default IssueHistory;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-25T14:35:20.345Z
+                at 2025-05-25T17:03:02.207Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

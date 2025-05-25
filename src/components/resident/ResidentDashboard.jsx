@@ -61,11 +61,19 @@ export default function ResidentPortal() {
         </article>
         <article className="card card-issues">
           <section className="card-icon"><FaExclamationTriangle/></section>
+          <h2>My Bookings</h2>
+          <p>Check the status of the bookings you've made</p>
+          <button onClick={() => navigate("/view-bookings")} className="btn btn-issues">View Bookings</button>
+
+        </article>
+        <article className="card card-issues">
+          <section className="card-icon"><FaExclamationTriangle/></section>
           <h2>Report Issues</h2>
           <p>Submit maintenance requests or report problems in common areas.</p>
           <button onClick={() => navigate("/issue-menu")} className="btn btn-issues">Report Problem</button>
 
         </article>
+        
       </section>
 
       <footer className="footer">

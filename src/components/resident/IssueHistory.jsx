@@ -85,7 +85,7 @@ const IssueHistory = () => {
     <main className="issue-history-page">
       {/* Header Banner */}
 
-      {error && <div role="alert" className="error-message">{error}</div>}
+      {error && <output role="alert" className="error-message">{error}</output>}
 
       <header className="dashboard-header">
         
@@ -98,15 +98,15 @@ const IssueHistory = () => {
                       </nav>
                     )}
                   </section>
-        <div className="banner-content">
-          <div className="icon-container">
-            <div className="home-icon"><FaWrench/></div>
-          </div>
-          <div className="banner-text">
+        <section className="banner-content">
+          <figure className="icon-container">
+            <i className="home-icon"><FaWrench/></i>
+          </figure>
+          <hgroup className="banner-text">
             <h1>Issue History</h1>
             <p>View and manage your maintenance requests</p>
-          </div>
-        </div>
+          </hgroup>
+        </section>
       </header>
 
    {/* Breadcrumb */}
@@ -115,24 +115,24 @@ const IssueHistory = () => {
           onClick={() => handleNavigate('/resident-home')} 
           className="breadcrumb-link"
         >
-          <span className="home-icon"><FaHome/></span> Dashboard
+          <i className="home-icon"><FaHome/></i> Dashboard
         </button>
-        <span className="separator">/</span>
+        <strong className="separator">/</strong>
         <button
         className='breadcrumb-link'
           onClick={() => handleNavigate('/issue-menu')}>
-        <span className="current-page"></span> Report Issue
+        <i className="current-page"></i> Report Issue
         </button>
       </nav>
    
 
       {/* Main Content */}
-      <div className="main-content">
+      <section className="main-content">
         {/* Filter Controls */}
         <section className="filter-section">
-          <div className="filter-container">
+          <header className="filter-container">
             <h2 className="section-title">Your Issues</h2>
-            <div className="filter-controls">
+            <fieldset className="filter-controls">
               <label htmlFor="status-filter">Filter by status:</label>
               <select 
                 id="status-filter" 
@@ -145,22 +145,22 @@ const IssueHistory = () => {
                 <option value="in-progress">In Progress</option>
                 <option value="resolved">Resolved</option>
               </select>
-            </div>
-          </div>
+            </fieldset>
+          </header>
         </section>
 
         {/* Issues List */}
         <section className="issues-section">
           {loading ? (
-            <div className="loading-container">
-              <div className="loading-spinner"></div>
+            <aside className="loading-container">
+              <figure className="loading-spinner"></figure>
               <p className="loading-text">Loading issues...</p>
-            </div>
+            </aside>
           ) : filteredIssues.length === 0 ? (
-            <div className="no-issues-container">
-              <div className="info-icon">ℹ️</div>
+            <aside className="no-issues-container">
+              <i className="info-icon">ℹ️</i>
               <p className="no-issues-text">No issues found with the selected status.</p>
-            </div>
+            </aside>
           ) : (
             <ul className="issues-list">
               {filteredIssues.map((issue) => (
@@ -168,35 +168,44 @@ const IssueHistory = () => {
                   <article className="issue-content">
                     <header className="issue-header">
                       <h3 className="issue-title">{issue.issueTitle}</h3>
-                      <span className={`issue-status ${getStatusClass(issue.issueStatus)}`}>
+                      <mark className={`issue-status ${getStatusClass(issue.issueStatus)}`}>
                         {issue.issueStatus.replace('-', ' ')}
-                      </span>
+                      </mark>
                     </header>
                     
-                    <div className="issue-meta">
-                      <span className="issue-category">{issue.category}</span>
-                      <span className="issue-date">{formatDate(issue.reportedAt)}</span>
-                    </div>
+                    <section className="issue-meta">
+                      <small className="issue-category">{issue.category}</small>
+                      <time className="issue-date" dateTime={issue.reportedAt}>
+                        {formatDate(issue.reportedAt)}
+                      </time>
+                    </section>
                     
                     <p className="issue-description">{issue.issueDescription}</p>
                     
-                    <div className="issue-details">
-                      <div className="issue-location">
-                        <strong>Location:</strong> {issue.location}
-                      </div>
+                    <dl className="issue-details">
+                      <dt className="issue-location">
+                        <strong>Location:</strong>
+                      </dt>
+                      <dd>{issue.location}</dd>
                       
                       {issue.assignedTo && (
-                        <div className="issue-assigned">
-                          <strong>Assigned to:</strong> {issue.assignedTo}
-                        </div>
+                        <>
+                          <dt className="issue-assigned">
+                            <strong>Assigned to:</strong>
+                          </dt>
+                          <dd>{issue.assignedTo}</dd>
+                        </>
                       )}
                       
                       {issue.feedback && (
-                        <div className="issue-feedback">
-                          <strong>Feedback:</strong> {issue.feedback}
-                        </div>
+                        <>
+                          <dt className="issue-feedback">
+                            <strong>Feedback:</strong>
+                          </dt>
+                          <dd>{issue.feedback}</dd>
+                        </>
                       )}
-                    </div>
+                    </dl>
                   </article>
                 </li>
               ))}
@@ -205,7 +214,7 @@ const IssueHistory = () => {
         </section>
 
         {/* Action Button */}
-        <div className="action-container">
+        <footer className="action-container">
           <button 
             type="button"
             className="btn btn-issues"
@@ -213,8 +222,8 @@ const IssueHistory = () => {
           >
             Log New Issue
           </button>
-        </div>
-      </div>
+        </footer>
+      </section>
     </main>
   );
 };

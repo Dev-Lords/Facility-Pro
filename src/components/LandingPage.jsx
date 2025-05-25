@@ -1,60 +1,49 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Calendar, Users, MapPin, Star, ArrowRight, Play, Award, Clock } from 'lucide-react';
+import { Calendar, Users,  Star, ArrowRight, Play, Award,  } from 'lucide-react';
 import "./LandingPage.css";
 
 import basketballImage from '../assets/polish/basketball_court.jpg';
 import swimmingImage from '../assets/polish/Swimming_pools.jpg';
 import tennisImage from '../assets/polish/Tennis_Courts.jpg';
 import soccerImage from '../assets/polish/Soccer_field.jpg';
-import trackImage from '../assets/polish/Running_track.jpg';
 import gymnasticsImage from '../assets/polish/Gymnastics.png';
-import danceImage from '../assets/polish/Dance_studio.jpg';
+
 
 const facilityData = [
   { 
     name: "Basketball Courts", 
     image: basketballImage,
     caption: "Premium indoor courts with professional lighting",
-    stats: "12 courts available"
+    
   },
   { 
     name: "Swimming Pools", 
     image: swimmingImage,
     caption: "Olympic-sized pools for all skill levels",
-    stats: "8 pools • Open year-round"
+  
   },
   { 
     name: "Tennis Courts", 
     image: tennisImage,
     caption: "Hard and clay courts with night lighting",
-    stats: "16 courts • All weather"
+    
   },
   { 
     name: "Soccer Fields", 
     image: soccerImage,
     caption: "Full-size fields with quality turf",
-    stats: "6 fields • FIFA standard"
+    
   },
+  
   { 
-    name: "Running Tracks", 
-    image: trackImage,
-    caption: "400m tracks with timing systems",  
-    stats: "3 tracks • Professional grade"
-  },
-  { 
-    name: "Gymnasiums", 
+    name: "Gymn", 
     image: gymnasticsImage,
     caption: "Multi-purpose halls for various sports",
-    stats: "5 gyms • Full equipment"
+    
   },
-  { 
-    name: "Dance Studios", 
-    image: danceImage,
-    caption: "Mirrored studios with premium sound systems",
-    stats: "4 studios • All styles welcome"
-  }
+  
 ];
 
 const testimonials = [
@@ -79,31 +68,19 @@ const testimonials = [
 ];
 
 const features = [
-  {
-    icon: Calendar,
-    title: "Smart Scheduling",
-    description: "AI-powered booking system that prevents conflicts and optimizes facility usage"
-  },
+ 
   {
     icon: Users,
     title: "Community Management", 
-    description: "Connect players, organize teams, and build lasting sporting communities"
+    description:"Participate in tournaments,competitions and build long lasting sports communities"
   },
-  {
-    icon: MapPin,
-    title: "Location Discovery",
-    description: "Find the perfect venue with detailed maps and facility information"
-  },
+  
   {
     icon: Award,
     title: "Quality Assurance",
     description: "All facilities are verified and rated by our community of users"
   },
-  {
-    icon: Clock,
-    title: "24/7 Availability",
-    description: "Book facilities anytime with instant confirmation and flexible cancellation"
-  },
+  
   {
     icon: Star,
     title: "Premium Experience",
@@ -281,7 +258,6 @@ const LandingPage = () => {
             <ul className="nav-links">
               <li><a href="https://dev-lords.github.io/Facility-Pro/#/">Documentation</a></li>
               <li><a href="#">Terms</a></li>
-              <li><a href="#">Privacy</a></li>
               <li><a href="#">FAQs</a></li>
             </ul>
           </nav>
@@ -376,42 +352,9 @@ const LandingPage = () => {
         </article>
       </section>
 
-      <footer className="footer">
-        <section className="container">
-          <section className="footer-content">
-            <article className="footer-section">
-              <h3>About Facility Pro</h3>
-              <p>Connecting communities through sport with seamless facility management and booking solutions.</p>
-            </article>
-            
-            <article className="footer-section">
-              <h3>Quick Links</h3>
-              <ul>
-                <li><a href="#">Find Facilities</a></li>
-                <li><a href="#">Book Now</a></li>
-                <li><a href="#">Community</a></li>
-                <li><a href="#">Support</a></li>
-              </ul>
-            </article>
-            
-            <article className="footer-section">
-              <h3>Contact</h3>
-              <address>
-                <p>Email: help@facilitypro.com</p>
-              </address>
-              <nav className="social-links">
-                <a href="#" aria-label="Facebook">📘</a>
-                <a href="#" aria-label="Twitter">🐦</a>
-                <a href="#" aria-label="Instagram">📷</a>
-                <a href="#" aria-label="LinkedIn">💼</a>
-              </nav>
-            </article>
-          </section>
           
-          <footer className="footer-bottom">
-            <p>&copy; 2025 Facility Pro. All rights reserved.</p>
-          </footer>
-        </section>
+      <footer className="footer-bottom">
+        <p>&copy; 2025 Facility Pro. All rights reserved.</p>
       </footer>
     </main>
   );

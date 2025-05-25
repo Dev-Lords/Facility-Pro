@@ -244,9 +244,9 @@ const MaintenanceReportPage = () => {
           onClick={() => handleNavigate('/admin-home')} 
           className="breadcrumb-link"
         >
-          <span className="home-icon">🏠</span> Dashboard
+          <i className="home-icon">🏠</i> Dashboard
         </button>
-        <span className="separator">/</span>
+        <strong className="separator">/</strong>
         <button
           className='breadcrumb-link'
           onClick={() => handleNavigate('/Reports')}>

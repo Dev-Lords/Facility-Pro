@@ -267,11 +267,11 @@ const CalendarPage = () => {
           onClick={() => handleNavigate('/resident-home')} 
           className="breadcrumb-link"
         >
-          <span className="home-icon">🏠</span> Dashboard
+          <i className="home-icon">🏠</i> Dashboard
         </button>
-        <span className="separator">/</span>
+        <strong className="separator">/</strong>
         
-        <span className="current-page"></span> Book slots
+        <strong className="current-page"></strong> Book slots
       </nav>
 
       <nav className="month-nav">

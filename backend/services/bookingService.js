@@ -87,17 +87,65 @@ export const createBooking = async (facilityId, selectedDate, slotsToBook, userI
     }
 
     const successResponse = await response.json();
+
+    const urllog = `https://us-central1-facilty-pro.cloudfunctions.net/api/create-log`;
+
+    const logpayload = {
+      eventType: "booking",
+      facilityId: facilityId,
+      eventDocId: successResponse.bookingId,
+      userId: userId,
+      details: payload
+    };
+
+    const logresponse = await fetch(urllog, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(logpayload)
+    });
+
+    if(!logresponse.ok){
+      const errorResponselog = await logresponse.json();
+      console.error("Error response: ", errorResponselog);
+      throw new Error(errorResponselog.error || `HTTP ${logresponse.status}: ${logresponse.statusText}`);
+    }
+
+    console.log("No error for log")
+    const successResponselog = await logresponse.json();
     
     return {
       success: true,
-      data: successResponse
+      data: successResponse,
+      logdata: successResponselog
     };
+
 
   } catch (error) {
     console.error("Error in createBooking:", error);
     throw error; // Re-throw to let caller handle it
   }
 };
+
+export const fetchUserBookings =  async(uid)=> {
+	
+  try {
+    const response = await fetch(`https://us-central1-facilty-pro.cloudfunctions.net/api/get-user-bookings?uid=${uid}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch bookings');
+    }
+
+    const bookings = await response.json();
+    console.log('User bookings:', bookings);
+    return bookings;
+  } catch (error) {
+    console.error('Error fetching user bookings:', error);
+  }
+}
+
+// Example usage
+
 
 //updating booking status
 export const updateBooking = async (bookingID, newStatus) => {

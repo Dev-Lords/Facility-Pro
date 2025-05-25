@@ -41,7 +41,10 @@ const LoginPage = () => {
         } else {
             userData.user_type = "resident";  
         }
-		await saveUser(userData);
+    if( !existingUser){
+      await saveUser(userData);
+    }
+		
 
     const userType = userData.user_type;
 
@@ -69,7 +72,7 @@ const LoginPage = () => {
 		console.error("Error signing in: ", error);
 		}
     
-  }
+  };
 
   const [formData, setFormData] = useState({
     email: "",
@@ -88,7 +91,7 @@ const LoginPage = () => {
       
       const uid = user.uid;
       const User = await fetchUser(uid);
-      const userType = User.user_type
+      const userType = User.user_type;
 
       const token = await user.getIdToken();
       localStorage.setItem('authToken', token);
@@ -154,7 +157,7 @@ const LoginPage = () => {
 
           <button type="submit">Sign In</button>
 
-          <p className="divider"><span>or</span></p>
+          <p className="divider"><strong>or</strong></p>
 
           <button type="button" className="google-btn" onClick={handleSignInWithGoogle}>
             <section className='google-icon'>

@@ -112,13 +112,12 @@ const SignupPage = () => {
             <input
               type="name"
               name="name"
-              placeholder="name"
+              placeholder="Name and Surname"
               value={formData.name}
               onChange={handleChange}
               required
             />
           </label>
-
 
           <label>
           
@@ -156,7 +155,7 @@ const SignupPage = () => {
 
           <button type="submit">Create Account</button>
 
-          <p className="divider"><span>or</span></p>
+          <p className="divider"><strong>or</strong></p>
 
           <button type="button" className="google-btn" onClick={handleSignUpWithGoogle}>
             <section className='google-icon'>
