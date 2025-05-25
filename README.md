@@ -10,11 +10,11 @@ This link can also be found in the submitted documentation in the appropriate se
 
 You may sign up and log in as a resident using google. You may also sign up and log in as a resident using email and password. 
 To use the app as an admin, use the following credentials:
-- email:
-- password:
+- email: markingadmin@gmail.com
+- password: markingadmin
 To use the app as a staff member, use the following credentials:
 - email: markingstaff123@gmail.com
-- password: markingstaff (This password applies to signing into the google account as well as signing into Facility–Pro)
+- password: markingstaff
 
 # RUNNING FACILITY PRO LOCALLY
 
