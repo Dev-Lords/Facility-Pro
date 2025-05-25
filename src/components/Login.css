@@ -1,45 +1,47 @@
 /* ==================== LOGIN PAGE STYLES - MATCHING LANDING PAGE DESIGN ==================== */
 
 :root {
-  /* Enhanced Blue Color Palette - Matching Landing Page */
-  --midnight-blue: #0a0f1c;
-  --deep-navy: #1a237e;
-  --royal-blue: #1565c0;
-  --ocean-blue: #1976d2;
-  --primary-blue: #2196f3;
-  --sky-blue: #42a5f5;
-  --light-blue: #64b5f6;
-  --powder-blue: #90caf9;
-  --ice-blue: #bbdefb;
-  --crystal-blue: #e3f2fd;
+  /* Lighter Blue Color Palette - Brighter and More Vibrant - Matching Landing Page */
+  --deep-navy: #1a202c;
+  --dark-blue: #2d3748;
+  --navy-blue: #4a5568;
+  --slate-blue: #718096;
+  --medium-blue: #a0aec0;
+  --light-slate: #cbd5e0;
+  --powder-blue: #e2e8f0;
+  --ice-blue: #f7fafc;
   
-  /* Accent Blues */
-  --electric-blue: #0066ff;
-  --neon-blue: #0080ff;
-  --cyan-blue: #00bcd4;
-  --teal-blue: #009688;
+  /* Primary Blues - Much Brighter */
+  --electric-blue: #3182ce;
+  --bright-blue: #4299e1;
+  --sky-blue: #63b3ed;
+  --light-blue: #90cdf4;
+  --powder-accent: #bee3f8;
+  --crystal-blue: #ebf8ff;
   
-  /* High Contrast Text Colors */
+  /* Accent Colors - Vibrant */
+  --cyan-blue: #00b4d8;
+  --teal-blue: #0891b2;
+  --neon-blue: #0ea5e9;
+  --azure-blue: #38bdf8;
+  
+  /* Text Colors - Higher contrast on lighter backgrounds */
   --white: #ffffff;
-  --off-white: #fafafa;
-  --light-text: #e8eaf6;
-  --medium-text: #c5cae9;
-  --accent-text: #9fa8da;
+  --off-white: #f8fafc;
+  --dark-text: #2d3748;
+  --medium-text: #4a5568;
+  --light-text: #718096;
+  --accent-text: #a0aec0;
   
-  /* Neutral Supporting Colors */
-  --dark-slate: #263238;
-  --slate-gray: #37474f;
-  --cool-gray: #546e7a;
-  
-  /* Enhanced Gradients */
-  --primary-gradient: linear-gradient(135deg, var(--midnight-blue) 0%, var(--deep-navy) 30%, var(--royal-blue) 60%, var(--ocean-blue) 100%);
-  --hero-gradient: linear-gradient(135deg, var(--midnight-blue) 0%, var(--deep-navy) 25%, var(--royal-blue) 50%, var(--primary-blue) 100%);
-  --card-gradient: linear-gradient(135deg, var(--royal-blue) 0%, var(--ocean-blue) 50%, var(--primary-blue) 100%);
-  --accent-gradient: linear-gradient(90deg, var(--electric-blue) 0%, var(--neon-blue) 100%);
-  --button-gradient: linear-gradient(135deg, var(--electric-blue) 0%, var(--primary-blue) 50%, var(--sky-blue) 100%);
-  --text-gradient: linear-gradient(135deg, var(--white) 0%, var(--light-text) 50%, var(--powder-blue) 100%);
-  --section-gradient: linear-gradient(180deg, var(--deep-navy) 0%, var(--royal-blue) 50%, var(--ocean-blue) 100%);
-  --glass-gradient: linear-gradient(135deg, rgba(26, 35, 126, 0.3) 0%, rgba(25, 118, 210, 0.2) 100%);
+  /* Lighter Gradients */
+  --primary-gradient: linear-gradient(135deg, var(--ice-blue) 0%, var(--powder-blue) 20%, var(--light-slate) 40%, var(--medium-blue) 70%, var(--slate-blue) 100%);
+  --hero-gradient: linear-gradient(135deg, var(--crystal-blue) 0%, var(--powder-accent) 15%, var(--light-blue) 35%, var(--sky-blue) 60%, var(--bright-blue) 100%);
+  --card-gradient: linear-gradient(135deg, var(--white) 0%, var(--ice-blue) 40%, var(--powder-accent) 80%, var(--light-blue) 100%);
+  --accent-gradient: linear-gradient(90deg, var(--electric-blue) 0%, var(--bright-blue) 100%);
+  --button-gradient: linear-gradient(135deg, var(--electric-blue) 0%, var(--bright-blue) 50%, var(--sky-blue) 100%);
+  --text-gradient: linear-gradient(135deg, var(--dark-text) 0%, var(--electric-blue) 50%, var(--bright-blue) 100%);
+  --section-gradient: linear-gradient(180deg, var(--crystal-blue) 0%, var(--powder-blue) 30%, var(--light-slate) 60%, var(--medium-blue) 100%);
+  --glass-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(235, 248, 255, 0.8) 100%);
 }
 
 * {
@@ -71,9 +73,9 @@ body, html {
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(circle at 20% 50%, rgba(0, 102, 255, 0.15) 0%, transparent 70%),
-    radial-gradient(circle at 80% 20%, rgba(33, 150, 243, 0.12) 0%, transparent 60%),
-    radial-gradient(circle at 40% 80%, rgba(0, 188, 212, 0.08) 0%, transparent 50%);
+    radial-gradient(circle at 20% 50%, rgba(49, 130, 206, 0.1) 0%, transparent 70%),
+    radial-gradient(circle at 80% 20%, rgba(66, 153, 225, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 40% 80%, rgba(0, 180, 216, 0.06) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -81,7 +83,7 @@ body, html {
 .brand-section {
   flex: 1;
   background: var(--hero-gradient);
-  color: var(--white);
+  color: var(--dark-text);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -100,8 +102,8 @@ body, html {
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(circle at 30% 40%, rgba(0, 102, 255, 0.1) 0%, transparent 60%),
-    radial-gradient(circle at 70% 60%, rgba(66, 165, 245, 0.08) 0%, transparent 50%);
+    radial-gradient(circle at 30% 40%, rgba(49, 130, 206, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 70% 60%, rgba(99, 179, 237, 0.06) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -112,7 +114,7 @@ body, html {
   right: -10%;
   width: 40%;
   height: 100%;
-  background: linear-gradient(45deg, transparent 40%, rgba(66, 165, 245, 0.05) 50%, transparent 60%);
+  background: linear-gradient(45deg, transparent 40%, rgba(190, 227, 248, 0.1) 50%, transparent 60%);
   transform: rotate(15deg);
   pointer-events: none;
 }
@@ -126,8 +128,8 @@ body, html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 8px 30px rgba(144, 202, 249, 0.3);
-  filter: drop-shadow(0 4px 15px rgba(255, 255, 255, 0.1));
+  text-shadow: 0 8px 30px rgba(49, 130, 206, 0.2);
+  filter: drop-shadow(0 4px 15px rgba(66, 153, 225, 0.1));
   animation: floatingGlow 4s ease-in-out infinite;
   position: relative;
   z-index: 3;
@@ -138,9 +140,9 @@ body, html {
   font-weight: 300;
   font-style: italic;
   max-width: 80%;
-  color: var(--light-text);
-  opacity: 0.95;
-  text-shadow: 0 2px 10px rgba(232, 234, 246, 0.2);
+  color: var(--medium-text);
+  opacity: 0.9;
+  text-shadow: 0 2px 10px rgba(113, 128, 150, 0.1);
   position: relative;
   z-index: 3;
 }
@@ -153,13 +155,12 @@ body, html {
   display: flex;
   flex-direction: column;
   justify-content: center;
-   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  border-left: 2px solid rgba(33, 150, 243, 0.3);
+  border-left: 2px solid rgba(49, 130, 206, 0.2);
   box-shadow: 
-    0 25px 80px rgba(15, 20, 25, 0.6),
-    0 10px 40px rgba(26, 35, 126, 0.4),
-    inset 1px 0 0 rgba(255, 255, 255, 0.1);
+    0 25px 80px rgba(26, 32, 44, 0.15),
+    0 10px 40px rgba(49, 130, 206, 0.1),
+    inset 1px 0 0 rgba(255, 255, 255, 0.3);
   position: relative;
   z-index: 2;
   overflow: hidden;
@@ -172,7 +173,7 @@ body, html {
   left: 0;
   width: 1px;
   height: 100%;
-  background: linear-gradient(180deg, transparent, var(--sky-blue), transparent);
+  background: linear-gradient(180deg, transparent, var(--electric-blue), transparent);
 }
 
 .login-panel::after {
@@ -182,23 +183,23 @@ body, html {
   left: -20%;
   width: 60%;
   height: 120%;
-  background: linear-gradient(45deg, transparent 40%, rgba(66, 165, 245, 0.03) 50%, transparent 60%);
+  background: linear-gradient(45deg, transparent 40%, rgba(190, 227, 248, 0.05) 50%, transparent 60%);
   transform: rotate(-15deg);
   pointer-events: none;
 }
 
 .login-panel h2 {
-  color: var(--white);
+  color: var(--dark-text);
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid rgba(33, 150, 243, 0.4);
+  border-bottom: 2px solid rgba(49, 130, 206, 0.3);
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--white) 0%, var(--powder-blue) 100%);
+  background: linear-gradient(135deg, var(--dark-text) 0%, var(--electric-blue) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 4px 15px rgba(144, 202, 249, 0.3);
+  text-shadow: 0 4px 15px rgba(49, 130, 206, 0.1);
   position: relative;
   z-index: 3;
 }
@@ -229,7 +230,7 @@ form {
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: var(--light-text);
+  color: var(--medium-text);
   font-weight: 500;
   font-size: 0.9rem;
   opacity: 0.9;
@@ -238,32 +239,31 @@ form {
 input {
   width: 100%;
   padding: 1rem 1.2rem;
-  border: 2px solid rgba(66, 165, 245, 0.3);
+  border: 2px solid rgba(49, 130, 206, 0.2);
   border-radius: 12px;
   font-size: 1rem;
-  background: rgba(25, 118, 210, 0.1);
-  color: var(--white);
-   -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--dark-text);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 4px 15px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 input::placeholder {
-  color: var(--medium-text);
+  color: var(--light-text);
   opacity: 0.7;
 }
 
 input:focus {
   outline: none;
   border-color: var(--electric-blue);
-  background: rgba(25, 118, 210, 0.15);
+  background: rgba(255, 255, 255, 0.9);
   box-shadow: 
-    0 0 0 3px rgba(0, 102, 255, 0.2),
-    0 8px 25px rgba(0, 102, 255, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 0 0 3px rgba(49, 130, 206, 0.1),
+    0 8px 25px rgba(49, 130, 206, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
 }
 
@@ -278,8 +278,8 @@ button[type="submit"] {
   font-size: 1.1rem;
   transition: all 0.4s ease;
   box-shadow: 
-    0 8px 25px rgba(0, 102, 255, 0.4),
-    0 4px 15px rgba(33, 150, 243, 0.3),
+    0 8px 25px rgba(49, 130, 206, 0.3),
+    0 4px 15px rgba(66, 153, 225, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
@@ -304,8 +304,8 @@ button[type="submit"]:hover::before {
 button[type="submit"]:hover {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 
-    0 15px 40px rgba(0, 102, 255, 0.5),
-    0 8px 25px rgba(33, 150, 243, 0.4),
+    0 15px 40px rgba(49, 130, 206, 0.4),
+    0 8px 25px rgba(66, 153, 225, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
@@ -313,7 +313,7 @@ button[type="submit"]:hover {
   text-align: center;
   position: relative;
   margin: 2rem 0;
-  color: var(--light-text);
+  color: var(--medium-text);
   font-weight: 500;
   opacity: 0.8;
 }
@@ -325,7 +325,7 @@ button[type="submit"]:hover {
   top: 50%;
   width: 40%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(66, 165, 245, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(49, 130, 206, 0.3), transparent);
 }
 
 .divider::before {
@@ -341,20 +341,18 @@ button[type="submit"]:hover {
   padding: 0 1rem;
   position: relative;
   z-index: 1;
-   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
 .google-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(66, 165, 245, 0.3);
-  color: var(--light-text);
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(49, 130, 206, 0.2);
+  color: var(--medium-text);
   padding: 1.2rem;
   border-radius: 12px;
   font-weight: 500;
   cursor: pointer;
   font-size: 1rem;
-   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   display: flex;
@@ -362,8 +360,8 @@ button[type="submit"]:hover {
   justify-content: center;
   gap: 0.8rem;
   box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 4px 15px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
 }
@@ -375,7 +373,7 @@ button[type="submit"]:hover {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   transition: left 0.5s ease;
 }
 
@@ -384,12 +382,12 @@ button[type="submit"]:hover {
 }
 
 .google-btn:hover {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--sky-blue) 100%);
+  background: linear-gradient(135deg, var(--electric-blue) 0%, var(--bright-blue) 100%);
   color: var(--white);
-  border-color: var(--sky-blue);
+  border-color: var(--bright-blue);
   transform: translateY(-2px);
   box-shadow: 
-    0 8px 25px rgba(33, 150, 243, 0.4),
+    0 8px 25px rgba(49, 130, 206, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -401,14 +399,13 @@ button[type="submit"]:hover {
 }
 
 .error {
-  color: #ff6b6b;
+  color: #e53e3e;
   font-size: 0.9rem;
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
-  background: rgba(255, 107, 107, 0.1);
+  background: rgba(229, 62, 62, 0.1);
   border-radius: 8px;
-  border: 1px solid rgba(255, 107, 107, 0.3);
-   -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(229, 62, 62, 0.2);
   backdrop-filter: blur(10px);
   animation: shake 0.5s ease-in-out;
 }
@@ -419,7 +416,7 @@ button[type="submit"]:hover {
 }
 
 .forgot-password a {
-  color: var(--sky-blue);
+  color: var(--electric-blue);
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
@@ -438,8 +435,8 @@ button[type="submit"]:hover {
 }
 
 .forgot-password a:hover {
-  color: var(--white);
-  text-shadow: 0 0 10px rgba(66, 165, 245, 0.6);
+  color: var(--bright-blue);
+  text-shadow: 0 0 10px rgba(49, 130, 206, 0.3);
 }
 
 .forgot-password a:hover::after {
@@ -450,12 +447,12 @@ button[type="submit"]:hover {
   text-align: center;
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(66, 165, 245, 0.2);
-  color: var(--medium-text);
+  border-top: 1px solid rgba(49, 130, 206, 0.2);
+  color: var(--light-text);
 }
 
 .signup-link a {
-  color: var(--sky-blue);
+  color: var(--electric-blue);
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -474,8 +471,8 @@ button[type="submit"]:hover {
 }
 
 .signup-link a:hover {
-  color: var(--white);
-  text-shadow: 0 0 10px rgba(66, 165, 245, 0.6);
+  color: var(--bright-blue);
+  text-shadow: 0 0 10px rgba(49, 130, 206, 0.3);
 }
 
 .signup-link a:hover::after {
@@ -485,21 +482,21 @@ button[type="submit"]:hover {
 /* Enhanced Animations */
 @keyframes pulseBlue {
   0%, 100% {
-    box-shadow: 0 8px 25px rgba(0, 102, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(49, 130, 206, 0.2);
   }
   50% {
-    box-shadow: 0 8px 25px rgba(0, 102, 255, 0.6), 0 12px 40px rgba(33, 150, 243, 0.4);
+    box-shadow: 0 8px 25px rgba(49, 130, 206, 0.4), 0 12px 40px rgba(66, 153, 225, 0.3);
   }
 }
 
 @keyframes floatingGlow {
   0%, 100% {
     transform: translateY(0px);
-    filter: drop-shadow(0 10px 20px rgba(0, 102, 255, 0.2));
+    filter: drop-shadow(0 10px 20px rgba(49, 130, 206, 0.1));
   }
   50% {
     transform: translateY(-10px);
-    filter: drop-shadow(0 15px 30px rgba(0, 102, 255, 0.4));
+    filter: drop-shadow(0 15px 30px rgba(49, 130, 206, 0.2));
   }
 }
 
@@ -549,11 +546,11 @@ button[type="submit"]:hover {
     width: 100%;
     padding: 2rem;
     border-left: none;
-    border-top: 2px solid rgba(33, 150, 243, 0.3);
+    border-top: 2px solid rgba(49, 130, 206, 0.2);
     box-shadow: 
-      0 -25px 80px rgba(15, 20, 25, 0.6),
-      0 -10px 40px rgba(26, 35, 126, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 -25px 80px rgba(26, 32, 44, 0.15),
+      0 -10px 40px rgba(49, 130, 206, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
   
   .login-panel::before {
@@ -561,7 +558,7 @@ button[type="submit"]:hover {
     left: 0;
     width: 100%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--sky-blue), transparent);
+    background: linear-gradient(90deg, transparent, var(--electric-blue), transparent);
   }
 }
 
@@ -619,7 +616,7 @@ a:focus {
 @media (prefers-contrast: high) {
   :root {
     --white: #ffffff;
-    --midnight-blue: #000000;
+    --dark-text: #000000;
     --electric-blue: #0066ff;
   }
   
