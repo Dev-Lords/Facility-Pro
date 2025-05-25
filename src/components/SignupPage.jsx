@@ -112,13 +112,12 @@ const SignupPage = () => {
             <input
               type="name"
               name="name"
-              placeholder="name"
+              placeholder="Name and Surname"
               value={formData.name}
               onChange={handleChange}
               required
             />
           </label>
-
 
           <label>
           
