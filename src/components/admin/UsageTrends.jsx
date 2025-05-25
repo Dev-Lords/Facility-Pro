@@ -692,7 +692,7 @@ const toggleMenu = () => {
               </select>
             </label>
 
-            <label htmlFor="facility-filter">Facility:</label>
+            <label htmlFor="facility-filter">Facility:
 
             <select
               data-testid="facility-filter"
@@ -706,6 +706,7 @@ const toggleMenu = () => {
               <option value="soccer">Soccer Field</option>
               <option value="basketball">Basketball Court</option>
             </select>
+            </label>
             <label>
               From:
               <input
@@ -723,20 +724,7 @@ const toggleMenu = () => {
               />
             </label>
           </section>
-          <section className="Buttons">
-            <button
-              onClick={() => exportCSV(filteredLogs)}
-              className="export-btn csv-btn"
-            >
-              Export as CSV
-            </button>
-            <button
-              onClick={() => exportPDF(filteredLogs)}
-              className="export-btn pdf-btn"
-            >
-              Export As PDF
-            </button>
-          </section>
+
           <section className="table-section">
             <table className="log-table">
               <thead>
@@ -771,6 +759,20 @@ const toggleMenu = () => {
                 )}
               </tbody>
             </table>
+          </section>
+                    <section className="Buttons">
+            <button
+              onClick={() => exportCSV(filteredLogs)}
+              className="export-btn csv-btn"
+            >
+              Export as CSV
+            </button>
+            <button
+              onClick={() => exportPDF(filteredLogs)}
+              className="export-btn pdf-btn"
+            >
+              Export As PDF
+            </button>
           </section>
         </section>
       </section>
