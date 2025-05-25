@@ -1,6 +1,7 @@
 
 import { TextEncoder, TextDecoder } from 'util';
-import 'dotenv/config';
+
+require('dotenv').config();
 
 if (!global.import) global.import = {};
 if (!global.import.meta) global.import.meta = {};
