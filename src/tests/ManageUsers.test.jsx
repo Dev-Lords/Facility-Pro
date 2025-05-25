@@ -1,8 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ManageUsers from '../components/admin/ManageUsers.jsx';
-import { db } from '../../backend/firebase/firebase.config.js';
-import { collection, getDocs, deleteDoc } from 'firebase/firestore';
 import { fetchAllUsers } from '../../backend/services/userServices.js';
 import { useNavigate } from 'react-router-dom';
 import '@testing-library/jest-dom';

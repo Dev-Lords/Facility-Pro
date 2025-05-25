@@ -1,3 +1,5 @@
+import { Event} from "../models/event.js"; 
+
 //fetch all bookings
 export const fetchEvents = async () => {
   const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/get-all-events`;
@@ -11,3 +13,37 @@ export const fetchEvents = async () => {
     return [];
   }
 };
+
+
+// createEvent.js
+export const createEvent = async (eventData) => {
+  const url = 'https://us-central1-facilty-pro.cloudfunctions.net/api/create-event';
+
+  const payload = {
+    ...eventData,
+    maxParticipants: Number(eventData.maxParticipants),
+    createdBy: localStorage.getItem('userId') || 'unknown',
+    participants: [],
+    status: 'active'
+  };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    console.error("Error response:", errorResponse);
+    throw new Error(errorResponse.error);
+  }
+
+  return { success: true };
+};
+
+
+
+

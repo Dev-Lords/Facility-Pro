@@ -576,6 +576,59 @@ app.get('/get-all-events', async (req, res) => {
   }
 });
 
+
+//Creating a Event doc
+app.post('/create-event', async (req, res) => {
+  try {
+    const {
+      title,
+      description,
+      date,
+      startTime,
+      endTime,
+      location,
+      maxParticipants,
+      eventType,
+      isRecurring,
+      createdBy
+    } = req.body;
+
+    // Input validation
+    if (!title || !date || !startTime || !endTime || !maxParticipants) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const numParticipants = parseInt(maxParticipants);
+    if (numParticipants <= 0 || numParticipants > 1000) {
+      return res.status(400).json({ error: 'Max participants must be between 1 and 1000' });
+    }
+
+    await db.collection('events').add({
+      title,
+      description,
+      date,
+      startTime,
+      endTime,
+      location,
+      maxParticipants: numParticipants,
+      eventType,
+      isRecurring: isRecurring || false,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdBy: createdBy || 'unknown',
+      participants: [],
+      status: 'active',
+    });
+
+    res.status(201).json({ success: true });
+  } catch (error) {
+    console.error('Error creating event:', error);
+    res.status(500).json({ error: error.message || 'Internal Server Error' });
+  }
+});
+
+
+
+
 //LOGS ClOUD FUNCTIONS:
 //Fetch all logs
 app.get('/get-all-logs', async (req, res) => {

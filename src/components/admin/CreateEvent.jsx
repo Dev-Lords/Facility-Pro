@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
-import { app } from "../../../backend/firebase/firebase.config.js";
+import {createEvent, fetchEvents} from "../../../backend/services/Events.js";
 import { FaCalendarAlt, FaClock ,FaBars} from 'react-icons/fa';
 import './CreateEvents.css';
 
@@ -107,52 +106,50 @@ const CreateEvents = () => {
     return errors;
   };
 
-  // Function to check if events overlap
-  const checkForOverlap = async (newEvent) => {
-    const db = getFirestore(app);
-    
-    // Query for events on the same date and location
-    const eventsRef = collection(db, 'events');
-    const q = query(
-      eventsRef, 
-      where('date', '==', newEvent.date),
-      where('location', '==', newEvent.location),
-      where('status', '==', 'active')
+
+// Function to check for event overlap 
+const checkForOverlap = async (newEvent) => {
+  try {
+    const allEvents =await fetchEvents();
+
+    const sameDaySameLocationEvents = allEvents.filter(event =>
+      event.date === newEvent.date &&
+      event.location === newEvent.location &&
+      event.status === 'active'
     );
 
-    const querySnapshot = await getDocs(q);
-    
-    // Convert new event times to minutes for comparison
     const newStartTime = timeToMinutes(newEvent.startTime);
     const newEndTime = timeToMinutes(newEvent.endTime);
-    
-    // Check each existing event for overlap
-    for (const doc of querySnapshot.docs) {
-      const existingEvent = doc.data();
-      
-      // Convert existing event times to minutes
-      const existingStartTime = timeToMinutes(existingEvent.startTime);
-      const existingEndTime = timeToMinutes(existingEvent.endTime);
-      
-      // Check for any overlap
-      if (
-        (newStartTime >= existingStartTime && newStartTime < existingEndTime) || // New event starts during existing event
-        (newEndTime > existingStartTime && newEndTime <= existingEndTime) || // New event ends during existing event
-        (newStartTime <= existingStartTime && newEndTime >= existingEndTime) // New event encompasses existing event
-      ) {
+
+    for (const event of sameDaySameLocationEvents) {
+      const existingStart = timeToMinutes(event.startTime);
+      const existingEnd = timeToMinutes(event.endTime);
+
+      const overlaps =
+        (newStartTime >= existingStart && newStartTime < existingEnd) ||
+        (newEndTime > existingStart && newEndTime <= existingEnd) ||
+        (newStartTime <= existingStart && newEndTime >= existingEnd);
+
+      if (overlaps) {
         return {
           hasOverlap: true,
-          conflictingEvent: existingEvent
+          conflictingEvent: event
         };
       }
     }
-    
-    return {
-      hasOverlap: false
-    };
-  };
 
-  const handleSubmit = async (e) => {
+    return { hasOverlap: false };
+
+  } catch (error) {
+    console.error('Error checking for overlap:', error);
+    throw error;
+  }
+};
+
+
+
+//Create a new event
+  const handleSubmit = async (e) => {  
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMessage('');
@@ -192,21 +189,8 @@ const CreateEvents = () => {
         setIsSubmitting(false);
         return;
       }
-      
-      // Initialize Firestore
-      const db = getFirestore(app);
-      
-      // Add event to Firestore
-      const eventRef = await addDoc(collection(db, 'events'), {
-        ...eventData,
-        maxParticipants: Number(eventData.maxParticipants),
-        createdAt: serverTimestamp(),
-        createdBy: localStorage.getItem('userId') || 'unknown',
-        participants: [],
-        status: 'active'
-      });
 
-      // Reset the form data
+      const response = await createEvent(eventData);
       setEventData({
         title: '',
         description: '',
@@ -218,11 +202,14 @@ const CreateEvents = () => {
         eventType: '',
         isRecurring: false
       });
-
+      if (response.success) {
       setShowSuccessMessage(true);
+      }else {
+      setErrorMessage('Event creation failed');
+      setShowErrorPopup(true);
+     }
     } catch (error) {
       console.error('Error creating event:', error);
-      
       // Provide more specific error messages based on error type
       if (error.code === 'permission-denied') {
         setErrorMessage('Permission denied. You may not have access to create events.');
