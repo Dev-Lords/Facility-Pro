@@ -1,6 +1,3 @@
-import { collection, addDoc, getDocs, serverTimestamp, Timestamp, query, where} from "firebase/firestore";
-import { db } from "../firebase/firebase.config";
-
 
 //Used to check that the eventTypes passed in on call of logging function
 // are valid
@@ -8,30 +5,37 @@ const eventTypes = ["booking", "cancellation", "issue"];
 
 //Function to log events. Events will be used to generate usage trends and reports
 export const logFacilityEvent = async (eventType, facilityId, eventDocId, userId, details) => {
+  if (!eventTypes.includes(eventType)) {
+    console.log("Logging failed due to invalid event. Events allowed are: \n booking \n cancellation \n issue \n");
+    console.log("Your event: ", eventType);
+    return;
+  }
 
-    //Check that the event type is valid to prevent meaningless events added to collection
-    if(!eventTypes.includes(eventType)){
-        console.log("Logging failed due to invalid event. Events allowed are: \n booking \n cancellation \n issue \n");
-        console.log("Your event: ",  eventType);
+  try {
+    const response = await fetch(`https://us-central1-facilty-pro.cloudfunctions.net/api/create-log`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        eventType,
+        facilityId,
+        eventDocId,
+        userId,
+        details
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to log event.");
     }
 
-
-    //Add log to database
-    try{
-        await addDoc(collection(db, "logs"), {  //need to be migrated to api-create log
-            eventType: eventType,
-            facilityId: facilityId,
-            eventDocId: eventDocId,
-            userId: userId,
-            timestamp: serverTimestamp(),
-            details: details
-            });
-        console.log("Event Logged. Well done.");
-    } catch (error) {
-        console.error("Error logging event: ", error);
-    }
-
-}
+    const result = await response.json();
+    console.log(result.message || "Event Logged. Well done.");
+  } catch (error) {
+    console.error("Error logging event: ", error);
+  }
+};
 
 
 export const fetchFacilityEvents = async () => {
@@ -51,18 +55,19 @@ export const FecthPrevMonthLogs = async () => {
     const startOfPrevMonth = new Date(now.getFullYear(), now.getMonth()-1, 1, 0, 0, 0, 0);
     const endOfPrevMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
 
-    const startPrev = Timestamp.fromDate(startOfPrevMonth);
-    const endPrev = Timestamp.fromDate(endOfPrevMonth);
+    const startPrev = startOfPrevMonth.toISOString();
+    const endPrev = endOfPrevMonth.toISOString();
 
-    const q = query(   //need to migrate to api
-        collection(db, "logs"), where("timestamp", ">=", startPrev), where("timestamp", "<=", endPrev)
-    );
+    const response=await fetch(`https://us-central1-facilty-pro.cloudfunctions.net/api/logs?start=${startPrev}&end=${endPrev}`);
+    
 
-    const snapshot = await getDocs(q);
-      const docs = snapshot.docs.map(doc => doc.data());
-
-      console.log(docs);
-      return docs;
+    if (!response.ok) {
+        throw new Error('Failed to fetch logs');
+    }
+    const data = await response.json();
+    const docs = data.logs;
+    console.log(docs);
+    return docs;
 
 }
 
@@ -74,18 +79,20 @@ export const fetchPastMonthLogs = async () => {
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
-    const start = Timestamp.fromDate(startOfMonth);
-    const end = Timestamp.fromDate(endOfMonth);
+    const start = startOfMonth.toISOString();
+    const end = endOfMonth.toISOString();
+    const q = await fetch(`https://us-central1-facilty-pro.cloudfunctions.net/api/logs?start=${start}&end=${end}`);
+    if (!q.ok) {
+        throw new Error('Failed to fetch logs');
+    }
 
-    const q = query(
-        collection(db, "logs"), where("timestamp", ">=", start), where("timestamp", "<=", end)  //need to migrate to api
-    );
-      
-      const snapshot = await getDocs(q);
-      const docs = snapshot.docs.map(doc => doc.data());
+    const data = await q.json();
+    const docs = data.logs; 
+
       return docs;
 
 }
+
 
 export const fetchMonthSummaryStats = async () => {  
 

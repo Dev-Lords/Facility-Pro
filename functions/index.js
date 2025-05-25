@@ -649,6 +649,68 @@ app.get('/get-all-logs', async (req, res) => {
 });
 
 
+//fetch logs with specific attributes:
+app.get('/logs', async (req, res) => {
+  const { start, end } = req.query;
+
+  if (!start || !end) {
+    return res.status(400).json({ error: 'Missing start or end query parameter' });
+  }
+
+  try {
+    const startTimestamp = new Date(req.query.start);
+    const endTimestamp = new Date(req.query.end);
+
+    const logsRef = db.collection('logs');
+    const snapshot = await logsRef
+      .where('timestamp', '>=', startTimestamp)
+      .where('timestamp', '<=', endTimestamp)
+      .get();
+
+    const logs = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    res.status(200).json({ logs });
+  } catch (error) {
+    console.error('Error fetching logs:', error);
+    res.status(500).json({ error: 'Failed to fetch logs' });
+  }
+});
+
+
+//Create a new log doc
+app.post('/create-log', async (req, res) => {
+  const { eventType, facilityId, eventDocId, userId, details } = req.body;
+
+  const eventTypes = ["booking", "cancellation", "issue"];
+
+  if (!eventTypes.includes(eventType)) {
+    return res.status(400).json({
+      error: 'Invalid eventType. Allowed: booking, cancellation, issue',
+      yourEvent: eventType
+    });
+  }
+
+  try {
+    await db.collection("logs").add({
+      eventType,
+      facilityId,
+      eventDocId,
+      userId,
+      timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      details
+    });
+
+    return res.status(201).json({ message: "Event logged successfully." });
+  } catch (error) {
+    console.error("Error logging event:", error);
+    return res.status(500).json({ error: "Failed to log event." });
+  }
+});
+
+
 
 
 
