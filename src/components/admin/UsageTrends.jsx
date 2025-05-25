@@ -561,7 +561,7 @@ const toggleMenu = () => {
   };
 
   return (
-    <main className="usageTrends-main">
+    <main className="dashboard-container">
       {error && <div className="error-message">{error}</div>}
 
       {isLoading && <div className="loading-message">Loading...</div>}
