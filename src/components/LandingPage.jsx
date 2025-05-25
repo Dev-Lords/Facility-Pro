@@ -203,47 +203,7 @@ const FacilitySlideshow = () => {
   );
 };
 
-const TestimonialCarousel = () => {
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <article className="testimonial-carousel">
-      <blockquote className="testimonial-card">
-        <section className="testimonial-content">
-          <p>"{testimonials[currentTestimonial].quote}"</p>
-        </section>
-        <footer className="testimonial-author">
-          <img 
-            src={testimonials[currentTestimonial].avatar} 
-            alt={testimonials[currentTestimonial].author}
-            className="author-avatar"
-          />
-          <address className="author-info">
-            <strong className="author-name">{testimonials[currentTestimonial].author}</strong>
-            <em className="author-role">{testimonials[currentTestimonial].role}</em>
-          </address>
-        </footer>
-      </blockquote>
-      
-      <nav className="testimonial-indicators">
-        {testimonials.map((_, index) => (
-          <button
-            key={index}
-            className={`indicator ${index === currentTestimonial ? 'active' : ''}`}
-            onClick={() => setCurrentTestimonial(index)}
-          />
-        ))}
-      </nav>
-    </article>
-  );
-};
 
 const LandingPage = () => {
   const navigate = useNavigate();
