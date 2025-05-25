@@ -79,6 +79,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 1000;
+  -webkit-backdrop-filter:blur(15px);
   backdrop-filter: blur(15px);
   border-bottom: 2px solid var(--electric-blue);
   box-shadow: 0 4px 20px rgba(0, 102, 255, 0.2);
@@ -286,6 +287,7 @@ body {
     0 25px 80px rgba(15, 20, 25, 0.6),
     0 10px 40px rgba(26, 35, 126, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   border: 2px solid rgba(33, 150, 243, 0.3);
   max-width: 350px;
@@ -344,6 +346,7 @@ body {
   background: rgba(25, 118, 210, 0.1);
   color: var(--light-text);
   border: 2px solid var(--primary-blue);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   animation: pulseBlue 3s ease-in-out infinite;
 }
@@ -454,6 +457,7 @@ body {
   text-align: center;
   transition: all 0.4s ease;
   border: 2px solid rgba(66, 165, 245, 0.3);
+   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px);
   animation: fadeInUp 0.6s ease forwards;
   opacity: 0;
@@ -638,6 +642,7 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 10;
+   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 25px rgba(0, 102, 255, 0.4);
 }
@@ -751,6 +756,7 @@ body {
     0 10px 40px rgba(26, 35, 126, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(66, 165, 245, 0.3);
+   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px);
   margin-bottom: 2rem;
   position: relative;
@@ -911,6 +917,7 @@ body {
   padding: 2rem;
   border-radius: 16px;
   border: 1px solid rgba(66, 165, 245, 0.2);
+   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   position: relative;

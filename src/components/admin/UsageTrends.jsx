@@ -565,7 +565,7 @@ const toggleMenu = () => {
       {error && <section className="error-message">{error}</section>}
 
       {isLoading && <section className="loading-message">Loading...</section>}
-      {/* This is for the header, to show something, idk*/}
+      
       <header className="dashboard-header">
           <section className="hamburger-menu">
                     <FaBars className="hamburger-icon" onClick={toggleMenu} />
