@@ -34,7 +34,12 @@ VITE_FIREBASE_MEASUREMENT_ID=G-89EB162VPS
 
 Once this is done, make sure to save the file, and the run the app using:
 
+npm install
 npm run dev
+
+## Note: 
+This requires that you have Node.js installed on your device.
+
 
 # NAVIGATING THE REPOSITORY
  The repository contains all the files that have to do with Facility pro's front and back end.
