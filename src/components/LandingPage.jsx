@@ -342,26 +342,10 @@ const LandingPage = () => {
         </article>
       </section>
 
-      <section className="testimonials-section">
-        <article className="container">
-          <header className="section-header">
-            <h2>What Our Community Says</h2>
-            <p>Join thousands of satisfied organizers and athletes</p>
-          </header>
-          
-          <TestimonialCarousel />
-        </article>
-      </section>
+     
 
       <footer className="footer">
-        <section className="container">
-         
-            
-        
-            
-            
-      
-          
+        <section className="container">  
           <footer className="footer-bottom">
             <p>&copy; 2025 Facility Pro. All rights reserved.</p>
           </footer>
@@ -370,3 +354,5 @@ const LandingPage = () => {
     </main>
   );
 };
+
+export default LandingPage;

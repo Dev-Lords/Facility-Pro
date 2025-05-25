@@ -1,9 +1,10 @@
 
 import './ResidentDashboard.css';
 import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { Navigate } from 'react-router-dom';
-import { FaBars,FaHome, FaCalendar, FaExclamationTriangle, FaCalendarCheck } from 'react-icons/fa';
+import { FaBars,FaHome, FaExclamationTriangle, FaCalendarCheck } from 'react-icons/fa';
+import { MdChecklistRtl } from "react-icons/md";
 
 export default function ResidentPortal() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -60,7 +61,7 @@ export default function ResidentPortal() {
           <button className="btn btn-facilities" onClick={() => handleNavigate("/Facility-selection")}>Book Now</button>
         </article>
         <article className="card card-issues">
-          <section className="card-icon"><FaExclamationTriangle/></section>
+          <section className="card-icon"><MdChecklistRtl /></section>
           <h2>My Bookings</h2>
           <p>Check the status of the bookings you've made</p>
           <button onClick={() => navigate("/view-bookings")} className="btn btn-issues">View Bookings</button>
