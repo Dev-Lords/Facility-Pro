@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { fetchIssues } from "../../../backend/services/issuesService.js";
 import { fetchUserBookings } from "../../../backend/services/bookingService.js";
 import "../staff/IssuesPage.css";
 import { FaBars } from 'react-icons/fa';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+
 
 const MyBookingsPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,7 +12,13 @@ const MyBookingsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState("all");
   const [isLoading, setIsLoading] = useState(false);
+  const token = localStorage.getItem('authToken');
+  const userType = localStorage.getItem('userType');
+  const isAuthenticated = token && userType === 'resident';
   const navigate = useNavigate();
+   if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
 
   const handleNavigate = (path) => {
     navigate(path);

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Users,  Star, ArrowRight, Play, Award,  } from 'lucide-react';
+import { Link } from "react-router-dom";
 import "./LandingPage.css";
 
 import basketballImage from '../assets/polish/basketball_court.jpg';
@@ -202,47 +203,7 @@ const FacilitySlideshow = () => {
   );
 };
 
-const TestimonialCarousel = () => {
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <article className="testimonial-carousel">
-      <blockquote className="testimonial-card">
-        <section className="testimonial-content">
-          <p>"{testimonials[currentTestimonial].quote}"</p>
-        </section>
-        <footer className="testimonial-author">
-          <img 
-            src={testimonials[currentTestimonial].avatar} 
-            alt={testimonials[currentTestimonial].author}
-            className="author-avatar"
-          />
-          <address className="author-info">
-            <strong className="author-name">{testimonials[currentTestimonial].author}</strong>
-            <em className="author-role">{testimonials[currentTestimonial].role}</em>
-          </address>
-        </footer>
-      </blockquote>
-      
-      <nav className="testimonial-indicators">
-        {testimonials.map((_, index) => (
-          <button
-            key={index}
-            className={`indicator ${index === currentTestimonial ? 'active' : ''}`}
-            onClick={() => setCurrentTestimonial(index)}
-          />
-        ))}
-      </nav>
-    </article>
-  );
-};
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -257,8 +218,8 @@ const LandingPage = () => {
           <nav className="header-right">
             <ul className="nav-links">
               <li><a href="https://dev-lords.github.io/Facility-Pro/#/">Documentation</a></li>
-              <li><a href="#">Terms</a></li>
-              <li><a href="#">FAQs</a></li>
+              <li><Link to="/terms">Terms</Link></li>
+              <li><Link to="/FAQ">FAQ</Link></li>
             </ul>
           </nav>
         </section>
@@ -341,24 +302,17 @@ const LandingPage = () => {
         </article>
       </section>
 
-      <section className="testimonials-section">
-        <article className="container">
-          <header className="section-header">
-            <h2>What Our Community Says</h2>
-            <p>Join thousands of satisfied organizers and athletes</p>
-          </header>
-          
-          <TestimonialCarousel />
-        </article>
-      </section>
+     
 
-          
-      <footer className="footer-bottom">
-        <p>&copy; 2025 Facility Pro. All rights reserved.</p>
+      <footer className="footer">
+        <section className="container">  
+          <footer className="footer-bottom">
+            <p>&copy; 2025 Facility Pro. All rights reserved.</p>
+          </footer>
+        </section>
       </footer>
     </main>
   );
 };
-
 
 export default LandingPage;

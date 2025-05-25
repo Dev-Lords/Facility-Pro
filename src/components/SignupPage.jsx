@@ -42,14 +42,16 @@ const SignupPage = () => {
       .catch((error) => {
         console.error("Error signing up:", error);
         let message = "";
-        if(error.code == "auth/email-already-in-use")
-          message = "Email already in use. log in instead.";
-        if(error.code=="auth/weak-password"){
-          message = "Password should have at least 6 characters."
-        }else {
-          message = "Signup failed"; 
-        }
-        setError(message); 
+        if (error.code === "auth/email-already-in-use") {
+            message = "Email already in use. Log in instead.";
+        }else if (error.code === "auth/weak-password") {
+            message = "Password should have at least 6 characters.";
+        } else {
+            message = "Signup failed";
+}
+setError(message);
+
+       
       });
     
   };
@@ -112,13 +114,12 @@ const SignupPage = () => {
             <input
               type="name"
               name="name"
-              placeholder="name"
+              placeholder="Name and Surname"
               value={formData.name}
               onChange={handleChange}
               required
             />
           </label>
-
 
           <label>
           
