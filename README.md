@@ -61,7 +61,7 @@ This requires that you have Node.js installed on your device.
 - tests - This folder contains all the tests for components and logic
 
 ## functions
- This folder all the cloud functions that handle the logic of Facility-Pro. All functions can be found in index.html
+ This folder all the cloud functions that handle the logic of Facility-Pro. All functions can be found in index.js
 
 ## backend
  This folder contains the setup for our firebase firestore database.
