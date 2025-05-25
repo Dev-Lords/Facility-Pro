@@ -91,6 +91,14 @@ describe('FacilityStaffDashboard Component', () => {
     // Check for the button using text content
     const viewReportsButton = screen.getByText('View Reports');
     expect(viewReportsButton).toBeInTheDocument();
+
+    // Look for card title without emoji
+    expect(screen.getByText('Events')).toBeInTheDocument();
+    expect(screen.getByText('View upcoming facility events to prepare in advance.')).toBeInTheDocument();
+    
+    // Check for the button using text content
+    const viewEventsButton = screen.getByText('View Events');
+    expect(viewEventsButton).toBeInTheDocument();
   });
   
   test('redirects to home when not authenticated', () => {

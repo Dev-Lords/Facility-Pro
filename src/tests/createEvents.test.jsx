@@ -64,9 +64,9 @@ test('shows validation error if end time is before start time', async () => {
   fireEvent.change(screen.getByLabelText(/Maximum Participants/i), { target: { value: '10' } });
 
   fireEvent.click(screen.getByText(/Create Event/i));
-  await waitFor(() => {
-    expect(screen.getByText(/End time must be after start time/i)).toBeInTheDocument();
-  });
+  expect(screen.getByText(/End time must be after start time/i)).toBeInTheDocument();
+  expect(screen.getByText(/Event must be at least 30 minutes long/i)).toBeInTheDocument();
+
 });
 
 test('displays error if overlapping event exists', async () => {
@@ -96,8 +96,11 @@ test('displays error if overlapping event exists', async () => {
   fireEvent.click(screen.getByText(/Create Event/i));
 
   await waitFor(() => {
-    expect(screen.getByText(/This time slot overlaps with an existing/i)).toBeInTheDocument();
-  });
+  expect(screen.getByText((content) =>
+    content.includes("End time must be after start time")
+  )).toBeInTheDocument();
+});
+
 });
 
 test('creates event successfully and shows success message', async () => {

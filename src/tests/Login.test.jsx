@@ -155,8 +155,8 @@ describe('LoginPage Component', () => {
   
   test('handles email/password login error', async () => {
     // Set up mock for failed login
-    const errorMessage = 'Invalid email or password';
-    signInWithEmailAndPassword.mockRejectedValue({ message: errorMessage });
+    const error = { code: 'auth/invalid-credential' };
+    signInWithEmailAndPassword.mockRejectedValue(error);
     
     render(<LoginPage />);
     
@@ -165,9 +165,11 @@ describe('LoginPage Component', () => {
     fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'wrongpassword' } });
     fireEvent.click(screen.getByText('Sign In'));
     
-    await waitFor(() => {
-      expect(screen.getByText(errorMessage)).toBeInTheDocument();
-    });
+
+    expect(await screen.findByText((text) =>
+    text.includes("Invalid email or password.")
+    )).toBeInTheDocument();
+
   });
   
   test('handles Google sign-in for new resident user', async () => {
