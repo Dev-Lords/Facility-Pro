@@ -1,61 +1,49 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Calendar, Users, MapPin, Star, ArrowRight, Play, Award, Clock } from 'lucide-react';
-import { Link } from "react-router-dom";
+import { Calendar, Users,  Star, ArrowRight, Play, Award,  } from 'lucide-react';
 import "./LandingPage.css";
 
 import basketballImage from '../assets/polish/basketball_court.jpg';
 import swimmingImage from '../assets/polish/Swimming_pools.jpg';
 import tennisImage from '../assets/polish/Tennis_Courts.jpg';
 import soccerImage from '../assets/polish/Soccer_field.jpg';
-import trackImage from '../assets/polish/Running_track.jpg';
 import gymnasticsImage from '../assets/polish/Gymnastics.png';
-import danceImage from '../assets/polish/Dance_studio.jpg';
+
 
 const facilityData = [
   { 
     name: "Basketball Courts", 
     image: basketballImage,
     caption: "Premium indoor courts with professional lighting",
-    stats: "12 courts available"
+    
   },
   { 
     name: "Swimming Pools", 
     image: swimmingImage,
     caption: "Olympic-sized pools for all skill levels",
-    stats: "8 pools • Open year-round"
+  
   },
   { 
     name: "Tennis Courts", 
     image: tennisImage,
     caption: "Hard and clay courts with night lighting",
-    stats: "16 courts • All weather"
+    
   },
   { 
     name: "Soccer Fields", 
     image: soccerImage,
     caption: "Full-size fields with quality turf",
-    stats: "6 fields • FIFA standard"
+    
   },
+  
   { 
-    name: "Running Tracks", 
-    image: trackImage,
-    caption: "400m tracks with timing systems",  
-    stats: "3 tracks • Professional grade"
-  },
-  { 
-    name: "Gymnasiums", 
+    name: "Gymn", 
     image: gymnasticsImage,
     caption: "Multi-purpose halls for various sports",
-    stats: "5 gyms • Full equipment"
+    
   },
-  { 
-    name: "Dance Studios", 
-    image: danceImage,
-    caption: "Mirrored studios with premium sound systems",
-    stats: "4 studios • All styles welcome"
-  }
+  
 ];
 
 const testimonials = [
@@ -80,31 +68,19 @@ const testimonials = [
 ];
 
 const features = [
-  {
-    icon: Calendar,
-    title: "Smart Scheduling",
-    description: "Book with ease,in just 4 steps"
-  },
+ 
   {
     icon: Users,
     title: "Community Management", 
     description:"Participate in tournaments,competitions and build long lasting sports communities"
   },
-  {
-    icon: MapPin,
-    title: "Location Discovery",
-    description: "Everything close to you(sports facilities I mean)"
-  },
+  
   {
     icon: Award,
     title: "Quality Assurance",
     description: "All facilities are verified and rated by our community of users"
   },
-  {
-    icon: Clock,
-    title: "Availability",
-    description: "Have up to 3 hrs to your team and whole day events"
-  },
+  
   {
     icon: Star,
     title: "Premium Experience",
@@ -281,7 +257,6 @@ const LandingPage = () => {
           <nav className="header-right">
             <ul className="nav-links">
               <li><a href="https://dev-lords.github.io/Facility-Pro/#/">Documentation</a></li>
-              <li><Link to="/terms">Terms</Link></li>
               <li><a href="#">Terms</a></li>
               <li><a href="#">FAQs</a></li>
             </ul>
@@ -376,7 +351,7 @@ const LandingPage = () => {
           <TestimonialCarousel />
         </article>
       </section>
-            
+
           
       <footer className="footer-bottom">
         <p>&copy; 2025 Facility Pro. All rights reserved.</p>
