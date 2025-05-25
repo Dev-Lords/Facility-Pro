@@ -47,6 +47,8 @@ const SignupPage = () => {
           message = "Email already in use. log in instead.";
         if(error.code=="auth/weak-password"){
           message = "Password should have at least 6 characters."
+        }else {
+          message = "Signup failed"; 
         }
         setError(message); 
       });
