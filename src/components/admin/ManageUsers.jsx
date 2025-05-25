@@ -513,7 +513,7 @@ useEffect(() => {
       </nav>
 
       <footer className="footer">
-        <p>Facility Management System • Admin services • Version 1.0.4</p>
+        <p>Facility Management System • Admin services • Version 1.0.0</p>
       </footer>
     </main>
   );
