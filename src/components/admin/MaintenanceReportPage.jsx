@@ -4,9 +4,8 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { useNavigate } from "react-router-dom";
 import { 
-  FaArrowLeft,FaBars
+  FaArrowLeft, FaBars
 } from 'react-icons/fa';
-// Updated Chart.js imports - add necessary components
 import { 
   Chart as ChartJS, 
   CategoryScale, 
@@ -15,16 +14,15 @@ import {
   Title, 
   Tooltip, 
   Legend,
-  BarController // Add BarController
+  BarController
 } from "chart.js";
 import "./MaintenanceReport.css";
 
-// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  BarController, // Register BarController
+  BarController,
   Title,
   Tooltip,
   Legend
@@ -48,10 +46,12 @@ const MaintenanceReportPage = () => {
   const handleNavigate = (path) => {
     navigate(path);
   };
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
-   const handleSignOut = () => {
+
+  const handleSignOut = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userType');
     navigate('/');
@@ -80,17 +80,20 @@ const MaintenanceReportPage = () => {
     };
   };
 
-  const calculateFacilityAvailability = (issues) => {
-    const facilities = ["Gym", "Pool", "Soccer Field", "Basketball Court"];
+  const getFacilityMaintenanceStats = (issues) => {
+    const facilities = ["Soccer Field", "Gym", "Pool", "Basketball Court"];
+    
     return facilities.map(facility => {
-      const hasOpenIssues = issues.some(issue =>
-        issue.relatedFacility === facility &&
-        resolveStatus(issue.issueStatus) === "Open"
-      );
+      const facilityIssues = issues.filter(issue => issue.relatedFacility === facility);
+      const totalIssues = facilityIssues.length;
+      const openIssues = facilityIssues.filter(issue => resolveStatus(issue.issueStatus) === "Open").length;
+      const closedIssues = totalIssues - openIssues;
+      
       return {
         facility,
-        availability: hasOpenIssues ? 0 : 100,
-        status: hasOpenIssues ? "Unavailable" : "Available"
+        totalIssues,
+        openIssues,
+        closedIssues
       };
     });
   };
@@ -219,25 +222,23 @@ const MaintenanceReportPage = () => {
 
   const { open, closed } = getStats(filteredIssues);
   const priorityCounts = getPriorityCounts(filteredIssues);
-  const facilityAvailability = calculateFacilityAvailability(filteredIssues);
+  const facilityStats = getFacilityMaintenanceStats(filteredIssues);
 
   return (
     <main className="issues-page" id="report-section">
-
-         <header className="dashboard-header">
-          <section className="hamburger-menu">
-                    <FaBars className="hamburger-icon" onClick={toggleMenu} />
-                    {menuOpen && (
-                      <nav className="dropdown-menu">
-                        <button onClick={() => handleNavigate('/')}>Home</button>
-                        <button onClick={handleSignOut}>Sign Out</button>
-                      </nav>
-                    )}
-                  </section>
+      <header className="dashboard-header">
+        <section className="hamburger-menu">
+          <FaBars className="hamburger-icon" onClick={toggleMenu} />
+          {menuOpen && (
+            <nav className="dropdown-menu">
+              <button onClick={() => handleNavigate('/')}>Home</button>
+              <button onClick={handleSignOut}>Sign Out</button>
+            </nav>
+          )}
+        </section>
         <h2>Maintenance Report Dashboard</h2>
       </header>
 
-        {/* Breadcrumb */}
       <nav className="breadcrumb-nav">
         <button 
           onClick={() => handleNavigate('/admin-home')} 
@@ -247,9 +248,9 @@ const MaintenanceReportPage = () => {
         </button>
         <span className="separator">/</span>
         <button
-        className='breadcrumb-link'
+          className='breadcrumb-link'
           onClick={() => handleNavigate('/Reports')}>
-        <span className="current-page"></span> Reports
+          <span className="current-page"></span> Reports
         </button>
       </nav>
 
@@ -262,17 +263,17 @@ const MaintenanceReportPage = () => {
         <article className="summary-card-sm"><h3>Low Priority</h3><p>{priorityCounts.Low}</p></article>
       </section>
 
-      <section className="facility-availability">
-        <h3>Facility Availability</h3>
-        <section className="facility-cards">
-          {facilityAvailability.map((facility) => (
-            <article 
-              key={facility.facility} 
-              className={`facility-card ${facility.status.toLowerCase()}`}
-            >
+      <section className="facility-maintenance-summary">
+        <h3>Maintenance Stats by Facility</h3>
+        <section className="facility-stats-cards">
+          {facilityStats.map((facility) => (
+            <article key={facility.facility} className="facility-stat-card">
               <h4>{facility.facility}</h4>
-              <p className="percentage">{facility.availability}%</p>
-              <p className="status">{facility.status}</p>
+              <ul>
+                <li>Total Issues: {facility.totalIssues}</li>
+                <li>Open Issues: {facility.openIssues}</li>
+                <li>Closed Issues: {facility.closedIssues}</li>
+              </ul>
             </article>
           ))}
         </section>
@@ -364,7 +365,8 @@ const MaintenanceReportPage = () => {
           </section>
         </section>
       )}
-       <section className="back-button-container">
+
+      <section className="back-button-container">
         <button className="btn back-btn" onClick={() => handleNavigate('/admin-home')}>
           <FaArrowLeft /> Back to Dashboard
         </button>
