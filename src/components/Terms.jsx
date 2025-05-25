@@ -381,19 +381,6 @@ export default function TermsOfUsePage() {
           ))}
         </section>
 
-        <footer style={styles.footer}>
-          <section style={styles.footerSection}>
-            <h3 style={styles.footerTitle}>Questions about these terms?</h3>
-            <p style={styles.footerText}>Our support team is here to help</p>
-            <button 
-              style={styles.footerButton}
-              onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
-              onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
-            >
-              Contact Support
-            </button>
-          </section>
-        </footer>
       </section>
     </main>
   );
