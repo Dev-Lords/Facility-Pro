@@ -12,6 +12,7 @@ You may sign up and log in as a resident using google. You may also sign up and 
 To use the app as an admin, use the following credentials:
 - email: markingadmin@gmail.com
 - password: markingadmin
+  
 To use the app as a staff member, use the following credentials:
 - email: markingstaff123@gmail.com
 - password: markingstaff
