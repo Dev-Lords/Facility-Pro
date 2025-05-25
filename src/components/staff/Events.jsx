@@ -52,7 +52,7 @@ const EventsPage = () => {
           onClick={() => handleNavigate('/staff-home')} 
           className="breadcrumb-link"
         >
-          <span className="home-icon">🏠</span> Dashboard
+          <i className="home-icon">🏠</i> Dashboard
         </button>
       </nav>
 

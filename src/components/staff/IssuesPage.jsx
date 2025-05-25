@@ -188,7 +188,7 @@ const IssuesPage = () => {
             {isLoading ? (
               <tr>
                 <td colSpan="6" className="loading-cell">
-                  <section className="table-spinner"></section>
+                  <figure className="table-spinner"></figure>
                   <p>Loading issues...</p>
                 </td>
               </tr>
@@ -205,21 +205,25 @@ const IssuesPage = () => {
                 >
                   <td>{issue.issueTitle}</td>
                   <td>
-                    <section
+                    <mark
                       className={`status-badge status-${issue.issueStatus}`}
                     >
                       {issue.issueStatus}
-                    </section>
+                    </mark>
                   </td>
                   <td>
-                    <section
+                    <mark
                       className={`priority-badge priority-${issue.priority}`}
                     >
                       {issue.priority}
-                    </section>
+                    </mark>
                   </td>
                   <td>{issue.location}</td>
-                  <td>{new Date(issue.reportedAt).toLocaleDateString()}</td>
+                  <td>
+                    <time dateTime={issue.reportedAt}>
+                      {new Date(issue.reportedAt).toLocaleDateString()}
+                    </time>
+                  </td>
                 </tr>
               ))
             )}
@@ -228,7 +232,7 @@ const IssuesPage = () => {
       </section>
 
       <footer className="pagination-controls">
-        <section>Rows per page: </section>
+        <label>Rows per page: </label>
         <select
           value={rowsPerPage}
           onChange={(e) => setRowsPerPage(Number(e.target.value))}
@@ -239,11 +243,11 @@ const IssuesPage = () => {
           <option value={200}>200</option>
         </select>
 
-        <section className="page-info" data-testid="page-info">
+        <output className="page-info" data-testid="page-info">
           {startIndex + 1}–
           {Math.min(startIndex + rowsPerPage, filteredIssues.length)} of{" "}
           {filteredIssues.length}
-        </section>
+        </output>
 
         <button
           onClick={handlePreviousPage}
@@ -302,8 +306,9 @@ const IssuesPage = () => {
                       const isActive = index === currentIndex;
 
                       return (
-                        <section
+                        <button
                           key={status}
+                          type="button"
                           className={`status-step ${
                             isCompleted ? "completed" : ""
                           } ${isActive ? "active" : ""}`}
@@ -312,13 +317,13 @@ const IssuesPage = () => {
                           }
                           data-status={status}
                         >
-                          <section className="step-circle"></section>
-                          <section className="step-label">
+                          <i className="step-circle"></i>
+                          <small className="step-label">
                             {status
                               .replace("-", " ")
                               .replace(/\b\w/g, (l) => l.toUpperCase())}
-                          </section>
-                        </section>
+                          </small>
+                        </button>
                       );
                     })}
                   </nav>
@@ -350,7 +355,11 @@ const IssuesPage = () => {
                 </article>
                 <article className="detail-item">
                   <h4>Reported At</h4>
-                  <p>{new Date(editedIssue.reportedAt).toLocaleString()}</p>
+                  <p>
+                    <time dateTime={editedIssue.reportedAt}>
+                      {new Date(editedIssue.reportedAt).toLocaleString()}
+                    </time>
+                  </p>
                 </article>
                 <article className="detail-item">
                   <h4>Assigned To</h4>

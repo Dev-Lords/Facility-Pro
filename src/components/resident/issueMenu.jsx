@@ -55,10 +55,10 @@ export default function IssueMenu(){
           onClick={() => handleNavigate('/resident-home')} 
           className="breadcrumb-link"
         >
-          <span className="home-icon"><FaHome/></span> Dashboard
+          <i className="home-icon"><FaHome/></i> Dashboard
         </button>
-        <span className="separator">/</span>
-        <span className="current-page">Report Issues</span>
+        <strong className="separator">/</strong>
+        <strong className="current-page">Report Issues</strong>
       </nav>
       <section className = "card-grid">
 
