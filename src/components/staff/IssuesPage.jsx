@@ -1,12 +1,14 @@
-import React from "react";
+
 import  { useEffect, useState } from "react";
 import { fetchIssues } from "../../../backend/services/issuesService.js";
-import { UpdateIssue } from "../../../backend/services/issuesService.js"; // Import the UpdateIssue function
-import { toast } from "react-toastify";
+import { UpdateIssue } from "../../../backend/services/issuesService.js"; 
 import "./IssuesPage.css";
 import { getUserByUid } from "../../../backend/services/userServices.js";
+import { FaBars } from 'react-icons/fa';
+import { useNavigate ,Navigate} from "react-router-dom";
 
 const IssuesPage = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [issues, setIssues] = useState([]);
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -15,6 +17,20 @@ const IssuesPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [editedIssue, setEditedIssue] = useState(null);
   const [reporter, setReporter] = useState(null); // State to hold reporter data
+  const navigate = useNavigate();
+  
+    
+    const handleNavigate = (path) => {
+      navigate(path);
+    };
+    const toggleMenu = () => {
+      setMenuOpen(!menuOpen);
+    };
+     const handleSignOut = () => {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userType');
+      navigate('/');
+    };
 
   useEffect(() => {
     const loadIssues = async () => {
@@ -125,6 +141,15 @@ const IssuesPage = () => {
     <main className="issues-page">
 
       <header className="facility-header">
+        <section className="hamburger-menu">
+          <FaBars className="hamburger-icon" onClick={toggleMenu} />
+          {menuOpen && (
+            <nav className="dropdown-menu">
+              <button onClick={() => handleNavigate('/')}>Home</button>
+              <button onClick={handleSignOut}>Sign Out</button>
+            </nav>
+          )}
+        </section>
         <h1 className="facility-title">Issue Reports</h1>
         <p className="facility-subtitle">
           View and manage maintenance issues reported by facility users

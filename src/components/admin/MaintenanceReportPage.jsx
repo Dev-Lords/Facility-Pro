@@ -5,7 +5,7 @@ import autoTable from "jspdf-autotable";
 import { useNavigate } from "react-router-dom";
 import { 
 
-  FaArrowLeft
+  FaArrowLeft,FaBars
 } from 'react-icons/fa';
 // Updated Chart.js imports - add necessary components
 import { 
@@ -38,6 +38,7 @@ const MaintenanceReportPage = () => {
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [facilityFilter, setFacilityFilter] = useState("all");
   const [showGraphs, setShowGraphs] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const statusChartRef = useRef(null);
   const priorityChartRef = useRef(null);
@@ -47,6 +48,14 @@ const MaintenanceReportPage = () => {
 
   const handleNavigate = (path) => {
     navigate(path);
+  };
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+   const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userType');
+    navigate('/');
   };
 
   useEffect(() => {
@@ -215,7 +224,17 @@ const MaintenanceReportPage = () => {
 
   return (
     <main className="issues-page" id="report-section">
-      <header className="usageTrends-header">
+
+         <header className="dashboard-header">
+          <section className="hamburger-menu">
+                    <FaBars className="hamburger-icon" onClick={toggleMenu} />
+                    {menuOpen && (
+                      <nav className="dropdown-menu">
+                        <button onClick={() => handleNavigate('/')}>Home</button>
+                        <button onClick={handleSignOut}>Sign Out</button>
+                      </nav>
+                    )}
+                  </section>
         <h2>Maintenance Report Dashboard</h2>
       </header>
 

@@ -1,17 +1,26 @@
-import React from "react";
+
 import "./FacilityStaffDashboard.css";
-import { useNavigate } from "react-router-dom";
-import { Navigate } from 'react-router-dom';
+import { useNavigate ,Navigate} from "react-router-dom";
 import {  FaUserTie } from 'react-icons/fa6';
-import {  FaFileAlt } from 'react-icons/fa';
+import {  FaFileAlt,FaBars } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
 
 
 export default function FacilityStaffDashboard() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   
   const handleNavigate = (path) => {
     navigate(path);
+  };
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+   const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userType');
+    navigate('/');
   };
   const token = localStorage.getItem('authToken');
     const userType = localStorage.getItem('userType');
@@ -24,6 +33,15 @@ export default function FacilityStaffDashboard() {
   return (
     <main className="container">
       <header className="header">
+        <section className="hamburger-menu">
+          <FaBars className="hamburger-icon" onClick={toggleMenu} />
+          {menuOpen && (
+            <nav className="dropdown-menu">
+              <button onClick={() => handleNavigate('/')}>Home</button>
+              <button onClick={handleSignOut}>Sign Out</button>
+            </nav>
+          )}
+        </section>
         <section className="header-content">
           <section className="staff-icon">< FaUserTie/></section>
           <section>

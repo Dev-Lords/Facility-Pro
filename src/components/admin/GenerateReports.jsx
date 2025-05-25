@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { 
   FaChartBar, 
   FaFileAlt, 
   FaChartPie,
-  FaArrowLeft
+  FaArrowLeft,
+  FaBars
 } from 'react-icons/fa';
 import './AdminDashboard.css'; // Reusing the existing CSS
 
 export default function ReportsDashboard() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const token = localStorage.getItem('authToken');
   const userType = localStorage.getItem('userType');
   const isAuthenticated = token && userType === 'admin';
@@ -17,6 +19,14 @@ export default function ReportsDashboard() {
   const handleNavigate = (path) => {
     navigate(path);
   };
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+   const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userType');
+    navigate('/');
+  };
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
@@ -24,7 +34,16 @@ export default function ReportsDashboard() {
 
   return (
     <main className="dashboard-container">
-      <header className="dashboard-header">
+         <header className="dashboard-header">
+                  <section className="hamburger-menu">
+                            <FaBars className="hamburger-icon" onClick={toggleMenu} />
+                            {menuOpen && (
+                              <nav className="dropdown-menu">
+                                <button onClick={() => handleNavigate('/')}>Home</button>
+                                <button onClick={handleSignOut}>Sign Out</button>
+                              </nav>
+                            )}
+                          </section>
         <section className="header-content">
           <section className="admin-icon"><FaFileAlt /></section>
           <section>

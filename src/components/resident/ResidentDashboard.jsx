@@ -1,10 +1,12 @@
-import React from 'react';
+
 import './ResidentDashboard.css';
 import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { FaHome, FaCalendar, FaExclamationTriangle, FaCalendarCheck } from 'react-icons/fa';
+import { FaBars,FaHome, FaCalendar, FaExclamationTriangle, FaCalendarCheck } from 'react-icons/fa';
 
 export default function ResidentPortal() {
+  const [menuOpen, setMenuOpen] = useState(false);
     const token = localStorage.getItem('authToken');
     const userType = localStorage.getItem('userType');
     const isAuthenticated = token && userType === 'resident';
@@ -13,6 +15,14 @@ export default function ResidentPortal() {
     const handleNavigate = (path) => {
       navigate(path);
     };
+    const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+   const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userType');
+    navigate('/');
+  };
 
   	if (!isAuthenticated) {
     	return <Navigate to="/" replace />;
@@ -21,6 +31,15 @@ export default function ResidentPortal() {
   return (
     <main className="container">
       <header className="header">
+        <section className="hamburger-menu">
+                  <FaBars className="hamburger-icon" onClick={toggleMenu} />
+                  {menuOpen && (
+                    <nav className="dropdown-menu">
+                      <button onClick={() => handleNavigate('/')}>Home</button>
+                      <button onClick={handleSignOut}>Sign Out</button>
+                    </nav>
+                  )}
+                </section>
         <section className="header-content">
           <section className="resident-icon"><FaHome/></section>
           <section>
@@ -40,14 +59,6 @@ export default function ResidentPortal() {
           <p>Reserve community spaces like the gym, pool, or meeting rooms.</p>
           <button className="btn btn-facilities" onClick={() => handleNavigate("/Facility-selection")}>Book Now</button>
         </article>
-
-        <article className="card card-events">
-          <section className="card-icon"><FaCalendar /></section>
-          <h2>View Events</h2>
-          <p>Stay updated on community gatherings, meetings, and activities.</p>
-          <button className="btn btn-events" onClick={() => handleNavigate("/calendar")}>See Calendar</button>
-        </article>
-
         <article className="card card-issues">
           <section className="card-icon"><FaExclamationTriangle/></section>
           <h2>Report Issues</h2>

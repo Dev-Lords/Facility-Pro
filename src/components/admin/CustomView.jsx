@@ -12,8 +12,11 @@ import {
   CheckSquare, Square, Home
 } from "lucide-react";
 import "./CustomView.css";
+import { FaBars } from 'react-icons/fa';
+
 
 const CustomView = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [bookings, setBookings] = useState([]);
   const [events, setEvents] = useState([]);
   const [issues, setIssues] = useState([]);
@@ -28,6 +31,14 @@ const CustomView = () => {
     navigate(path);
   };
   
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+   const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userType');
+    navigate('/');
+  };
   // Date filtering states
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -942,9 +953,19 @@ const CustomView = () => {
   return (
     <main className="dashboard">
       <article className="dashboard-container">
-        <header className="dashboard-header">
-          <h1>Custom Reports</h1>
-          <p>Tailor your insights—analyze facility data your way with powerful visual tools</p>
+        <header className="user-management-header">
+          <section className="hamburger-menu">
+                    <FaBars className="hamburger-icon" onClick={toggleMenu} />
+                    {menuOpen && (
+                      <nav className="dropdown-menu">
+                        <button onClick={() => handleNavigate('/')}>Home</button>
+                        <button onClick={handleSignOut}>Sign Out</button>
+                      </nav>
+                    )}
+                  </section>
+          <h1 className=" user-management-title" >Custom Reports</h1>
+
+          <p className=" user-management-subtitle">Tailor your insights—analyze facility data your way with powerful visual tools</p>
         </header>
 
         {renderDashboardSummary()}

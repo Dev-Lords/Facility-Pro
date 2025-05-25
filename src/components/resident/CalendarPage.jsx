@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './CalendarPage.css';
 import { fetchAvailableNumericSlots ,createBooking,validBooking} from "./../../../backend/services/bookingService";
 import { useNavigate } from 'react-router-dom';
-import { getFunctions, httpsCallable } from "firebase/functions";
-import { app } from "../../../backend/firebase/firebase.config.js";
-const functions = getFunctions(app);
-const callFetchAvailableNumericSlots = httpsCallable(functions, "fetchAvailableNumericSlots");
+import { FaBars } from 'react-icons/fa';
+
 
 const convertToTimeSlots = (hours) => {
   const convertToTimeSlot = (hour) => {
@@ -47,7 +45,7 @@ const convertToNumericHours = (slots) => {
 const CalendarPage = () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
+  const [menuOpen, setMenuOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [selectedDate, setSelectedDate] = useState(null);
@@ -70,6 +68,14 @@ const CalendarPage = () => {
   
   const handleNavigate = (path) => {
     navigate(path);
+  };
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+   const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userType');
+    navigate('/');
   };
 
   const unbookableDates = [];
@@ -238,9 +244,18 @@ const CalendarPage = () => {
 
   return (
     <article className={`calendar-container ${(popupVisible || confirmationVisible)||bookingSubmittedVisible ? 'blurred' : ''}`}>
-      <header className="calendar-header">
-        <h1>Facility Booking Calendar</h1>
-        <p>Select a date to book your preferred facility</p>
+      <header className="user-management-header">
+          <section className="hamburger-menu">
+                    <FaBars className="hamburger-icon" onClick={toggleMenu} />
+                    {menuOpen && (
+                      <nav className="dropdown-menu">
+                        <button onClick={() => handleNavigate('/')}>Home</button>
+                        <button onClick={handleSignOut}>Sign Out</button>
+                      </nav>
+                    )}
+                  </section>
+        <h1 className=" user-management-title">Facility Booking Calendar</h1>
+        <p className=" user-management-subtitle">Select a date to book your preferred facility</p>
       </header>
 
          {/* Breadcrumb */}
@@ -253,7 +268,7 @@ const CalendarPage = () => {
         </button>
         <span className="separator">/</span>
         
-        <span className="current-page"></span> Book Events
+        <span className="current-page"></span> Book slots
       </nav>
 
       <nav className="month-nav">

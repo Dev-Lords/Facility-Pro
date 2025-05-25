@@ -1,8 +1,7 @@
-import React, { PureComponent, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   PieChart,
   Pie,
-  Sector,
   Cell,
   ResponsiveContainer,
   Legend,
@@ -15,6 +14,7 @@ import { unparse } from "papaparse";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { useNavigate } from "react-router-dom";
+import {  FaBars } from 'react-icons/fa';
 
 // Define color palettes for pie charts
 const BOOKING_COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
@@ -64,6 +64,7 @@ const getChartData = (data) => {
 
 export default function UsageTrends() {
   // All variables used to set data computed from logService Functions
+  const [menuOpen, setMenuOpen] = useState(false);
   const [issuesChart, setIssuesChart] = useState(null);
   const [bookingsChart, setBookingsChart] = useState(null);
   const [totalBookings, setTotalBookings] = useState(null);
@@ -78,6 +79,14 @@ export default function UsageTrends() {
 const handleNavigate = (path) => {  
   navigate(path);
 };
+const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+   const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userType');
+    navigate('/');
+  };
 
   //______________________________________
 
@@ -558,7 +567,16 @@ const handleNavigate = (path) => {
 
       {isLoading && <div className="loading-message">Loading...</div>}
       {/* This is for the header, to show something, idk*/}
-      <header className="usageTrends-header">
+      <header className="dashboard-header">
+          <section className="hamburger-menu">
+                    <FaBars className="hamburger-icon" onClick={toggleMenu} />
+                    {menuOpen && (
+                      <nav className="dropdown-menu">
+                        <button onClick={() => handleNavigate('/')}>Home</button>
+                        <button onClick={handleSignOut}>Sign Out</button>
+                      </nav>
+                    )}
+                  </section>
         <h2>Facility Trends Overview</h2>
       </header>
 

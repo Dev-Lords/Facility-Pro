@@ -10,11 +10,12 @@ import {
   getDocs 
 } from 'firebase/firestore';
 import { app } from "../../../backend/firebase/firebase.config.js";
-import { FaCalendarAlt, FaClock } from 'react-icons/fa';
+import { FaCalendarAlt, FaClock ,FaBars} from 'react-icons/fa';
 import './CreateEvents.css';
 
 const CreateEvents = () => {
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -31,6 +32,14 @@ const CreateEvents = () => {
     eventType: '',
     isRecurring: false
   });
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+   const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userType');
+    navigate('/');
+  };
 
   const userRole = localStorage.getItem('role');
   const dashboardPath = {
@@ -249,6 +258,7 @@ const CreateEvents = () => {
 
   return (
     <section className="issue-form-container">
+      
       <article className="issue-form">
         <aside className="form-image">
           <p className="form-message-bounce">

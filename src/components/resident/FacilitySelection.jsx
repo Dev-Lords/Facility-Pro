@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './FacilitySelection.css';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { FaUser, FaSwimmer, FaDumbbell, FaFutbol, FaBasketballBall } from 'react-icons/fa';
+import { FaSwimmer, FaDumbbell, FaFutbol, FaBasketballBall,FaBars } from 'react-icons/fa';
 
 export default function FacilitiesPage() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const token = localStorage.getItem('authToken');
   const userType = localStorage.getItem('userType');
   const isAuthenticated = token && userType === 'resident';
@@ -12,7 +13,14 @@ export default function FacilitiesPage() {
   const handleNavigate = (path) => {
     navigate(path);
   };
-
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+   const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userType');
+    navigate('/');
+  };
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }
@@ -20,14 +28,23 @@ export default function FacilitiesPage() {
   return (
     <main className="container">
       
-      <header className="header">
-        <section className="header-content">
-          <section className="resident-icon"><FaUser /></section>
-          <section>
-            <h1>Choose a Facility to Book</h1>
-            <p>Select one of the available facilities below</p>
-          </section>
-        </section>
+      <header className="user-management-header">
+    
+          <section className="hamburger-menu">
+                    <FaBars className="hamburger-icon" onClick={toggleMenu} />
+                    {menuOpen && (
+                      <nav className="dropdown-menu">
+                        <button onClick={() => handleNavigate('/')}>Home</button>
+                        <button onClick={handleSignOut}>Sign Out</button>
+                      </nav>
+                    )}
+            </section>
+        
+        
+            <h1 className=" user-management-title">Choose a Facility to Book</h1>
+            <p className=" user-management-subtitle">Select one of the available facilities below</p>
+      
+       
       </header>
 
       <section className="card-grid">

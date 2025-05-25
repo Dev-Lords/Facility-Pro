@@ -3,7 +3,6 @@ import * as React from "react";
 import { DataGrid } from '@mui/x-data-grid';
 
 const columns = [
-  { field: "issueID", headerName: 'ID', width: 200 },
   { field: "issueTitle", headerName: 'Title', width: 200 },
   { field: "issueStatus", headerName: 'Status', width: 150 },
 ];

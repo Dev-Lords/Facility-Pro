@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getIssueByUserId } from '../../../backend/services/issuesService';
 import { Issue } from '../../../backend/models/issue';
-import './issueHistory.css'; // We'll add the CSS styles in a separate file
+import './issueHistory.css'; 
+import { FaHome,FaBars,FaWrench, } from 'react-icons/fa';
+
 
 const IssueHistory = () => {
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
@@ -27,7 +30,14 @@ const IssueHistory = () => {
 
     fetchIssues();
   }, []);
-
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+   const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userType');
+    navigate('/');
+  };
   const getStatusClass = (status) => {
     switch(status) {
       case 'open':
@@ -77,10 +87,20 @@ const IssueHistory = () => {
 
       {error && <div role="alert" className="error-message">{error}</div>}
 
-      <header className="page-banner">
+      <header className="dashboard-header">
+        
+          <section className="hamburger-menu">
+                    <FaBars className="hamburger-icon" onClick={toggleMenu} />
+                    {menuOpen && (
+                      <nav className="dropdown-menu">
+                        <button onClick={() => handleNavigate('/')}>Home</button>
+                        <button onClick={handleSignOut}>Sign Out</button>
+                      </nav>
+                    )}
+                  </section>
         <div className="banner-content">
           <div className="icon-container">
-            <div className="home-icon">🏠</div>
+            <div className="home-icon"><FaWrench/></div>
           </div>
           <div className="banner-text">
             <h1>Issue History</h1>
@@ -95,7 +115,7 @@ const IssueHistory = () => {
           onClick={() => handleNavigate('/resident-home')} 
           className="breadcrumb-link"
         >
-          <span className="home-icon">🏠</span> Dashboard
+          <span className="home-icon"><FaHome/></span> Dashboard
         </button>
         <span className="separator">/</span>
         <button

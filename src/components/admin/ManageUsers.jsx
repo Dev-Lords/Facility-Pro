@@ -4,8 +4,10 @@ import { Pencil, Trash2, Filter, Search, UserPlus, ChevronDown} from "lucide-rea
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "./ManageUsers.css";
+import {  FaBars } from 'react-icons/fa';
 
 const ManageUsers = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);   //pop up to delete user
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [editUser, setEditUser] = useState(null);      //pop up to edit user
@@ -26,6 +28,14 @@ const ManageUsers = () => {
 
   const handleNavigate = (path) => {
     navigate(path);
+  };
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+   const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userType');
+    navigate('/');
   };
 
   //filter and search properties
@@ -205,6 +215,16 @@ useEffect(() => {
       )}
 
       <header className="user-management-header">
+      
+          <section className="hamburger-menu">
+                    <FaBars className="hamburger-icon" onClick={toggleMenu} />
+                    {menuOpen && (
+                      <nav className="dropdown-menu">
+                        <button onClick={() => handleNavigate('/')}>Home</button>
+                        <button onClick={handleSignOut}>Sign Out</button>
+                      </nav>
+                    )}
+                  </section>
         <h1 className="user-management-title">Manage Users</h1>
         <p className="user-management-subtitle">
           Onboard members, revoke access and assign roles!

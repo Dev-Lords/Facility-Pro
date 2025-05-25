@@ -1,10 +1,11 @@
-import React from 'react';
-import './issueMenu.css'; // Import your CSS file for styling
+import React, { useState, useEffect } from 'react';
+import './issueMenu.css'; 
 import { useNavigate, Navigate } from 'react-router-dom';
-import { FaWrench, FaExclamationTriangle, FaHistory, FaFutbol, FaBasketballBall } from 'react-icons/fa';
+import { FaBars,FaHome, FaWrench, FaExclamationTriangle, FaHistory } from 'react-icons/fa';
 
 
 export default function IssueMenu(){
+  const [menuOpen, setMenuOpen] = useState(false);
   const token = localStorage.getItem('authToken');
   const userType = localStorage.getItem('userType');
   const isAuthenticated = token && userType === 'resident';
@@ -14,6 +15,14 @@ export default function IssueMenu(){
     console.log(`Navigating to ${path}`);
     navigate(path);
   };
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+   const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userType');
+    navigate('/');
+  };
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }
@@ -21,6 +30,15 @@ export default function IssueMenu(){
   return (
     <main className="container">
       <header className="header">
+        <section className="hamburger-menu">
+          <FaBars className="hamburger-icon" onClick={toggleMenu} />
+          {menuOpen && (
+            <nav className="dropdown-menu">
+              <button onClick={() => handleNavigate('/')}>Home</button>
+              <button onClick={handleSignOut}>Sign Out</button>
+            </nav>
+          )}
+        </section>
         <section className="header-content">
           <section className="issues-icon"><FaWrench/></section>
           <section>
@@ -37,7 +55,7 @@ export default function IssueMenu(){
           onClick={() => handleNavigate('/resident-home')} 
           className="breadcrumb-link"
         >
-          <span className="home-icon">🏠</span> Dashboard
+          <span className="home-icon"><FaHome/></span> Dashboard
         </button>
         <span className="separator">/</span>
         <span className="current-page">Report Issues</span>
