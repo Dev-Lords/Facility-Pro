@@ -553,18 +553,18 @@ const toggleMenu = () => {
     if (isNaN(numChange)) return null;
 
     if (numChange > 0) {
-      return <span className="trend-up">↑</span>;
+      return <section className="trend-up">↑</section>;
     } else if (numChange < 0) {
-      return <span className="trend-down">↓</span>;
+      return <section className="trend-down">↓</section>;
     }
-    return <span className="trend-neutral">→</span>;
+    return <section className="trend-neutral">→</section>;
   };
 
   return (
     <main className="usageTrends-main">
-      {error && <div className="error-message">{error}</div>}
+      {error && <section className="error-message">{error}</section>}
 
-      {isLoading && <div className="loading-message">Loading...</div>}
+      {isLoading && <section className="loading-message">Loading...</section>}
       {/* This is for the header, to show something, idk*/}
       <header className="dashboard-header">
           <section className="hamburger-menu">
@@ -585,13 +585,13 @@ const toggleMenu = () => {
           onClick={() => handleNavigate('/admin-home')} 
           className="breadcrumb-link"
         >
-          <span className="home-icon">🏠</span> Dashboard
+          <section className="home-icon">🏠</section> Dashboard
         </button>
-        <span className="separator">/</span>
+        <section className="separator">/</section>
         <button
         className='breadcrumb-link'
           onClick={() => handleNavigate('/reports')}>
-        <span className="current-page"></span> Reports 
+        <section className="current-page"></section> Reports 
         </button>
       </nav>
 

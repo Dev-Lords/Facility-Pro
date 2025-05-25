@@ -188,7 +188,7 @@ const IssuesPage = () => {
             {isLoading ? (
               <tr>
                 <td colSpan="6" className="loading-cell">
-                  <span className="table-spinner"></span>
+                  <section className="table-spinner"></section>
                   <p>Loading issues...</p>
                 </td>
               </tr>
@@ -205,18 +205,18 @@ const IssuesPage = () => {
                 >
                   <td>{issue.issueTitle}</td>
                   <td>
-                    <span
+                    <section
                       className={`status-badge status-${issue.issueStatus}`}
                     >
                       {issue.issueStatus}
-                    </span>
+                    </section>
                   </td>
                   <td>
-                    <span
+                    <section
                       className={`priority-badge priority-${issue.priority}`}
                     >
                       {issue.priority}
-                    </span>
+                    </section>
                   </td>
                   <td>{issue.location}</td>
                   <td>{new Date(issue.reportedAt).toLocaleDateString()}</td>
@@ -228,7 +228,7 @@ const IssuesPage = () => {
       </section>
 
       <footer className="pagination-controls">
-        <span>Rows per page: </span>
+        <section>Rows per page: </section>
         <select
           value={rowsPerPage}
           onChange={(e) => setRowsPerPage(Number(e.target.value))}
@@ -239,11 +239,11 @@ const IssuesPage = () => {
           <option value={200}>200</option>
         </select>
 
-        <span className="page-info" data-testid="page-info">
+        <section className="page-info" data-testid="page-info">
           {startIndex + 1}–
           {Math.min(startIndex + rowsPerPage, filteredIssues.length)} of{" "}
           {filteredIssues.length}
-        </span>
+        </section>
 
         <button
           onClick={handlePreviousPage}
@@ -302,7 +302,7 @@ const IssuesPage = () => {
                       const isActive = index === currentIndex;
 
                       return (
-                        <span
+                        <section
                           key={status}
                           className={`status-step ${
                             isCompleted ? "completed" : ""
@@ -312,13 +312,13 @@ const IssuesPage = () => {
                           }
                           data-status={status}
                         >
-                          <span className="step-circle"></span>
-                          <span className="step-label">
+                          <section className="step-circle"></section>
+                          <section className="step-label">
                             {status
                               .replace("-", " ")
                               .replace(/\b\w/g, (l) => l.toUpperCase())}
-                          </span>
-                        </span>
+                          </section>
+                        </section>
                       );
                     })}
                   </nav>
