@@ -45,6 +45,7 @@ export default function LogIssueForm() {
     
     if (!currentUser) {
       alert("You must be logged in to submit an issue");
+      setError("You must be logged in to submit an issue");
       return;
     }
     
@@ -104,9 +105,6 @@ export default function LogIssueForm() {
 
   return (
     <main className="issue-form-container">
-
-
-
       <section className="issue-form">
         <figure className="form-image">
           <blockquote className="form-message-bounce">
@@ -118,7 +116,7 @@ export default function LogIssueForm() {
           </figure>
         </figure>
 
-        <form className="form-fields" onSubmit={handleSubmit}>
+        <form className="form-fields" onSubmit={handleSubmit} role="form">
           <h2>Log an Issue</h2>
           
           {currentUser && (

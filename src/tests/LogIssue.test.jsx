@@ -263,11 +263,16 @@ describe('LogIssueForm Component', () => {
     
     render(<LogIssueForm />);
     
+    fireEvent.submit(screen.getByRole('form'));
+
     // Check if login warning is displayed
-    expect(screen.getByText('You must be logged in to submit an issue')).toBeInTheDocument();
-    
+    await waitFor(() =>
+    expect(screen.getByText('You must be logged in to submit an issue')).toBeInTheDocument()
+    );
+
     // Try to submit the form
     fireEvent.click(screen.getByText('Submit Issue'));
+    
     
     // Confirm that createIssue was not called
     expect(createIssue).not.toHaveBeenCalled();
