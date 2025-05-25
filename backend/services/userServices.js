@@ -1,43 +1,30 @@
 // src/services/UserService.js
 
-import { db } from "../firebase/firebase.config.js";
-import { User } from "../models/user.js"; // Adjust the import path as necessary
-import { doc,getDoc,setDoc}from "firebase/firestore";
 
-// Create or update user in Firestore
-export const saveUser = async (userData) => {  
-  const user = new User(userData);
-  const userRef = doc(db, "users", user.uid);
-
+export const saveUser = async (userData) => {
+    const url = `https://us-central1-facilty-pro.cloudfunctions.net/api/saveUser`;
   try {
-    await setDoc(
-      userRef,
-      {
-        ...user.toJSON(),
-        updatedAt: new Date().toISOString()
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
       },
-      { merge: true }
-    );
+      body: JSON.stringify(userData)
+    });
 
-    return user;
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || 'Failed to save user');
+    }
+
+    return data.user;
   } catch (error) {
-    console.error("Error saving user:", error);
+    console.error('Error saving user via API:', error);
     throw error;
   }
 };
 
-
-// Check if user exists
-export const userExists = async (uid) => {  
-  try {
-    const userRef = doc(db, "users", uid);
-    const userDoc = await getDoc(userRef);
-    return userDoc.exists();
-  } catch (error) {
-    console.error("Error checking user existence:", error);
-    throw error;
-  }
-};
 
 //Admin-functions:
 
