@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { HelpCircle, Search, Clock, MapPin, Users, Shield, Star, ChevronDown, ChevronUp } from 'lucide-react';
+import React from 'react';
 
 export default function FAQPage() {
   const [activeQuestion, setActiveQuestion] = useState(null);

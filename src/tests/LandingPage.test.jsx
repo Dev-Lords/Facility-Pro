@@ -1,23 +1,21 @@
-// LandingPage.test.jsx
 import React from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import LandingPage from '../components/LandingPage.jsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
-// Mock the router
+// Mock react-router-dom
 jest.mock('react-router-dom', () => ({
-  useNavigate: jest.fn()
+  useNavigate: jest.fn(),
+  Link: ({ children, to }) => <a href={to}>{children}</a>
 }));
 
-// Mock the image imports
-jest.mock('../assets/polish/basketball_court.jpg', () => 'basketball-image-mock');
-jest.mock('../assets/polish/Swimming_pools.jpg', () => 'swimming-image-mock');
-jest.mock('../assets/polish/Tennis_Courts.jpg', () => 'tennis-image-mock');
-jest.mock('../assets/polish/Soccer_field.jpg', () => 'soccer-image-mock');
-jest.mock('../assets/polish/Running_track.jpg', () => 'track-image-mock');
-jest.mock('../assets/polish/Gymnastics.png', () => 'gymnastics-image-mock');
-jest.mock('../assets/polish/Dance_studio.jpg', () => 'dance-image-mock');
+// Mock images to prevent import errors
+jest.mock('../assets/polish/basketball_court.jpg', () => 'basketball-court-mock.jpg');
+jest.mock('../assets/polish/Swimming_pools.jpg', () => 'swimming-pools-mock.jpg');
+jest.mock('../assets/polish/Tennis_Courts.jpg', () => 'tennis-courts-mock.jpg');
+jest.mock('../assets/polish/Soccer_field.jpg', () => 'soccer-field-mock.jpg');
+jest.mock('../assets/polish/Gymnastics.png', () => 'gymnastics-mock.png');
 
 describe('LandingPage Component', () => {
   const mockNavigate = jest.fn();
@@ -25,7 +23,6 @@ describe('LandingPage Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     useNavigate.mockReturnValue(mockNavigate);
-    // Mock timers for handling the slideshow interval
     jest.useFakeTimers();
   });
 
@@ -36,196 +33,376 @@ describe('LandingPage Component', () => {
   test('renders the landing page correctly', () => {
     render(<LandingPage />);
     
-    // Check header elements
     expect(screen.getByText('Facility Pro')).toBeInTheDocument();
     expect(screen.getByText('Documentation')).toBeInTheDocument();
-    expect(screen.getByText('Terms')).toBeInTheDocument();
-    expect(screen.getByText('Privacy')).toBeInTheDocument();
-    expect(screen.getByText('FAQs')).toBeInTheDocument();
-    
-    // Check main content
-    expect(
-      screen.getByText('Facility Pro lets you schedule and manage your local facilities, Hassle Free.')
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText('We want to see communities outside again. Plan sports days, without the headache.')
-    ).toBeInTheDocument();
-    
-    // Check buttons
-    expect(screen.getByText('Login')).toBeInTheDocument();
-    expect(screen.getByText('Create Account')).toBeInTheDocument();
-    
-    // Check sports section
-    expect(screen.getByText('Community Sports Made Simple')).toBeInTheDocument();
-    expect(screen.getByText('Featured Facilities:')).toBeInTheDocument();
-    
-    //feature in construction
-    /* Check testimonial
-    expect(screen.getByText(/Facility Pro transformed how our local basketball league operates/)).toBeInTheDocument();
-    expect(screen.getByText(/- Mike J., Community Basketball League Organizer/)).toBeInTheDocument();*/
-    
-    // Check footer
-    expect(screen.getByText(/© 2025 Facility Pro. All rights reserved./)).toBeInTheDocument();
+    expect(screen.getByText(/We want to see communities outside again/)).toBeInTheDocument();
   });
   
   test('navigates to login page when Login button is clicked', () => {
     render(<LandingPage />);
-    
-    const loginButton = screen.getByText('Login');
-    fireEvent.click(loginButton);
-    
+    fireEvent.click(screen.getByText('Login'));
     expect(mockNavigate).toHaveBeenCalledWith('/LoginPage');
   });
-  
-  test('navigates to signup page when Create Account button is clicked', () => {
+
+  test('navigates to signup page when signup buttons are clicked', () => {
     render(<LandingPage />);
     
-    const signupButton = screen.getByText('Create Account');
-    fireEvent.click(signupButton);
+    // Test "Book a Facility Now" button
+    fireEvent.click(screen.getByText('Book a Facility Now'));
+    expect(mockNavigate).toHaveBeenCalledWith('/SignupPage');
     
+    // Test "Create Account" button
+    fireEvent.click(screen.getByText('Create Account'));
     expect(mockNavigate).toHaveBeenCalledWith('/SignupPage');
   });
-  
-  test('renders FacilitySlideshow with initial slide', () => {
+
+  test('renders hero section with typing animation', () => {
     render(<LandingPage />);
     
-    // Initial slide should be Basketball Courts
-    expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
-    expect(screen.getByText('Basketball Courts')).toBeInTheDocument();
-    
-    // Check that all dots are rendered (one for each facility)
-    const dots = screen.getAllByRole('button', { name: '' }); // The dots have no accessible name
-    expect(dots.length).toBe(7); // 7 facilities in the data
+    // Check for hero section elements
+    expect(screen.getByText('Get Started Today')).toBeInTheDocument();
+    expect(screen.getByText("Don't have an account?")).toBeInTheDocument();
+    expect(screen.getByText(/We want to see communities outside again/)).toBeInTheDocument();
   });
-  
-  test('changes slide when clicking next arrow', () => {
+
+  test('renders features section', () => {
     render(<LandingPage />);
     
-    // First slide is Basketball Courts
-    expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    expect(screen.getByText('Why Choose Facility Pro?')).toBeInTheDocument();
+    expect(screen.getByText('Community Management')).toBeInTheDocument();
+    expect(screen.getByText('Quality Assurance')).toBeInTheDocument();
+    expect(screen.getByText('Premium Experience')).toBeInTheDocument();
+  });
+
+  test('renders facilities section', () => {
+    render(<LandingPage />);
     
-    // Click next arrow
-    const nextArrow = screen.getByText('>');
+    expect(screen.getByText('Premium Facilities')).toBeInTheDocument();
+    expect(screen.getByText('Discover world-class venues for every sport and activity')).toBeInTheDocument();
+  });
+
+  test('renders footer', () => {
+    render(<LandingPage />);
+    
+    expect(screen.getByText('© 2025 Facility Pro. All rights reserved.')).toBeInTheDocument();
+  });
+
+  test('renders FacilitySlideshow with initial slide', async () => {
+    render(<LandingPage />);
+    
+    // Wait for the slideshow to render
+    await waitFor(() => {
+      expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    });
+    
+    // Check for slideshow controls
+    const leftArrow = screen.getByText('‹');
+    const rightArrow = screen.getByText('›');
+    
+    expect(leftArrow).toBeInTheDocument();
+    expect(rightArrow).toBeInTheDocument();
+    
+    // Check for dots (they should be buttons with class 'dot')
+    const dots = screen.getAllByRole('button').filter(button => 
+      button.className.includes('dot')
+    );
+    expect(dots.length).toBe(5); // 5 facilities in the actual component
+  });
+
+  test('changes slide when clicking next arrow', async () => {
+    render(<LandingPage />);
+    
+    // Wait for initial slide
+    await waitFor(() => {
+      expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    });
+    
+    // Click next arrow (›)
+    const nextArrow = screen.getByText('›');
     fireEvent.click(nextArrow);
     
-    // Now should show Swimming Pools
-    expect(screen.getByAltText('Swimming Pools')).toBeInTheDocument();
-    expect(screen.getByText('Swimming Pools')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByAltText('Swimming Pools')).toBeInTheDocument();
+    });
   });
-  
-  test('changes slide when clicking previous arrow', () => {
+
+  test('changes slide when clicking previous arrow', async () => {
     render(<LandingPage />);
     
-    // First slide is Basketball Courts
-    expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    // Wait for initial slide
+    await waitFor(() => {
+      expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    });
     
-    // Click previous arrow (should wrap to the last slide)
-    const prevArrow = screen.getByText('<');
+    // Click previous arrow (‹) - should wrap to last slide
+    const prevArrow = screen.getByText('‹');
     fireEvent.click(prevArrow);
     
-    // Now should show the last slide (Dance Studios)
-    expect(screen.getByAltText('Dance Studios')).toBeInTheDocument();
-    expect(screen.getByText('Dance Studios')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByAltText('Gymn')).toBeInTheDocument(); // Last slide is 'Gymn' in actual component
+    });
   });
-  
-  test('changes slide when clicking on dot indicators', () => {
+
+  test('changes slide when clicking on dot indicators', async () => {
     render(<LandingPage />);
     
-    // Get all dot buttons
-    const dots = screen.getAllByRole('button', { name: '' });
+    // Wait for initial slide
+    await waitFor(() => {
+      expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    });
     
-    // Click the third dot (index 2, Tennis Courts)
+    // Get all dot buttons
+    const dots = screen.getAllByRole('button').filter(button => 
+      button.className.includes('dot')
+    );
+    
+    // Click on the third dot (index 2) - should show Tennis Courts
     fireEvent.click(dots[2]);
     
-    // Now should show Tennis Courts
-    expect(screen.getByAltText('Tennis Courts')).toBeInTheDocument();
-    expect(screen.getByText('Tennis Courts')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByAltText('Tennis Courts')).toBeInTheDocument();
+    });
   });
-  
-  test('automatically advances slides after timeout', () => {
+
+  test('automatically advances slides after timeout', async () => {
     render(<LandingPage />);
     
-    // First slide is Basketball Courts
-    expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
-    
-    // Advance timer by 5 seconds (the auto-advance interval)
-    act(() => {
-      jest.advanceTimersByTime(5000);
+    // Wait for initial slide
+    await waitFor(() => {
+      expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
     });
     
-    // Should now show the second slide (Swimming Pools)
-    expect(screen.getByAltText('Swimming Pools')).toBeInTheDocument();
-    expect(screen.getByText('Swimming Pools')).toBeInTheDocument();
+    // Advance time by 5 seconds (slideshow interval)
+    jest.advanceTimersByTime(5000);
     
-    // Advance timer by another 5 seconds
-    act(() => {
-      jest.advanceTimersByTime(5000);
+    await waitFor(() => {
+      expect(screen.getByAltText('Swimming Pools')).toBeInTheDocument();
     });
-    
-    // Should now show the third slide (Tennis Courts)
-    expect(screen.getByAltText('Tennis Courts')).toBeInTheDocument();
-    expect(screen.getByText('Tennis Courts')).toBeInTheDocument();
   });
-  
-  test('dot indicator for current slide has active class', () => {
+
+  test('dot indicator for current slide has active class', async () => {
     render(<LandingPage />);
     
-    // Get all dot buttons
-    const dots = screen.getAllByRole('button', { name: '' });
+    // Wait for slideshow to render
+    await waitFor(() => {
+      expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    });
     
-    // First dot should have active class
+    const dots = screen.getAllByRole('button').filter(button => 
+      button.className.includes('dot')
+    );
+    
+    // First dot should be active
     expect(dots[0]).toHaveClass('active');
     
-    // Click the third dot (index 2)
+    // Click on third dot
     fireEvent.click(dots[2]);
     
-    // Third dot should now have active class
-    expect(dots[2]).toHaveClass('active');
-    // First dot should no longer have active class
-    expect(dots[0]).not.toHaveClass('active');
+    await waitFor(() => {
+      expect(dots[2]).toHaveClass('active');
+      expect(dots[0]).not.toHaveClass('active');
+    });
   });
-  
-  test('slideshow wraps around after reaching the end', () => {
+
+  test('slideshow wraps around after reaching the end', async () => {
     render(<LandingPage />);
     
-    // Get to the last slide by clicking next arrow multiple times
-    const nextArrow = screen.getByText('>');
+    // Wait for initial slide
+    await waitFor(() => {
+      expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    });
     
-    // Click 6 times to reach the last slide (Dance Studios)
-    for (let i = 0; i < 6; i++) {
+    const nextArrow = screen.getByText('›');
+    
+    // Click through all slides (5 total, so 4 clicks to reach the last one)
+    for (let i = 0; i < 4; i++) {
       fireEvent.click(nextArrow);
     }
     
-    // Should now show Dance Studios
-    expect(screen.getByAltText('Dance Studios')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByAltText('Gymn')).toBeInTheDocument(); // Last slide
+    });
     
-    // Click next one more time to wrap around
+    // One more click should wrap back to the first slide
     fireEvent.click(nextArrow);
     
-    // Should now show the first slide again (Basketball Courts)
-    expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    });
   });
-  
-  test('cleans up interval timer when unmounted', () => {
-    const { unmount } = render(<LandingPage />);
-    
-    // Spy on clearInterval
-    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
-    
-    // Unmount the component
-    unmount();
-    
-    // Expect clearInterval to have been called
-    expect(clearIntervalSpy).toHaveBeenCalled();
-    
-    // Clean up the spy
-    clearIntervalSpy.mockRestore();
-  });
-  
-  test('link to documentation points to correct URL', () => {
+
+  test('slideshow pauses on hover and resumes on leave', async () => {
     render(<LandingPage />);
     
+    // Wait for initial slide
+    await waitFor(() => {
+      expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    });
+    
+    // Find the slide element and hover over it
+    const slideElement = screen.getByAltText('Basketball Courts').closest('figure');
+    
+    // Hover to pause
+    fireEvent.mouseEnter(slideElement);
+    
+    // Advance time - should NOT change slide while paused
+    jest.advanceTimersByTime(5000);
+    
+    // Should still be on first slide
+    expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    
+    // Leave hover to resume
+    fireEvent.mouseLeave(slideElement);
+    
+    // Now advance time - should change slide
+    jest.advanceTimersByTime(5000);
+    
+    await waitFor(() => {
+      expect(screen.getByAltText('Swimming Pools')).toBeInTheDocument();
+    });
+  });
+
+  test('play/pause button toggles slideshow', async () => {
+    render(<LandingPage />);
+    
+    // Wait for slideshow to render
+    await waitFor(() => {
+      expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    });
+    
+    // Find the play/pause button by class
+    const playPauseButton = document.querySelector('.play-pause-btn');
+    
+    expect(playPauseButton).toBeInTheDocument();
+    
+    // Initial state should be playing
+    const playIcon = playPauseButton.querySelector('.play-icon');
+    expect(playIcon).toHaveClass('playing');
+    
+    // Click to pause
+    fireEvent.click(playPauseButton);
+    
+    // Advance time - should not change slide when paused
+    jest.advanceTimersByTime(5000);
+    expect(screen.getByAltText('Basketball Courts')).toBeInTheDocument();
+    
+    // Click to resume
+    fireEvent.click(playPauseButton);
+    
+    // Advance time - should change slide when playing
+    jest.advanceTimersByTime(5000);
+    
+    await waitFor(() => {
+      expect(screen.getByAltText('Swimming Pools')).toBeInTheDocument();
+    });
+  });
+
+  test('cleans up interval timers when unmounted', () => {
+    const { unmount } = render(<LandingPage />);
+    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+    
+    unmount();
+    
+    // Should have called clearInterval for slideshow timer
+    expect(clearIntervalSpy).toHaveBeenCalled();
+    clearIntervalSpy.mockRestore();
+  });
+
+  test('renders all navigation links correctly', () => {
+    render(<LandingPage />);
+    
+    // Check header navigation
     const docLink = screen.getByText('Documentation');
-    expect(docLink.getAttribute('href')).toBe('https://dev-lords.github.io/Facility-Pro/#/');
+    expect(docLink).toHaveAttribute('href', 'https://dev-lords.github.io/Facility-Pro/#/');
+    
+    const termsLink = screen.getByText('Terms');
+    expect(termsLink).toHaveAttribute('href', '/terms');
+    
+    const faqLink = screen.getByText('FAQ');
+    expect(faqLink).toHaveAttribute('href', '/FAQ');
+  });
+
+  test('renders all feature cards with animations', () => {
+    render(<LandingPage />);
+    
+    const expectedFeatures = [
+      'Community Management', 
+      'Quality Assurance',
+      'Premium Experience'
+    ];
+    
+    expectedFeatures.forEach((feature, index) => {
+      const featureCard = screen.getByText(feature).closest('li');
+      expect(featureCard).toHaveStyle({ animationDelay: `${index * 0.1}s` });
+    });
+  });
+
+  test('typing animation component renders', () => {
+    render(<LandingPage />);
+    
+    // The typing animation should be working, we can verify the hero section exists
+    const heroSection = document.querySelector('.hero-title');
+    expect(heroSection).toBeInTheDocument();
+    
+    // Verify the subtitle is present
+    expect(screen.getByText(/We want to see communities outside again/)).toBeInTheDocument();
+  });
+
+  test('facility slideshow shows correct captions', async () => {
+    render(<LandingPage />);
+    
+    // Wait for slideshow to render
+    await waitFor(() => {
+      expect(screen.getByText('Premium indoor courts with professional lighting')).toBeInTheDocument();
+    });
+    
+    // Click next to see swimming pool caption
+    const nextArrow = screen.getByText('›');
+    fireEvent.click(nextArrow);
+    
+    await waitFor(() => {
+      expect(screen.getByText('Olympic-sized pools for all skill levels')).toBeInTheDocument();
+    });
+  });
+
+  test('CTA button has arrow icon', () => {
+    render(<LandingPage />);
+    
+    const ctaButton = screen.getByText('Book a Facility Now').closest('button');
+    const arrowIcon = ctaButton.querySelector('.cta-icon');
+    expect(arrowIcon).toBeInTheDocument();
+  });
+
+  test('auth container renders with correct structure', () => {
+    render(<LandingPage />);
+    
+    const authContainer = document.querySelector('.auth-container');
+    expect(authContainer).toBeInTheDocument();
+    expect(authContainer.tagName.toLowerCase()).toBe('form');
+    
+    // Check form elements
+    expect(screen.getByText('Get Started Today')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Login' })).toHaveClass('login-btn');
+    expect(screen.getByRole('button', { name: 'Create Account' })).toHaveClass('signup-btn');
+  });
+
+  test('feature icons render correctly', () => {
+    render(<LandingPage />);
+    
+    const featureCards = document.querySelectorAll('.feature-card');
+    expect(featureCards.length).toBe(3);
+    
+    featureCards.forEach(card => {
+      const icon = card.querySelector('.feature-icon');
+      expect(icon).toBeInTheDocument();
+    });
+  });
+
+  test('slideshow navigation has correct ARIA attributes', () => {
+    render(<LandingPage />);
+    
+    const dotsContainer = document.querySelector('.dots-container');
+    expect(dotsContainer).toBeInTheDocument();
+    expect(dotsContainer.tagName.toLowerCase()).toBe('ul');
   });
 });

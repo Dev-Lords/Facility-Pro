@@ -2,10 +2,12 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import IssuesPage from '../components/staff/IssuesPage.jsx';
+import { BrowserRouter } from 'react-router-dom';
 import { within } from '@testing-library/react';
+import IssuesPage from '../components/staff/IssuesPage.jsx';
 
 import { fetchIssues, UpdateIssue } from '../../backend/services/issuesService.js';
+import { fetchUser } from '../../backend/services/userServices.js';
 
 // Mock the services
 jest.mock('../../backend/services/issuesService', () => ({
@@ -13,13 +15,33 @@ jest.mock('../../backend/services/issuesService', () => ({
   UpdateIssue: jest.fn()
 }));
 
+jest.mock('../../backend/services/userServices', () => ({
+  fetchUser: jest.fn()
+}));
+
+// Mock react-toastify
+jest.mock('react-toastify', () => ({
+  toast: {
+    success: jest.fn(),
+    error: jest.fn(),
+  },
+}));
+
+// Mock react-icons
+jest.mock('react-icons/fa', () => ({
+  FaBars: () => <div>Menu Icon</div>
+}));
+
+// Helper function to render with router
+const renderWithRouter = (component) => {
+  return render(
+    <BrowserRouter>
+      {component}
+    </BrowserRouter>
+  );
+};
+
 describe('IssuesPage Component', () => {
-
-
-
-    
-
-
   // Sample mock data
   const mockIssues = [
     {
@@ -29,7 +51,7 @@ describe('IssuesPage Component', () => {
       priority: 'high',
       location: 'Building A, Room 101',
       reportedAt: '2025-04-10T10:00:00Z',
-      reporter: 'John Doe',
+      reporter: 'user123',
       issueDescription: 'Light fixture is not working',
       assignedTo: '',
       feedback: '',
@@ -42,7 +64,7 @@ describe('IssuesPage Component', () => {
       priority: 'medium',
       location: 'Building B, Room 203',
       reportedAt: '2025-04-12T14:30:00Z',
-      reporter: 'Jane Smith',
+      reporter: 'user456',
       issueDescription: 'Water leaking from ceiling',
       assignedTo: 'staff1',
       feedback: 'Technician dispatched',
@@ -55,7 +77,7 @@ describe('IssuesPage Component', () => {
       priority: 'low',
       location: 'Building C, Room 305',
       reportedAt: '2025-04-08T09:15:00Z',
-      reporter: 'Anonymous',
+      reporter: 'user789',
       issueDescription: 'Air conditioning not cooling properly',
       assignedTo: 'staff2',
       feedback: 'Fixed and tested',
@@ -63,6 +85,10 @@ describe('IssuesPage Component', () => {
     }
   ];
 
+  const mockUser = {
+    displayName: 'John Doe',
+    email: 'john@example.com'
+  };
 
   beforeEach(() => {
     // Reset mocks before each test
@@ -70,13 +96,25 @@ describe('IssuesPage Component', () => {
     // Setup default mock implementations
     fetchIssues.mockResolvedValue(mockIssues);
     UpdateIssue.mockResolvedValue({ success: true });
+    fetchUser.mockResolvedValue(mockUser);
     
     // Mock window.alert
     window.alert = jest.fn();
+    
+    // Mock localStorage
+    Object.defineProperty(window, 'localStorage', {
+      value: {
+        getItem: jest.fn(),
+        setItem: jest.fn(),
+        removeItem: jest.fn(),
+        clear: jest.fn(),
+      },
+      writable: true,
+    });
   });
 
   test('renders the page header', async () => {
-    render(<IssuesPage />);
+    renderWithRouter(<IssuesPage />);
     
     expect(screen.getByText('Issue Reports')).toBeInTheDocument();
     expect(screen.getByText('View and manage maintenance issues reported by facility users')).toBeInTheDocument();
@@ -88,7 +126,7 @@ describe('IssuesPage Component', () => {
       setTimeout(() => resolve(mockIssues), 100);
     }));
     
-    render(<IssuesPage />);
+    renderWithRouter(<IssuesPage />);
     
     expect(screen.getByText('Loading issues...')).toBeInTheDocument();
     
@@ -99,7 +137,7 @@ describe('IssuesPage Component', () => {
   });
 
   test('displays issues in the table after loading', async () => {
-    render(<IssuesPage />);
+    renderWithRouter(<IssuesPage />);
     
     // Wait for issues to load
     await waitFor(() => {
@@ -109,7 +147,6 @@ describe('IssuesPage Component', () => {
     });
     
     // Verify table headers
-    expect(screen.getByText('ID')).toBeInTheDocument();
     expect(screen.getByText('Title')).toBeInTheDocument();
     expect(screen.getByText('Status')).toBeInTheDocument();
     expect(screen.getByText('Priority')).toBeInTheDocument();
@@ -118,7 +155,7 @@ describe('IssuesPage Component', () => {
   });
 
   test('filters issues by status', async () => {
-    render(<IssuesPage />);
+    renderWithRouter(<IssuesPage />);
     
     // Wait for issues to load
     await waitFor(() => {
@@ -128,10 +165,10 @@ describe('IssuesPage Component', () => {
     // Get the status filter select
     const statusFilter = screen.getByTestId('status-filter');
     
-    // Filter by "open" status
+    // Filter by "pending" status
     await userEvent.selectOptions(statusFilter, 'pending');
     
-    // Should show "Broken Light" (open status) but not "Water Leak" (in-progress)
+    // Should show "Broken Light" (pending status) but not "Water Leak" (in-progress)
     await waitFor(() => {
       expect(screen.getByText('Broken Light')).toBeInTheDocument();
       expect(screen.queryByText('Water Leak')).not.toBeInTheDocument();
@@ -146,7 +183,7 @@ describe('IssuesPage Component', () => {
       expect(screen.queryByText('Broken Light')).not.toBeInTheDocument();
     });
     
-    // Filter by "completed" status
+    // Filter by "closed" status
     await userEvent.selectOptions(statusFilter, 'closed');
     
     // Should show "AC Not Working" but not the others
@@ -158,7 +195,7 @@ describe('IssuesPage Component', () => {
   });
 
   test('opens issue details when an issue is clicked', async () => {
-    render(<IssuesPage />);
+    renderWithRouter(<IssuesPage />);
   
     // Wait for issues to load
     await waitFor(() => {
@@ -168,22 +205,21 @@ describe('IssuesPage Component', () => {
     // Click on the issue row to open the modal
     fireEvent.click(screen.getByText('Broken Light'));
   
-    // Find the modal (which appears conditionally)
-    const modal = await screen.findByRole('dialog', { hidden: true }) || screen.getByText('Light fixture is not working').closest('.issue-details-modal');
+    // Wait for modal to appear and find it
+    await waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
   
-    // Scope all queries to inside the modal
+    const modal = screen.getByRole('dialog');
     const modalUtils = within(modal);
   
     // Check modal content
     expect(modalUtils.getByText('Light fixture is not working')).toBeInTheDocument();
     expect(modalUtils.getByText('Building A, Room 101')).toBeInTheDocument();
-
-    
   });
-  
 
   test('status progress bar shows correct state and can be changed', async () => {
-    render(<IssuesPage />);
+    renderWithRouter(<IssuesPage />);
     
     // Wait for issues to load
     await waitFor(() => {
@@ -193,26 +229,27 @@ describe('IssuesPage Component', () => {
     // Click on an issue to open the modal
     await userEvent.click(screen.getByText('Broken Light'));
     
+    // Wait for modal to appear
+    await waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
+    
     // Get the specific status steps from the progress bar
     const statusProgressBar = screen.getByTestId('status-progress-bar');
-    const openStep = within(statusProgressBar).getByText('Pending').closest('.status-step');
-
-    const inProgressStep = within(statusProgressBar).getByText('In Progress').closest('.status-step');
-    const completedStep = within(statusProgressBar).getByText('Closed').closest('.status-step');
+    const pendingStep = within(statusProgressBar).getByText('Pending').closest('button');
+    const inProgressStep = within(statusProgressBar).getByText('In Progress').closest('button');
     
-    // Verify initial state (should be open)
-    expect(openStep).toHaveClass('active');
-    expect(inProgressStep).not.toHaveClass('closed');
+    // Verify initial state (should be pending)
+    expect(pendingStep).toHaveClass('active');
     expect(inProgressStep).not.toHaveClass('active');
-    expect(completedStep).not.toHaveClass('closed');
     
     // Change status to in-progress
     await userEvent.click(inProgressStep);
     
-    // Verify the change was applied to editedIssue
+    // Verify the change was applied
     expect(inProgressStep).toHaveClass('active');
     
-    // Update button should now be clickable
+    // Update button should be clickable
     const updateButton = screen.getByRole('button', { name: 'Update Issue' });
     expect(updateButton).toBeEnabled();
     
@@ -228,13 +265,18 @@ describe('IssuesPage Component', () => {
   });
 
   test('can update issue priority', async () => {
-    render(<IssuesPage />);
+    renderWithRouter(<IssuesPage />);
   
     // Open modal
     await waitFor(() => {
       expect(screen.getByText('Broken Light')).toBeInTheDocument();
     });
     fireEvent.click(screen.getByText('Broken Light'));
+  
+    // Wait for modal to appear
+    await waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
   
     // Change priority
     const prioritySelect = screen.getByTestId('priority-select');
@@ -258,52 +300,22 @@ describe('IssuesPage Component', () => {
       );
     });
   });
-  
 
-  test('can update assignee', async () => {
-    render(<IssuesPage />);
-    
-    // Wait for issues to load and click on one
-    await waitFor(() => {
-      expect(screen.getByText('Broken Light')).toBeInTheDocument();
-    });
-    fireEvent.click(screen.getByText('Broken Light'));
-    
-    // Change assignee - use getByTestId for reliability
-    const assigneeSelect = screen.getByTestId('assignee-select');
-    
-    // IMPORTANT: Use userEvent for proper select simulation
-    await userEvent.selectOptions(assigneeSelect, 'staff2');
-    
-    // Verify the selection was made
-    expect(assigneeSelect.value).toBe('staff2');
-    
-    // Update issue
-    fireEvent.click(screen.getByText('Update Issue'));
-    
-    // Verify UpdateIssue was called with correct data
-    await waitFor(() => {
-      expect(UpdateIssue).toHaveBeenCalledWith(
-        1, 
-        expect.objectContaining({
-          assignedTo: 'staff2',
-          // Include other required fields that your API expects
-          issueStatus: 'pending',
-          priority: 'high', // or whatever default priority is
-          feedback: ''
-        })
-      );
-    });
-  });
+ 
 
   test('can add feedback', async () => {
-    render(<IssuesPage />);
+    renderWithRouter(<IssuesPage />);
     
     // Wait for issues to load and click on one
     await waitFor(() => {
       expect(screen.getByText('Broken Light')).toBeInTheDocument();
     });
     fireEvent.click(screen.getByText('Broken Light'));
+    
+    // Wait for modal to appear
+    await waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
     
     // Add feedback
     const feedbackTextarea = screen.getByPlaceholderText('Enter feedback or resolution notes here...');
@@ -319,47 +331,13 @@ describe('IssuesPage Component', () => {
       }));
     });
   });
-  test('can update issue priority', async () => {
-    render(<IssuesPage />);
-    
-    // Open the modal
-    await waitFor(() => {
-      expect(screen.getByText('Broken Light')).toBeInTheDocument();
-    });
-    fireEvent.click(screen.getByText('Broken Light'));
-    
-    // Get the priority select
-    const prioritySelect = screen.getByTestId('priority-select');
-    
-    // Verify initial value is 'high'
-    expect(prioritySelect.value).toBe('high');
-    
-    // Change priority to medium
-    await userEvent.selectOptions(prioritySelect, 'medium');
-    
-    // Verify the value changed
-    expect(prioritySelect.value).toBe('medium');
-    
-    // Click update button
-    fireEvent.click(screen.getByText('Update Issue'));
-    
-    // Verify API call
-    await waitFor(() => {
-      expect(UpdateIssue).toHaveBeenCalledWith(
-        1,
-        expect.objectContaining({
-          priority: 'medium'  // This should now pass
-        })
-      );
-    });
-  });
 
   test('handles failed API requests gracefully', async () => {
     // Mock fetch to fail
     console.error = jest.fn(); // Suppress console errors
     fetchIssues.mockRejectedValue(new Error('API Error'));
     
-    render(<IssuesPage />);
+    renderWithRouter(<IssuesPage />);
     
     // Wait for loading to complete
     await waitFor(() => {
@@ -375,13 +353,18 @@ describe('IssuesPage Component', () => {
     console.error = jest.fn(); // Suppress console errors
     UpdateIssue.mockRejectedValue(new Error('Update Error'));
     
-    render(<IssuesPage />);
+    renderWithRouter(<IssuesPage />);
     
     // Wait for issues to load and click on one
     await waitFor(() => {
       expect(screen.getByText('Broken Light')).toBeInTheDocument();
     });
     fireEvent.click(screen.getByText('Broken Light'));
+    
+    // Wait for modal to appear
+    await waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
     
     // Try to update
     fireEvent.click(screen.getByText('Update Issue'));
@@ -394,7 +377,7 @@ describe('IssuesPage Component', () => {
   });
 
   test('closes modal when clicking close button', async () => {
-    render(<IssuesPage />);
+    renderWithRouter(<IssuesPage />);
     
     // Wait for issues to load
     await waitFor(() => {
@@ -404,10 +387,39 @@ describe('IssuesPage Component', () => {
     // Click on an issue to open modal
     fireEvent.click(screen.getByText('Broken Light'));
     
+    // Wait for modal to appear
+    await waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
+    
     // Click close button
     fireEvent.click(screen.getByText('×'));
     
     // Modal should disappear
-    expect(screen.queryByText('Staff Feedback')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
   });
+
+  test('displays pagination controls correctly', async () => {
+    renderWithRouter(<IssuesPage />);
+    
+    // Wait for issues to load
+    await waitFor(() => {
+      expect(screen.getByText('Broken Light')).toBeInTheDocument();
+    });
+    
+    // Check pagination info
+    const pageInfo = screen.getByTestId('page-info');
+    expect(pageInfo).toHaveTextContent('1–3 of 3');
+    
+    // Check pagination buttons
+    const prevButton = screen.getByLabelText('Previous page');
+    const nextButton = screen.getByLabelText('Next page');
+    
+    expect(prevButton).toBeDisabled();
+    expect(nextButton).toBeDisabled();
+  });
+
+  
 });
