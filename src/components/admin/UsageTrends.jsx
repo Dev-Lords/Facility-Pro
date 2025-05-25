@@ -553,11 +553,11 @@ const toggleMenu = () => {
     if (isNaN(numChange)) return null;
 
     if (numChange > 0) {
-      return <span className="trend-up">↑</span>;
+      return <section className="trend-up">↑</section>;
     } else if (numChange < 0) {
-      return <span className="trend-down">↓</span>;
+      return <section className="trend-down">↓</section>;
     }
-    return <span className="trend-neutral">→</span>;
+    return <section className="trend-neutral">→</section>;
   };
 
   return (
@@ -585,13 +585,13 @@ const toggleMenu = () => {
           onClick={() => handleNavigate('/admin-home')} 
           className="breadcrumb-link"
         >
-          <span className="home-icon">🏠</span> Dashboard
+          <section className="home-icon">🏠</section> Dashboard
         </button>
-        <span className="separator">/</span>
+        <section className="separator">/</section>
         <button
         className='breadcrumb-link'
           onClick={() => handleNavigate('/reports')}>
-        <span className="current-page"></span> Reports 
+        <section className="current-page"></section> Reports 
         </button>
       </nav>
 
@@ -692,7 +692,7 @@ const toggleMenu = () => {
               </select>
             </label>
 
-            <label htmlFor="facility-filter">Facility:</label>
+            <label htmlFor="facility-filter">Facility:
 
             <select
               data-testid="facility-filter"
@@ -706,6 +706,7 @@ const toggleMenu = () => {
               <option value="soccer">Soccer Field</option>
               <option value="basketball">Basketball Court</option>
             </select>
+            </label>
             <label>
               From:
               <input
@@ -722,20 +723,6 @@ const toggleMenu = () => {
                 onChange={(e) => setEndDate(new Date(e.target.value))}
               />
             </label>
-          </section>
-          <section className="Buttons">
-            <button
-              onClick={() => exportCSV(filteredLogs)}
-              className="export-btn csv-btn"
-            >
-              Export as CSV
-            </button>
-            <button
-              onClick={() => exportPDF(filteredLogs)}
-              className="export-btn pdf-btn"
-            >
-              Export As PDF
-            </button>
           </section>
           <section className="table-section">
             <table className="log-table">
@@ -771,6 +758,20 @@ const toggleMenu = () => {
                 )}
               </tbody>
             </table>
+          </section>
+                    <section className="Buttons">
+            <button
+              onClick={() => exportCSV(filteredLogs)}
+              className="export-btn csv-btn"
+            >
+              Export as CSV
+            </button>
+            <button
+              onClick={() => exportPDF(filteredLogs)}
+              className="export-btn pdf-btn"
+            >
+              Export As PDF
+            </button>
           </section>
         </section>
       </section>
