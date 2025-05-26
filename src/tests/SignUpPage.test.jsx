@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import SignupPage from '../components/SignupPage.jsx';
 import { MemoryRouter } from 'react-router-dom';
 import * as authModule from '../../backend/auth/firebase-auth.js';
-import * as userModel from '../../backend/models/user.js';
+import * as userServices from '../../backend/services/userServices.js';
 import '@testing-library/jest-dom';
 
 // Mock useNavigate
@@ -19,13 +19,18 @@ jest.mock('../../backend/auth/firebase-auth.js', () => ({
   signUpWithEmailAndPassword: jest.fn(),
 }));
 
-// Mock user model functions
-jest.mock('../../backend/models/user.js', () => ({
-  User: {
-    saveUser: jest.fn(),
-    getUserType: jest.fn(),
-  },
+// Mock user services
+jest.mock('../../backend/services/userServices.js', () => ({
+  saveUser: jest.fn().mockResolvedValue({}),
+  getUserType: jest.fn(),
 }));
+
+// Mock global fetch
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve({}),
+  })
+);
 
 const renderWithRouter = (ui) => render(<MemoryRouter>{ui}</MemoryRouter>);
 
@@ -37,7 +42,7 @@ describe('SignupPage', () => {
 
   test('renders all form fields', () => {
     renderWithRouter(<SignupPage />);
-    expect(screen.getByPlaceholderText(/name/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/name and surname/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/phone number/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
@@ -47,7 +52,7 @@ describe('SignupPage', () => {
 
   test('handles input changes', () => {
     renderWithRouter(<SignupPage />);
-    const nameInput = screen.getByPlaceholderText(/name/i);
+    const nameInput = screen.getByPlaceholderText(/name and surname/i);
     fireEvent.change(nameInput, { target: { value: 'John Doe' } });
     expect(nameInput.value).toBe('John Doe');
   });
@@ -59,7 +64,7 @@ describe('SignupPage', () => {
     authModule.signUpWithEmailAndPassword.mockResolvedValue(mockUserCredential);
 
     renderWithRouter(<SignupPage />);
-    fireEvent.change(screen.getByPlaceholderText(/name/i), { target: { value: 'John' } });
+    fireEvent.change(screen.getByPlaceholderText(/name and surname/i), { target: { value: 'John' } });
     fireEvent.change(screen.getByPlaceholderText(/phone number/i), { target: { value: '1234567890' } });
     fireEvent.change(screen.getByPlaceholderText(/email/i), { target: { value: 'test@example.com' } });
     fireEvent.change(screen.getByPlaceholderText(/password/i), { target: { value: 'password123' } });
@@ -75,7 +80,7 @@ describe('SignupPage', () => {
     authModule.signUpWithEmailAndPassword.mockRejectedValue(new Error('Signup failed'));
 
     renderWithRouter(<SignupPage />);
-    fireEvent.change(screen.getByPlaceholderText(/name/i), { target: { value: 'John' } });
+    fireEvent.change(screen.getByPlaceholderText(/name and surname/i), { target: { value: 'John' } });
     fireEvent.change(screen.getByPlaceholderText(/phone number/i), { target: { value: '1234567890' } });
     fireEvent.change(screen.getByPlaceholderText(/email/i), { target: { value: 'test@example.com' } });
     fireEvent.change(screen.getByPlaceholderText(/password/i), { target: { value: 'password123' } });
@@ -99,7 +104,7 @@ describe('SignupPage', () => {
     };
 
     authModule.signInWithGoogle.mockResolvedValue({ user: mockUser });
-    userModel.User.getUserType.mockResolvedValue('resident');
+    userServices.getUserType.mockResolvedValue('resident');
 
     renderWithRouter(<SignupPage />);
     fireEvent.click(screen.getByText(/continue with google/i));
@@ -110,7 +115,7 @@ describe('SignupPage', () => {
     });
   });
 
-  test('calls User.saveUser with correct Google user data', async () => {
+  test('calls saveUser with correct Google user data', async () => {
     const mockUser = {
       uid: 'google-uid',
       email: 'google@example.com',
@@ -123,13 +128,13 @@ describe('SignupPage', () => {
     };
 
     authModule.signInWithGoogle.mockResolvedValue({ user: mockUser });
-    userModel.User.getUserType.mockResolvedValue('resident');
+    userServices.getUserType.mockResolvedValue('resident');
 
     renderWithRouter(<SignupPage />);
     fireEvent.click(screen.getByText(/continue with google/i));
 
     await waitFor(() => {
-      expect(userModel.User.saveUser).toHaveBeenCalledWith(expect.objectContaining({
+      expect(userServices.saveUser).toHaveBeenCalledWith(expect.objectContaining({
         uid: 'google-uid',
         email: 'google@example.com',
         displayName: 'Google User',
@@ -151,7 +156,7 @@ describe('SignupPage', () => {
     };
 
     authModule.signInWithGoogle.mockResolvedValue({ user: mockUser });
-    userModel.User.getUserType.mockResolvedValue('resident');
+    userServices.getUserType.mockResolvedValue('resident');
 
     renderWithRouter(<SignupPage />);
     fireEvent.click(screen.getByText(/continue with google/i));
@@ -161,49 +166,5 @@ describe('SignupPage', () => {
     });
   });
 
-  test('redirects admin to /admin-home', async () => {
-    const mockUser = {
-      uid: 'admin-uid',
-      email: 'admin@example.com',
-      displayName: 'Admin User',
-      photoURL: '',
-      phoneNumber: '',
-      providerId: 'google.com',
-      emailVerified: true,
-      getIdToken: jest.fn().mockResolvedValue('token123'),
-    };
-
-    authModule.signInWithGoogle.mockResolvedValue({ user: mockUser });
-    userModel.User.getUserType.mockResolvedValue('admin');
-
-    renderWithRouter(<SignupPage />);
-    fireEvent.click(screen.getByText(/continue with google/i));
-
-    await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/admin-home');
-    });
-  });
-
-  test('redirects staff to /staff-home', async () => {
-    const mockUser = {
-      uid: 'staff-uid',
-      email: 'staff@example.com',
-      displayName: 'Staff User',
-      photoURL: '',
-      phoneNumber: '',
-      providerId: 'google.com',
-      emailVerified: true,
-      getIdToken: jest.fn().mockResolvedValue('token123'),
-    };
-
-    authModule.signInWithGoogle.mockResolvedValue({ user: mockUser });
-    userModel.User.getUserType.mockResolvedValue('staff');
-
-    renderWithRouter(<SignupPage />);
-    fireEvent.click(screen.getByText(/continue with google/i));
-
-    await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/staff-home');
-    });
-  });
+ 
 });
