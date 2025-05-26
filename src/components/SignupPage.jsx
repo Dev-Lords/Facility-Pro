@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import "./Login.css";
 import { signInWithGoogle } from "../../backend/auth/firebase-auth";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../backend/models/user.js";
 import { signUpWithEmailAndPassword } from '../../backend/auth/firebase-auth';
 import { FcGoogle } from "react-icons/fc";
+import {
+  saveUser
+} from "../../backend/services/userServices.js";
 
 const SignupPage = () => {
 	 const navigate = useNavigate();
@@ -40,7 +42,7 @@ const SignupPage = () => {
 		navigate('/LoginPage');
       })
       .catch((error) => {
-        console.error("Error signing up:", error);
+       
         let message = "";
         if (error.code === "auth/email-already-in-use") {
             message = "Email already in use. Log in instead.";
@@ -62,6 +64,7 @@ setError(message);
         const result = await signInWithGoogle();
         const user = result.user;
         
+        
         const token = await user.getIdToken();
         localStorage.setItem('authToken', token);
         const userData = {
@@ -75,25 +78,14 @@ setError(message);
           user_type: user.user_type || "resident",
           createdAt: new Date().toISOString()
 		};
-		    await User.saveUser(userData);
-        const uid = user.uid;
-        const userType = await User.getUserType(uid);
-        if(userType == "admin"){
-          navigate('/admin-home');			
-        }
-        else if(userType =="resident"){
-          navigate('/resident-home');
-        }
-        else if(userType=="staff"){
-          navigate('/staff-home');
-        }
-        else{
-          navigate('/');
-        }
+		     await saveUser(userData);
+      
+        navigate('/resident-home');
+        
     
     }
       catch(error){
-        console.error("Error signing up: ", error.message);
+        
       }
       
     }

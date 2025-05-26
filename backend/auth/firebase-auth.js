@@ -21,7 +21,7 @@ export const signInWithGoogle = async () => {
     const user = result.user;
 
     // Check if user exists
-    let existingUser = await fetchUser(user.uid);
+   
 
     const userData = {
       uid: user.uid,
@@ -33,14 +33,7 @@ export const signInWithGoogle = async () => {
       emailVerified: user.emailVerified
     };
 
-    if (existingUser) {
-      userData.user_type = existingUser.user_type; // preserve user_type
-      console.log("Existing user signed in, preserving user_type:", userData.user_type);
-    } else {
-      userData.user_type = "resident"; // default role
-      userData.createdAt = new Date().toISOString();
-      console.log("Creating new user profile with default user_type");
-    }
+    
 
     await saveUser(userData);
     return result;
