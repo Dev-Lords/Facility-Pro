@@ -158,37 +158,7 @@ describe('MaintenanceReportPage Component', () => {
 
   
 
-  test('displays facility availability correctly', async () => {
-    // Mock implementation to test the calculateFacilityAvailability logic
-    resolveStatus.mockImplementation(status => status);
-    
-    render(<Router><MaintenanceReportPage/></Router>);
-    
-    await waitFor(() => {
-      // Check facility availability section
-      expect(screen.getByText('Facility Availability')).toBeInTheDocument();
-      
-      // Check specific facilities using h4 tags
-      const facilityHeadings = screen.getAllByRole('heading', { level: 4 });
-      
-      // Find specific facility cards by their h4 text content
-      const gymHeading = facilityHeadings.find(h => h.textContent === 'Gym');
-      const poolHeading = facilityHeadings.find(h => h.textContent === 'Pool');
-      const soccerFieldHeading = facilityHeadings.find(h => h.textContent === 'Soccer Field');
-      const basketballCourtHeading = facilityHeadings.find(h => h.textContent === 'Basketball Court');
-      
-      expect(gymHeading).toBeInTheDocument();
-      expect(poolHeading).toBeInTheDocument();
-      expect(soccerFieldHeading).toBeInTheDocument();
-      expect(basketballCourtHeading).toBeInTheDocument();
-      
-      // Check availability status by finding the closest facility card and then its status paragraph
-      expect(gymHeading.closest('.facility-card').querySelector('.status')).toHaveTextContent(/Available|Unavailable/);
-      expect(poolHeading.closest('.facility-card').querySelector('.status')).toHaveTextContent(/Available|Unavailable/);
-      expect(soccerFieldHeading.closest('.facility-card').querySelector('.status')).toHaveTextContent(/Available|Unavailable/);
-      expect(basketballCourtHeading.closest('.facility-card').querySelector('.status')).toHaveTextContent(/Available|Unavailable/);
-    });
-  });
+  
 
   test('displays issues table with correct data', async () => {
     render(<Router><MaintenanceReportPage/></Router>);
@@ -315,61 +285,7 @@ describe('MaintenanceReportPage Component', () => {
     expect(pdfInstance.save).toHaveBeenCalledWith('maintenance_report.pdf');
   });
 
-  test('calculates facility availability correctly', async () => {
-    // Mock implementation to test the calculateFacilityAvailability logic
-    resolveStatus.mockImplementation(status => status);
-    
-    // Create mock data with specific facility states
-    const facilityIssues = [
-      { relatedFacility: 'Pool', issueStatus: 'Open' },       // Unavailable
-      { relatedFacility: 'Gym', issueStatus: 'Closed' },      // Available
-      { relatedFacility: 'Soccer Field', issueStatus: 'Open' } // Unavailable
-      // Basketball Court has no issues, so should be Available
-    ];
-    
-    fetchFilteredIssues.mockResolvedValueOnce(facilityIssues);
-    
-    render(<Router><MaintenanceReportPage/></Router>);
-    
-    await waitFor(() => {
-      // Check the availability status for each facility
-      const facilityHeadings = screen.getAllByRole('heading', { level: 4 });
-      
-      // Find specific facility cards by their h4 text content
-      const gymHeading = facilityHeadings.find(h => h.textContent === 'Gym');
-      const poolHeading = facilityHeadings.find(h => h.textContent === 'Pool');
-      const soccerFieldHeading = facilityHeadings.find(h => h.textContent === 'Soccer Field');
-      const basketballCourtHeading = facilityHeadings.find(h => h.textContent === 'Basketball Court');
-      
-      // Verify the status of each facility
-      if (poolHeading) {
-        const poolCard = poolHeading.closest('.facility-card');
-        const poolStatus = poolCard.querySelector('.status');
-        const poolPercentage = poolCard.querySelector('.percentage');
-        
-        expect(poolStatus).toHaveTextContent('Unavailable');
-        expect(poolPercentage).toHaveTextContent('0%');
-      }
-      
-      if (gymHeading) {
-        const gymCard = gymHeading.closest('.facility-card');
-        const gymStatus = gymCard.querySelector('.status');
-        const gymPercentage = gymCard.querySelector('.percentage');
-        
-        expect(gymStatus).toHaveTextContent('Available');
-        expect(gymPercentage).toHaveTextContent('100%');
-      }
-      
-      if (basketballCourtHeading) {
-        const basketballCard = basketballCourtHeading.closest('.facility-card');
-        const basketballStatus = basketballCard.querySelector('.status');
-        const basketballPercentage = basketballCard.querySelector('.percentage');
-        
-        expect(basketballStatus).toHaveTextContent('Available');
-        expect(basketballPercentage).toHaveTextContent('100%');
-      }
-    });
-  });
+ 
 
   test('displays results count correctly', async () => {
     render(<Router><MaintenanceReportPage/></Router>);

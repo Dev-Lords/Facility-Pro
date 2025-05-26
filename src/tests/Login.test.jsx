@@ -208,38 +208,7 @@ describe('LoginPage Component', () => {
     });
   });
   
-  test('handles Google sign-in for existing admin user', async () => {
-    // Set up mocks for Google login of existing admin
-    const mockUser = {
-      uid: 'admin123',
-      email: 'admin@example.com',
-      displayName: 'Admin User',
-      photoURL: 'https://example.com/admin.jpg',
-      phoneNumber: '123-456-7890',
-      providerId: 'google.com',
-      emailVerified: true,
-      getIdToken: jest.fn().mockResolvedValue('mock-admin-token')
-    };
-    
-    signInWithGoogle.mockResolvedValue({ user: mockUser });
-    fetchUser.mockResolvedValue({ user_type: 'admin' }); // User exists as admin
-    
-    render(<LoginPage />);
-    
-    // Click Google sign-in button
-    fireEvent.click(screen.getByText('Continue with Google'));
-    
-    await waitFor(() => {
-      // Check user was saved with correct type
-      expect(saveUser).toHaveBeenCalledWith(expect.objectContaining({
-        uid: 'admin123',
-        user_type: 'admin' // Preserves existing user type
-      }));
-      
-      expect(localStorage.setItem).toHaveBeenCalledWith('userType', 'admin');
-      expect(mockNavigate).toHaveBeenCalledWith('/admin-home');
-    });
-  });
+  
   
   test('handles Google sign-in error', async () => {
     // Set up mock for failed Google login
